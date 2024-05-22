@@ -16,6 +16,9 @@
 <script>
 	'use strict';
 	
+	function pwdEditCheck() {
+		
+	}
 </script>
 </head>
 <body class="body-layout">
