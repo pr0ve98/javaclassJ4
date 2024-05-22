@@ -145,6 +145,25 @@ public class UserDAO {
 		}
 		return res;
 	}
+
+	// 유저 정보 수정
+	public int setUserEdit(String nickName, String name, String birthday, String mid) {
+		int res = 0;
+		try {
+			sql = "update hbUser set nickName=?, name=?, birthday=? where mid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, nickName);
+			pstmt.setString(2, name);
+			pstmt.setString(3, birthday);
+			pstmt.setString(4, mid);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
 	
 	
 	

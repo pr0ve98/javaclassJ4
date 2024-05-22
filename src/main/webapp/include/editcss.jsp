@@ -17,6 +17,7 @@
 	}
 	.table-label{
 		width: 30%;
+		vertical-align: middle!important;
 		background-color: #eee;
 	}
 	.table-content{
@@ -28,6 +29,7 @@
 	.user-profile img {
 		width: 100px;
 		height: 100px;
+		cursor: default;
 	}
 	.proBtn {
 		padding: 5px 10px;

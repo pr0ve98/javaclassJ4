@@ -17,7 +17,7 @@ public class UserLogoutCommand implements UserInterface {
 		session.invalidate();
 		
 		request.setAttribute("title", "로그아웃");
-		request.setAttribute("message", nickName+"님 로그아웃 되셨습니다.");
+		request.setAttribute("message", "<span style='color:#ff7200'>"+nickName+"</span>님 로그아웃 되셨습니다.");
 		request.setAttribute("url", "Main");
 
 	}

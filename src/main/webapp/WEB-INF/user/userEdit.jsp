@@ -98,6 +98,55 @@
 			}
 		});
 	}
+	
+	// 유저 정보 변경
+	function userEditCheck() {
+		let nickName = editForm.nickName.value;
+		let nickNameReg = /^[a-zA-Z가-힣0-9]{2,8}$/;
+		
+		let name = editForm.name.value;
+		let nameReg = /^[가-힣]{2,6}$/;
+		
+		let birthday = document.forms["editForm"]["birthday"].valueAsDate;
+		let today = new Date();
+		let minDate = new Date('1900-01-01');
+		
+		if(nickName.trim() == ""){
+			$("#myModal #modalTitle").text("닉네임 오류");
+			$("#myModal #modalText").text("닉네임을 입력해주세요!");
+			$('#myModal').modal('show');
+			editForm.nickName.focus();
+		}
+		else if(!nickNameReg.test(nickName)){
+			$("#myModal #modalTitle").text("닉네임 오류");
+			$("#myModal #modalText").text("닉네임은 2~8자 영문대소문자, 한글, 숫자만 가능합니다!");
+			$('#myModal').modal('show');
+			editForm.nickName.value = "";
+			editForm.nickName.focus();
+    	}
+		else if(name.trim() == ""){
+			$("#myModal #modalTitle").text("이름 오류");
+			$("#myModal #modalText").text("이름을 입력해주세요!");
+			$('#myModal').modal('show');
+			editForm.name.focus();
+		}
+		else if(!nameReg.test(name)){
+			$("#myModal #modalTitle").text("이름 오류");
+			$("#myModal #modalText").text("이름은 한글 2~6자만 가능합니다!");
+			$('#myModal').modal('show');
+			editForm.name.value = "";
+			editForm.name.focus();
+    	}
+		else if(birthday === null || birthday > today || birthday < minDate) {
+			$("#myModal #modalTitle").text("생년월일 오류");
+			$("#myModal #modalText").text("생년월일을 정확히 입력해주세요!");
+			$('#myModal').modal('show');
+            document.forms["editForm"]["birthday"].focus();
+        }
+		else {
+			editForm.submit();
+		}
+	}
 </script>
 </head>
 <body class="body-layout">
@@ -123,7 +172,7 @@
 						<tr>
 							<td class="table-label">비밀번호</td>
 							<td class="table-content">
-								<input type="button" value="비밀번호 변경" class="proBtn"/>
+								<input type="button" value="비밀번호 변경" onclick="location.href='UserPwdEdit.u';" class="proBtn"/>
 							</td>
 						</tr>
 						<tr>
@@ -146,11 +195,12 @@
 						</tr>
 						<tr>
 							<td colspan="2" class="table-content">
-								<input type="button" value="변경" class="proBtn mr-2"/>
+								<input type="button" value="변경" onclick="userEditCheck()" class="proBtn mr-2"/>
 								<input type="button" value="돌아가기" class="proBtn" onclick="location.href='Main';"/>
 							</td>
 						</tr>
 					</table>
+					<input type="hidden" name="mid" id="mid" value="${sMid}" />
 				</form>
 			</div>
 		</div>
