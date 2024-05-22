@@ -112,7 +112,7 @@
 						<tr>
 							<td class="table-label">프로필사진</td>
 							<td class="table-content">
-								<div class="user-profile"><img src="${ctp}/images/user/${vo.userSImg}" alt="유저프로필"></div>
+								<div class="user-profile"><img src="${ctp}/images/user/${vo.userImg}" alt="유저프로필"></div>
 								<div class="mb-2">
 									<input type="button" value="사진변경" class="proBtn mr-2" onclick="document.getElementById('fName').click();"/>
 									<input type="button" value="기본이미지로 변경" class="proBtn" onclick="userImgBasicChange()" />

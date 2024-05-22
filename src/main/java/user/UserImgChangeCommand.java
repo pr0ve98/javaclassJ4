@@ -19,23 +19,22 @@ public class UserImgChangeCommand implements UserInterface {
 		String encoding = "UTF-8";
 		
 		MultipartRequest multipartRequest = new MultipartRequest(request, realPath, maxSize, encoding, new DefaultFileRenamePolicy());
-		String img = multipartRequest.getOriginalFileName("fName") == null ? "user_basic.jpg" : multipartRequest.getOriginalFileName("fName");
-		String sImg = multipartRequest.getFilesystemName("fName") == null ? "user_basic.jpg" : multipartRequest.getFilesystemName("fName");
+		String img = multipartRequest.getFilesystemName("fName") == null ? "user_basic.jpg" : multipartRequest.getFilesystemName("fName");
 		String mid = multipartRequest.getParameter("mid") == null ? "" : multipartRequest.getParameter("mid");
 		
 		UserVO vo = new UserVO();
 		UserDAO dao = new UserDAO();
 		
 		vo = dao.getUserIdCheck(mid);
-		if(!vo.getUserSImg().equals("user_basic.jpg")) {
+		if(!vo.getUserImg().equals("user_basic.jpg")) {
 			String filePath = request.getServletContext().getRealPath("/images/user/");
-			File file = new File(filePath+vo.getUserSImg());
+			File file = new File(filePath+vo.getUserImg());
 			if(file.exists()) {
 				file.delete();
 			}
 		}
 		
-		int res = dao.setUserImgChange(img, sImg, mid);
+		int res = dao.setUserImgChange(img, mid);
 		
 		response.getWriter().write(res+"");
 

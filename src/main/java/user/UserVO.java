@@ -11,7 +11,6 @@ public class UserVO {
 	private int isDel;
 	private String joinDate;
 	private String userImg;
-	private String userSImg;
 	
 	public int getIdx() {
 		return idx;
@@ -73,17 +72,12 @@ public class UserVO {
 	public void setUserImg(String userImg) {
 		this.userImg = userImg;
 	}
-	public String getUserSImg() {
-		return userSImg;
-	}
-	public void setUserSImg(String userSImg) {
-		this.userSImg = userSImg;
-	}
 	@Override
 	public String toString() {
 		return "UserVO [idx=" + idx + ", mid=" + mid + ", pwd=" + pwd + ", email=" + email + ", nickName=" + nickName
 				+ ", name=" + name + ", birthday=" + birthday + ", isDel=" + isDel + ", joinDate=" + joinDate
-				+ ", userImg=" + userImg + ", userSImg=" + userSImg + "]";
+				+ ", userImg=" + userImg + "]";
 	}
+
 	
 }

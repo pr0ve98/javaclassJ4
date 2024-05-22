@@ -55,7 +55,6 @@ public class UserDAO {
 				vo.setIsDel(rs.getInt("isDel"));
 				vo.setJoinDate(rs.getString("joinDate"));
 				vo.setUserImg(rs.getString("userImg"));
-				vo.setUserSImg(rs.getString("userSImg"));
 			}
 		} catch (SQLException e) {
 			System.out.println("sql 오류 "+e.getMessage());
@@ -84,7 +83,6 @@ public class UserDAO {
 				vo.setIsDel(rs.getInt("isDel"));
 				vo.setJoinDate(rs.getString("joinDate"));
 				vo.setUserImg(rs.getString("userImg"));
-				vo.setUserSImg(rs.getString("userSImg"));
 			}
 		} catch (SQLException e) {
 			System.out.println("sql 오류 "+e.getMessage());
@@ -98,7 +96,7 @@ public class UserDAO {
 	public int setUserJoinInput(UserVO vo) {
 		int res = 0;
 		try {
-			sql = "insert into hbUser values (default, ?, ?, ?, ?, ?, ?, default, default, default, default)";
+			sql = "insert into hbUser values (default, ?, ?, ?, ?, ?, ?, default, default, default)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getMid());
 			pstmt.setString(2, vo.getEmail());
@@ -116,14 +114,13 @@ public class UserDAO {
 	}
 	
 	// 유저 프로필 사진 변경
-	public int setUserImgChange(String img, String sImg, String mid) {
+	public int setUserImgChange(String img, String mid) {
 		int res = 0;
 		try {
-			sql = "update hbUser set userImg=?, userSImg=? where mid=?";
+			sql = "update hbUser set userImg=? where mid=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, img);
-			pstmt.setString(2, sImg);
-			pstmt.setString(3, mid);
+			pstmt.setString(2, mid);
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("sql 오류 "+e.getMessage());
@@ -137,7 +134,7 @@ public class UserDAO {
 	public int setUserImgBasicChange(String mid) {
 		int res = 0;
 		try {
-			sql = "update hbUser set userImg='user_basic.jpg', userSImg='user_basic.jpg' where mid=?";
+			sql = "update hbUser set userImg='user_basic.jpg' where mid=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mid);
 			res = pstmt.executeUpdate();

@@ -166,7 +166,7 @@
 			<c:if test="${sNickName == null}"><button class="orangeBtn" onclick="location.href='Login.u';">가입하기</button></c:if>
 			<c:if test="${sNickName != null}">
 				<i class="fa-solid fa-bell fa-xl mt-4" style="color: gray;" onclick="alarmBtn()"></i>
-				<div class="user-profile"><img src="${ctp}/images/user/${vo.userSImg}" alt="유저프로필" onclick="profileBtn()"></div>
+				<div class="user-profile"><img src="${ctp}/images/user/${vo.userImg}" alt="유저프로필" onclick="profileBtn()"></div>
 			</c:if>
 		</div>
 	</div>
