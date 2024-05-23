@@ -141,7 +141,7 @@
 	        +'        <span class="b-title">운영중인 블로그</span>'
 	        +'    </div>'
 	        +'    <div class="user_blog">'
-	        +'        <span class="user_blog-title">${sBlogTitle}</span>'
+	        +'        <span class="user_blog-title" onclick="location.href=&quot;${ctp}/blog/${sMid}&quot;">${sBlogTitle}</span>'
 	        +'			<div class="user-blog-btn">'
 	        +'        <span class="user_write-icon"><i class="fa-solid fa-pen-to-square fa-sm" style="color: #A6A6A6;"></i></span>'
 	        +'        <span class="user_settings-icon"><i class="fa-solid fa-gear fa-sm" style="color: #A6A6A6;"></i></span>'

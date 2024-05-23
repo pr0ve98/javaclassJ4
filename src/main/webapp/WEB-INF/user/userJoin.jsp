@@ -242,7 +242,7 @@
 				    </div>
 				</form>
 				<input type="button" value="회원가입" onclick="joinCheck()" class="orangeBtn mb-3" data-target="#myModal"/>
-				<input type="button" value="돌아가기" onclick="location.href='Login.mem';" class="grayBtn mb-3"/>
+				<input type="button" value="돌아가기" onclick="location.href='Login.u';" class="grayBtn mb-3"/>
 			</div>
 		</div>
 	</div>
