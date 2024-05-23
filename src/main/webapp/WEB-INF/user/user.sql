@@ -8,7 +8,7 @@ create table hbUser (
 	nickName varchar(20) not null,
 	name varchar(20) not null,
 	birthday date not null,
-	isDel boolean default FALSE,
+	isDel int default 0,
 	joinDate datetime default now(),
 	userImg varchar(200) default 'user_basic.jpg',
 	primary key (idx),

@@ -1,6 +1,7 @@
 package user;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -163,6 +164,84 @@ public class UserDAO {
 			pstmtClose();
 		}
 		return res;
+	}
+
+	// 유저 비밀번호 변경
+	public int setPwdEdit(String mid, String pwd) {
+		int res = 0;
+		try {
+			sql = "update hbUser set pwd=? where mid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, pwd);
+			pstmt.setString(2, mid);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
+	// 유저 아이디 찾기
+	public UserVO getUserIdSearch(String email, String name, Date birthday) {
+		UserVO vo = new UserVO();
+		try {
+			sql = "select * from hbUser where email=? and name=? and birthday=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, email);
+			pstmt.setString(2, name);
+			pstmt.setDate(3, birthday);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setEmail(rs.getString("email"));
+				vo.setPwd(rs.getString("pwd"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setName(rs.getString("name"));
+				vo.setBirthday(rs.getString("birthday"));
+				vo.setIsDel(rs.getInt("isDel"));
+				vo.setJoinDate(rs.getString("joinDate"));
+				vo.setUserImg(rs.getString("userImg"));
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vo;
+	}
+
+	// 유저 비밀번호 찾기
+	public UserVO getUserPwdSearch(String mid, String email, String name, Date birthday) {
+		UserVO vo = new UserVO();
+		try {
+			sql = "select * from hbUser where mid=? and email=? and name=? and birthday=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			pstmt.setString(2, email);
+			pstmt.setString(3, name);
+			pstmt.setDate(4, birthday);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				vo.setIdx(rs.getInt("idx"));
+				vo.setMid(rs.getString("mid"));
+				vo.setEmail(rs.getString("email"));
+				vo.setPwd(rs.getString("pwd"));
+				vo.setNickName(rs.getString("nickName"));
+				vo.setName(rs.getString("name"));
+				vo.setBirthday(rs.getString("birthday"));
+				vo.setIsDel(rs.getInt("isDel"));
+				vo.setJoinDate(rs.getString("joinDate"));
+				vo.setUserImg(rs.getString("userImg"));
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vo;
 	}
 	
 	

@@ -37,12 +37,13 @@ public class BlogDAO {
 	}
 
 	// 회원가입 할 때 자동으로 블로그 생성
-	public void setInputBlog(String mid, String blogTitle) {
+	public void setInputBlog(String mid, String blogTitle, String blogIntro) {
 		try {
-			sql = "insert into hbBlog values(default, ?, ?, default, default)";
+			sql = "insert into hbBlog values(default, ?, ?, ?, default)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mid);
 			pstmt.setString(2, blogTitle);
+			pstmt.setString(3, blogIntro);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("sql 오류 "+e.getMessage());
@@ -64,8 +65,8 @@ public class BlogDAO {
 				vo.setIdx(rs.getInt("idx"));
 				vo.setMid(rs.getString("mid"));
 				vo.setBlogTitle(rs.getString("blogTitle"));
+				vo.setBlogIntro(rs.getString("blogIntro"));
 				vo.setTotalVisit(rs.getInt("totalVisit"));
-				vo.setTodayVisit(rs.getInt("todayVisit"));
 			}
 		} catch (SQLException e) {
 			System.out.println("sql 오류 "+e.getMessage());

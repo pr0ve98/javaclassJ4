@@ -33,6 +33,22 @@ public class UserController extends HttpServlet {
 			command.execute(request, response);
 			viewPage += "/userLogin.jsp";
 		}
+		else if(com.equals("/UserIdSearch")) {
+			viewPage += "/userIdSearch.jsp";
+		}
+		else if(com.equals("/UserIdSearchCheck")) {
+			command = new UserIdSearchCheckCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/UserPwdSearch")) {
+			viewPage += "/userPwdSearch.jsp";
+		}
+		else if(com.equals("/UserPwdSearchCheck")) {
+			command = new UserPwdSearchCheckCommand();
+			command.execute(request, response);
+			return;
+		}
 		else if(com.equals("/UserJoin")) {
 			viewPage += "/userJoin.jsp";
 		}
@@ -56,6 +72,12 @@ public class UserController extends HttpServlet {
 			command.execute(request, response);
 			viewPage = "/include/message.jsp";
 		}
+		else if(mid.trim().equals("")) { // 인증
+			request.setAttribute("title", "로그인 오류");
+			request.setAttribute("message", "다시 로그인해주세요!");
+			request.setAttribute("url", "UserLogin.u");
+			viewPage = "/include/message.jsp";
+		}
 		else if(com.equals("/UserEdit")) {
 			command = new UserEditCommand();
 			command.execute(request, response);
@@ -71,11 +93,6 @@ public class UserController extends HttpServlet {
 			command.execute(request, response);
 			return;
 		}
-		else if(com.equals("/UserLogout")) {
-			command = new UserLogoutCommand();
-			command.execute(request, response);
-			viewPage = "/include/message.jsp";
-		}
 		else if(com.equals("/UserEditOk")) {
 			command = new UserEditOkCommand();
 			command.execute(request, response);
@@ -83,6 +100,16 @@ public class UserController extends HttpServlet {
 		}
 		else if(com.equals("/UserPwdEdit")) {
 			viewPage += "/userPwdEdit.jsp";
+		}
+		else if(com.equals("/UserPwdEditOk")) {
+			command = new UserPwdEditOkCommand();
+			command.execute(request, response);
+			return;
+		}
+		else if(com.equals("/UserLogout")) {
+			command = new UserLogoutCommand();
+			command.execute(request, response);
+			viewPage = "/include/message.jsp";
 		}
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);

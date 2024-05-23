@@ -62,8 +62,8 @@
 						<input type="password" name="pwd" id="pwd" value="qwer1234!" placeholder="비밀번호를 입력하세요" class="form-control mb-2" />
 						<div class="login-menu font-light mb-4">
 							<span><input type="checkbox" name="idSave" value="저장" ${check} /> 아이디 저장&nbsp;&nbsp;&nbsp;</span>
-							<span><a href="#">아이디 찾기</a>&nbsp;&nbsp;
-							<a href="#">비밀번호 찾기</a></span>
+							<span><a href="UserIdSearch.u">아이디 찾기</a>&nbsp;&nbsp;
+							<a href="UserPwdSearch.u">비밀번호 찾기</a></span>
 						</div>
 					</div>
 				</form>

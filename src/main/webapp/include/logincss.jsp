@@ -29,14 +29,5 @@
 	    display: block;
 	    text-align: left;
 	}
-	.btn-gray {
-		background-color: #eee;
-		color: gray;
-		border: none;
-	}
-	.btn-gray:hover {
-		background-color: #ddd;
-		color: gray;
-	}
 
 </style>

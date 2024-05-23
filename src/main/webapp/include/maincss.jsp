@@ -395,8 +395,6 @@
 		color: #747474;
 	}
 	
-	
-	
 	.layer_profile_header {
 	    display: flex;
 	    justify-content: space-between;
@@ -442,6 +440,7 @@
 	.user_blog-title {
 	    font-size: 16px;
 	    color: #747474;
+	    cursor: pointer;
 	}
 	
 	.user_write-icon, .user_settings-icon {
@@ -528,5 +527,17 @@
 		font-family: 'Pretendard-Light';
 		margin: 0;
 		color: #A6A6A6;
+	}
+	.btn-gray {
+		background-color: #eee;
+		color: gray;
+		border: none;
+	}
+	.btn-gray:hover {
+		background-color: #ddd;
+		color: gray;
+	}
+	#modalText {
+		font-family: 'Pretendard-Light';
 	}
 </style>

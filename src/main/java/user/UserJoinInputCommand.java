@@ -52,9 +52,10 @@ public class UserJoinInputCommand implements UserInterface {
 		BlogVO bVo = new BlogVO();
 		bVo.setMid(mid);
 		bVo.setBlogTitle(vo.getNickName()+"의 Blog");
+		bVo.setBlogIntro(vo.getNickName()+"의 블로그입니다");
 		
 		BlogDAO bDao = new BlogDAO();
-		bDao.setInputBlog(mid, bVo.getBlogTitle());
+		bDao.setInputBlog(mid, bVo.getBlogTitle(), bVo.getBlogIntro());
 		
 		
 		if(res != 0) {

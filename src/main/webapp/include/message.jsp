@@ -9,17 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>message.jsp</title>
 <%@ include file="/include/bs4.jsp"%>
-	<style>
-		.btn-gray {
-			background-color: #eee;
-			color: gray;
-			border: none;
-		}
-		.btn-gray:hover {
-			background-color: #ddd;
-			color: gray;
-		}
-	</style>
+<%@ include file="/include/maincss.jsp"%>
 	<script>
     'use strict';
 
@@ -29,12 +19,15 @@
             $("#myModal #modalTitle").html("${title}");
             $("#myModal #modalText").html("${message}");
             $('#myModal').modal('show');
+	        // 모달창이 닫힐 때 페이지 이동
+	        $('#myModal').on('hide.bs.modal', function () {
+	            window.location.href = "${url}";
+	        });
+        }
+        else {
+        	location.href = "${url}";
         }
         
-        // 모달창이 닫힐 때 페이지 이동
-        $('#myModal').on('hide.bs.modal', function () {
-            window.location.href = "${url}";
-        });
     });
 	</script>
 </head>

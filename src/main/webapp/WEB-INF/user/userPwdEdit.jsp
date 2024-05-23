@@ -12,12 +12,88 @@
 <%@ include file="/include/bs4.jsp"%>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <%@ include file="/include/maincss.jsp"%>
+<%@ include file="/include/logincss.jsp"%>
 <%@ include file="/include/editcss.jsp"%>
 <script>
 	'use strict';
 	
 	function pwdEditCheck() {
+		let pwdNow = editPwdForm.pwdNow.value.trim();
+		let pwd = editPwdForm.pwd.value.trim();
+		let pwdCheck = editPwdForm.pwdCheck.value.trim();
 		
+		let pwdReg = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&^])[A-Za-z\d@$!%*#?&^]{8,16}$/;
+		
+		if(pwdNow == ""){
+			$("#myModal #modalTitle").text("비밀번호 오류");
+			$("#myModal #modalText").text("비밀번호를 입력해주세요!");
+			$('#myModal').modal('show');
+			editPwdForm.pwdNow.focus();
+		}
+		else if(pwd == ""){
+			$("#myModal #modalTitle").text("비밀번호 오류");
+			$("#myModal #modalText").text("비밀번호를 입력해주세요!");
+			$('#myModal').modal('show');
+			editPwdForm.pwd.focus();
+		}
+		else if(pwdCheck == ""){
+			$("#myModal #modalTitle").text("비밀번호 오류");
+			$("#myModal #modalText").text("비밀번호를 입력해주세요!");
+			$('#myModal').modal('show');
+			editPwdForm.pwdCheck.focus();
+		}
+		else if(!pwdReg.test(pwd)){
+			$("#myModal #modalTitle").text("비밀번호 오류");
+			$("#myModal #modalText").text("비밀번호는 8~16자 영문대소문자, 숫자, 특수문자(@$!%*#?&^)를 하나씩은 포함해야 합니다!");
+			$('#myModal').modal('show');
+			editPwdForm.pwd.value = "";
+			editPwdForm.pwd.focus();
+    	}
+		else if(pwd != pwdCheck){
+			$("#myModal #modalTitle").text("비밀번호 오류");
+			$("#myModal #modalText").text("비밀번호 확인이 다릅니다");
+			$('#myModal').modal('show');
+			editPwdForm.pwdCheck.value = "";
+			editPwdForm.pwdCheck.focus();
+    	}
+		else {
+			//editPwdForm.submit();
+			$.ajax({
+				url : "UserPwdEditOk.u",
+				type : "post",
+				data : {pwdNow : pwdNow, pwd:pwd, mid:'${sMid}'},
+				success : function(res) {
+					if(res == "현재비밀번호오류"){
+						$("#myModal #modalTitle").text("비밀번호");
+						$("#myModal #modalText").text("현재 비밀번호가 맞지 않습니다!");
+						$('#myModal').modal('show');
+					}
+					else if(res == "비밀번호같음"){
+						$("#myModal #modalTitle").text("비밀번호");
+						$("#myModal #modalText").text("현재 비밀번호와 다른 비밀번호로 변경하세요!");
+						$('#myModal').modal('show');
+					}
+					else if(res == "1"){
+						$("#myModal #modalTitle").text("비밀번호");
+						$("#myModal #modalText").html("비밀번호가 변경되었습니다 다시 로그인해주세요!");
+						$('#myModal').modal('show');
+				        $('#myModal').on('hide.bs.modal', function () {
+				            window.location.href = "UserLogout.u";
+				        });
+					}
+					else {
+						$("#myModal #modalTitle").text("비밀번호");
+						$("#myModal #modalText").text("비밀번호 변경 실패...");
+						$('#myModal').modal('show');
+					}
+				},
+				error : function() {
+					$("#myModal #modalTitle").text("오류");
+					$("#myModal #modalText").text("전송 오류!");
+					$('#myModal').modal('show');
+				}
+			});
+		}
 	}
 </script>
 </head>
@@ -62,7 +138,6 @@
 							</td>
 						</tr>
 					</table>
-					<input type="hidden" name="mid" id="mid" value="${sMid}" />
 				</form>
 			</div>
 		</div>

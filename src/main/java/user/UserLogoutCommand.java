@@ -13,11 +13,9 @@ public class UserLogoutCommand implements UserInterface {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		
-		String nickName = (String)session.getAttribute("sNickName");
 		session.invalidate();
 		
-		request.setAttribute("title", "로그아웃");
-		request.setAttribute("message", "<span style='color:#ff7200'>"+nickName+"</span>님 로그아웃 되셨습니다.");
+		request.setAttribute("message", "NO");
 		request.setAttribute("url", "Main");
 
 	}
