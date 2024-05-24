@@ -50,7 +50,7 @@ public class UserJoinInputCommand implements UserInterface {
 		
 		// 회원가입 시 블로그 자동생성
 		BlogVO bVo = new BlogVO();
-		bVo.setMid(mid);
+		bVo.setBlogMid(mid);
 		bVo.setBlogTitle(vo.getNickName()+"의 Blog");
 		bVo.setBlogIntro(vo.getNickName()+"의 블로그입니다");
 		

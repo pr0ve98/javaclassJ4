@@ -32,7 +32,7 @@ public class UserLoginOkCommand implements UserInterface {
 			return;
 		}
 		
-		if(bVo.getMid() == null) {
+		if(bVo.getBlogMid() == null) {
 			request.setAttribute("title", "아이디 오류");
 			request.setAttribute("message", "해당 아이디가 없습니다!");
 			request.setAttribute("url", "UserLogin.u");

@@ -1,28 +1,27 @@
 package blog;
 
 public class BlogVO {
-	private int idx;
-	private String mid;
+	private int blogIdx;
+	private String blogMid;
 	private String blogTitle;
 	private String blogIntro;
 	private int totalVisit;
-	
 	private int todayVisit;
 
-	public int getIdx() {
-		return idx;
+	public int getBlogIdx() {
+		return blogIdx;
 	}
 
-	public void setIdx(int idx) {
-		this.idx = idx;
+	public void setBlogIdx(int blogIdx) {
+		this.blogIdx = blogIdx;
 	}
 
-	public String getMid() {
-		return mid;
+	public String getBlogMid() {
+		return blogMid;
 	}
 
-	public void setMid(String mid) {
-		this.mid = mid;
+	public void setBlogMid(String blogMid) {
+		this.blogMid = blogMid;
 	}
 
 	public String getBlogTitle() {
@@ -56,6 +55,13 @@ public class BlogVO {
 	public void setTodayVisit(int todayVisit) {
 		this.todayVisit = todayVisit;
 	}
+
+	@Override
+	public String toString() {
+		return "BlogVO [blogIdx=" + blogIdx + ", blogMid=" + blogMid + ", blogTitle=" + blogTitle + ", blogIntro="
+				+ blogIntro + ", totalVisit=" + totalVisit + ", todayVisit=" + todayVisit + "]";
+	}
+	
 	
 	
 }

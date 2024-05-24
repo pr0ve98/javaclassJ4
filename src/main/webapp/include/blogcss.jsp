@@ -124,11 +124,6 @@
 	    margin-bottom: 20px;
 	    padding: 20px;
 	}
-	.post-date {
-	    flex: 1;
-	    font-size: 14px;
-	    color: #999;
-	}
 	.post-content {
 	    flex: 3;
 	}
@@ -250,6 +245,7 @@
 	    display: block;
 	    margin: 0 auto;
 	    margin-bottom: 20px;
+	    object-fit: cover;
 	}
 	
 	.categories ul,

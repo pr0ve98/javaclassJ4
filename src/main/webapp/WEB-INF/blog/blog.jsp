@@ -29,7 +29,6 @@
     	<b>전체 글 <span style="color:#ff7200">27</span></b>
     	<hr/>
         <div class="post">
-            <div class="post-date">23.03.22</div>
             <div class="post-content">
                 <h2>오늘은 별로 안 바빴다</h2>
                 <p>오늘은 별로 안 바빴다... (본문 내용)</p>
@@ -53,10 +52,8 @@
 	    	</div>
         </div>
         <div class="categories">
-        	<ul>
-            <li>분류 전체보기 (27)</li>
-            </ul>
             <ul>
+            	<li>전체보기 (27)</li>
                 <li>일기 (22)</li>
                 <li>리뷰 (5)</li>
             </ul>
@@ -74,16 +71,13 @@
         <div class="counter">
             <div>Total</div>
             <div class="totalVisit">${bVo.totalVisit}</div>
-            <div class="todayVisit">Today 0</div>
+            <div class="todayVisit">Today ${bVo.todayVisit}</div>
         </div>
     </aside>
 </main>
-    <footer>
-        <p>&copy; H-Blog</p>
-    </footer>
-    <!-- 홈 버튼 -->
-    <div class="home-button" onclick="location.href='${ctp}/Main';">
-        <i class="fas fa-home"></i>
-    </div>
+<!-- 홈 버튼 -->
+<div class="home-button" onclick="location.href='${ctp}/Main';">
+    <i class="fas fa-home"></i>
+</div>
 </body>
 </html>
