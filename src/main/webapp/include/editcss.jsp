@@ -45,5 +45,4 @@
 		cursor: pointer;
 		color: #747474;
 	}
-
 </style>

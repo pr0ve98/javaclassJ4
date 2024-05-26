@@ -14,7 +14,7 @@
 <%@ include file="/include/maincss.jsp"%>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
-	  loadContent('sub');
+	  loadContent('sub','');
 
 	  const $$navDiv = document.querySelectorAll('.menu div');
 	  const handleToggleActive = (e) => {
@@ -36,14 +36,17 @@
 	
 	// 구독/인기/최신 블로그글 부분 로드
 	function loadContent(nav, category) {
-		  let xhttp = new XMLHttpRequest();
-		  xhttp.onreadystatechange = function() {
-		    if (this.readyState == 4 && this.status == 200) {
-		      document.getElementById("main-blog").innerHTML = this.responseText;
-		    }
-		  };
-		  xhttp.open("GET", "MainContent?nav=" + nav +"&category="+ category, true);
-		  xhttp.send();
+			$.ajax({
+			url: "MainContent",
+			method: "GET",
+			data: { nav: nav, category: category },
+			success: function(res) {
+			  $("#main-blog").html(res);
+			},
+			error : function() {
+			alert("오류");
+			}
+		});
 	}
 	
 	// 알람 버튼
@@ -144,7 +147,7 @@
 	        +'        <span class="user_blog-title" onclick="location.href=&quot;${ctp}/blog/${sMid}&quot;">${sBlogTitle}</span>'
 	        +'			<div class="user-blog-btn">'
 	        +'        <span class="user_write-icon"><i class="fa-solid fa-pen-to-square fa-sm" style="color: #A6A6A6;"></i></span>'
-	        +'        <span class="user_settings-icon"><i class="fa-solid fa-gear fa-sm" style="color: #A6A6A6;"></i></span>'
+	        +'        <span class="user_settings-icon"><i class="fa-solid fa-gear fa-sm" style="color: #A6A6A6;" onclick="location.href=&quot;${ctp}/blogEdit/${sMid}&quot;"></i></span>'
 	        +'			</div>'
 	        +'    </div>'
 	        +'</div>'
@@ -172,9 +175,9 @@
 	</div>
 	<div class="menu">
 		<nav>
-			<div class="mr-5 active-color" onclick="loadContent('sub')">구독</div>
-			<div class="mr-5" onclick="loadContent('pop')">인기</div>
-			<div class="mr-5" onclick="loadContent('rec')">최신</div>
+			<div class="mr-5 active-color" onclick="loadContent('sub','')">구독</div>
+			<div class="mr-5" onclick="loadContent('pop','')">인기</div>
+			<div class="mr-5" onclick="loadContent('rec','')">최신</div>
 			<span class="animation"></span>
 		</nav>
 	</div>

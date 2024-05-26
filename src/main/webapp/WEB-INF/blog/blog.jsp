@@ -71,7 +71,7 @@
         <div class="counter">
             <div>Total</div>
             <div class="totalVisit">${bVo.totalVisit}</div>
-            <div class="todayVisit">Today ${bVo.todayVisit}</div>
+            <div class="todayVisit">Today ${todayVisit}</div>
         </div>
     </aside>
 </main>

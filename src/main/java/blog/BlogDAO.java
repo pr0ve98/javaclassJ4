@@ -39,7 +39,7 @@ public class BlogDAO {
 	// 회원가입 할 때 자동으로 블로그 생성
 	public void setInputBlog(String mid, String blogTitle, String blogIntro) {
 		try {
-			sql = "insert into hbBlog values(default, ?, ?, ?, default, default)";
+			sql = "insert into hbBlog values(default, ?, ?, ?, default)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mid);
 			pstmt.setString(2, blogTitle);
@@ -67,7 +67,6 @@ public class BlogDAO {
 				vo.setBlogTitle(rs.getString("blogTitle"));
 				vo.setBlogIntro(rs.getString("blogIntro"));
 				vo.setTotalVisit(rs.getInt("totalVisit"));
-				vo.setTodayVisit(rs.getInt("todayVisit"));
 			}
 		} catch (SQLException e) {
 			System.out.println("sql 오류 "+e.getMessage());
@@ -78,9 +77,9 @@ public class BlogDAO {
 	}
 
 	// 방문자수 증가
-	public void setVisit(String mid) {
+	public void setTotalVisit(String mid) {
 		try {
-			sql = "update hbBlog set totalVisit=totalVisit+1, todayVisit=todayVisit+1 where blogMid=?";
+			sql = "update hbBlog set totalVisit=totalVisit+1 where blogMid=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, mid);
 			pstmt.executeUpdate();
@@ -91,19 +90,5 @@ public class BlogDAO {
 		}
 	}
 
-	// 오늘 방문자수 초기화
-	public void resetTodayVisit() {
-		try {
-			sql = "update hbBlog set todayVisit=0";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("sql 오류 "+e.getMessage());
-		} finally {
-			pstmtClose();
-		}
-	}
-
-	
 	
 }
