@@ -13,3 +13,13 @@ create table hbBlog (
 desc hbBlog;
 
 drop table hbBlog;
+
+create table hbCategory (
+	caIdx int not null auto_increment,
+	caBlogIdx int not null,
+	category varchar(30) not null,
+	parentCategoryIdx int,
+	publicSetting char(3) default '공개',
+	primary key(caIdx),
+	foreign key(caBlogIdx) references hbBlog(blogIdx) on delete cascade
+);

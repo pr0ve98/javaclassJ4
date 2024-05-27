@@ -21,15 +21,14 @@ import user.UserDAO;
 import user.UserVO;
 
 @SuppressWarnings("serial")
-@WebServlet("/blogEdit/*")
-public class BlogEditServlet extends HttpServlet {
+@WebServlet("/CategoryEdit/*")
+public class CategoryEditServlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BlogDAO bDao = new BlogDAO();
 		UserDAO uDao = new UserDAO();
 		RequestDispatcher dispatcher = null;
-		
-		String part = request.getParameter("part")==null ? "basic" : request.getParameter("part");
+		String viewPage = "/WEB-INF/blog/blogCategoryEdit.jsp";
 		
 		HttpSession session = request.getSession();
 		String sMid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
@@ -51,7 +50,6 @@ public class BlogEditServlet extends HttpServlet {
         request.setAttribute("uVo", uVo);
 
         
-        String viewPage = "/blogCategoryEdit.jsp";
         dispatcher = request.getRequestDispatcher(viewPage);
         dispatcher.forward(request, response);
 	}

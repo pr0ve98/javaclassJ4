@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import common.GetConn;
 
@@ -88,6 +89,31 @@ public class BlogDAO {
 		} finally {
 			pstmtClose();
 		}
+	}
+
+	// 카테고리 가져오기
+	public ArrayList<CategoryVO> getCategory(int blogIdx) {
+		ArrayList<CategoryVO> vos = new ArrayList<CategoryVO>();
+		try {
+			sql = "select * from hbCategory where caBlogIdx=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, blogIdx);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				CategoryVO vo = new CategoryVO();
+				vo.setCaIdx(rs.getInt("caIdx"));
+				vo.setCaBlogIdx(rs.getInt("caBlogIdx"));
+				vo.setCategory(rs.getString("category"));
+				vo.setParentCategoryIdx(rs.getInt("parentCategoryIdx"));
+				vo.setPublicSetting(rs.getString("publicSetting"));
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
 	}
 
 	

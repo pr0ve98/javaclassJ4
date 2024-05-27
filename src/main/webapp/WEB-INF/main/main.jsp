@@ -53,67 +53,77 @@
 	function alarmBtn() {
 	    let profileHeaderLayer = document.querySelector('.menu-right-bar .layer_profile');
 	    
-	 	// 프로필 버튼의 header_layer 제거
+	    // 프로필 버튼의 header_layer 제거
 	    if (profileHeaderLayer) {
 	        profileHeaderLayer.remove();
 	    }
 
 	    let alarmHeaderLayer = document.querySelector('.menu-right-bar .layer_news');
 	    
-	 	// 알람 버튼의 header_layer가 없는 경우 생성
+	    // 알람 버튼의 header_layer가 없는 경우 생성
 	    if (!alarmHeaderLayer) {
 	        let headerLayer = document.createElement('div');
 	        headerLayer.className = 'header_layer layer_news';
 	        headerLayer.innerHTML = '<div class="notification-top">새소식</div><hr class="notification-hr"/>'
-	        		+'<div class="notification-list">'
-	        			+'<div class="notification" data-clicked="false">'
-	        				+'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
-	        				+'<div class="notification-content">'
-	        					+'<div class="notification-header">'
-		        					+'<p class="user"><span class="user-name">김요운</span>님이 댓글을 남겼습니다.</p>'
-		        					+'<p class="date">2023.04.18</p>'
-		        				+'</div>'
-	        					+'<p class="comment">"나도....친구됐다...코붕이쿼카"</p>'
-	        					+'<p class="title">23.03.20</p>'
-	        				+'</div>'
-	        			+'</div>'
-	        			+'<div class="notification" data-clicked="false">'
-        					+'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
-        					+'<div class="notification-content">'
-        						+'<div class="notification-header">'
-		        					+'<p class="user"><span class="user-name">김요운</span>님이 댓글을 남겼습니다.</p>'
-		        					+'<p class="date">2023.03.08</p>'
-			        			+'</div>'
-	        					+'<p class="comment">"일기좀 자주 써주세요"</p>'
-	        					+'<p class="title">23.03.06</p>'
-		        			+'</div>'
-	        			+'</div>'
-	        			+'<div class="notification" data-clicked="false">'
-    					+'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
-	    					+'<div class="notification-content">'
-	    						+'<div class="notification-header">'
-			        				+'<p class="user"><span class="user-name">괴도 유빈</span>님이 댓글을 남겼습니다.</p>'
-			        				+'<p class="date">2023.02.26</p>'
-			        			+'</div>'
-		        				+'<p class="comment">"ㅋㅋㅋㅋㅋ"</p>'
-	        					+'<p class="title">23.02.26</p>'
-	        				+'</div>'
-	        			+'</div>'
-	        			+'<div class="notification" data-clicked="false">'
-    					+'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
-    						+'<div class="notification-content">'
-    							+'<div class="notification-header">'
-	        						+'<p class="user"><span class="user-name">김요운</span>님이 댓글을 남겼습니다.</p>'
-			        				+'<p class="date">2023.02.22</p>'
-				        		+'</div>'
-	        					+' <p class="comment">"해줘 나랑도ㅠ"</p>'
-	        					+'<p class="title">덩킴 Dinkum</p>'
-	        				+'</div>'
-	        			+'</div>'
-        			+'</div>';
+	                +'<div class="notification-list">'
+	                    +'<div class="notification" data-clicked="false">'
+	                        +'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
+	                        +'<div class="notification-content">'
+	                            +'<div class="notification-header">'
+	                                +'<p class="user"><span class="user-name">김요운</span>님이 댓글을 남겼습니다.</p>'
+	                                +'<p class="date">2023.04.18</p>'
+	                            +'</div>'
+	                            +'<p class="comment">"나도....친구됐다...코붕이쿼카"</p>'
+	                            +'<p class="title">23.03.20</p>'
+	                        +'</div>'
+	                    +'</div>'
+	                    +'<div class="notification" data-clicked="false">'
+	                        +'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
+	                        +'<div class="notification-content">'
+	                            +'<div class="notification-header">'
+	                                +'<p class="user"><span class="user-name">김요운</span>님이 댓글을 남겼습니다.</p>'
+	                                +'<p class="date">2023.03.08</p>'
+	                            +'</div>'
+	                            +'<p class="comment">"일기좀 자주 써주세요"</p>'
+	                            +'<p class="title">23.03.06</p>'
+	                        +'</div>'
+	                    +'</div>'
+	                    +'<div class="notification" data-clicked="false">'
+	                        +'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
+	                        +'<div class="notification-content">'
+	                            +'<div class="notification-header">'
+	                                +'<p class="user"><span class="user-name">괴도 유빈</span>님이 댓글을 남겼습니다.</p>'
+	                                +'<p class="date">2023.02.26</p>'
+	                            +'</div>'
+	                            +'<p class="comment">"ㅋㅋㅋㅋㅋ"</p>'
+	                            +'<p class="title">23.02.26</p>'
+	                        +'</div>'
+	                    +'</div>'
+	                    +'<div class="notification" data-clicked="false">'
+	                        +'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
+	                        +'<div class="notification-content">'
+	                            +'<div class="notification-header">'
+	                                +'<p class="user"><span class="user-name">김요운</span>님이 댓글을 남겼습니다.</p>'
+	                                +'<p class="date">2023.02.22</p>'
+	                            +'</div>'
+	                            +' <p class="comment">"해줘 나랑도ㅠ"</p>'
+	                            +'<p class="title">덩킴 Dinkum</p>'
+	                        +'</div>'
+	                    +'</div>'
+	                +'</div>';
 	        document.querySelector('.menu-right-bar').appendChild(headerLayer);
+	        document.addEventListener('click', handleClickOutsideAlarm);
 	    } else {
 	        alarmHeaderLayer.remove();
+	        document.removeEventListener('click', handleClickOutsideAlarm);
+	    }
+	}
+
+	function handleClickOutsideAlarm(e) {
+	    let alarmHeaderLayer = document.querySelector('.menu-right-bar .layer_news');
+	    if (alarmHeaderLayer && !alarmHeaderLayer.contains(e.target) && !e.target.matches('.menu-right-bar *')) {
+	        alarmHeaderLayer.remove();
+	        document.removeEventListener('click', handleClickOutsideAlarm);
 	    }
 	}
 
@@ -131,24 +141,24 @@
 	    // 프로필 버튼의 header_layer가 없는 경우 생성
 	    if (!profileHeaderLayer) {
 	        let headerLayer = document.createElement('div');
-	        headerLayer.className = 'header_layer layer_profile'
+	        headerLayer.className = 'header_layer layer_profile';
 	        headerLayer.innerHTML = '<div class="layer_profile_header">'
-	        +'	<span class="layer_profile_username">${vo.nickName}</span>'
-	        +'	</div>'
+	        +'    <span class="layer_profile_username">${vo.nickName}</span>'
+	        +'    </div>'
 	        +'  <div class="u-mail_u-account"><span class="layer_profile_email">${vo.email}</span>'
 	        +'    <span class="layer_profile_account-management" onclick="location.href=&quot;UserEdit.u&quot;">계정관리</span>'
 	        +'</div>'
-	        +'		<hr/>'
+	        +'        <hr/>'
 	        +'<div class="user_blogs">'
 	        +'    <div class="user_blog">'
 	        +'        <span class="b-title">운영중인 블로그</span>'
 	        +'    </div>'
 	        +'    <div class="user_blog">'
 	        +'        <span class="user_blog-title" onclick="location.href=&quot;${ctp}/blog/${sMid}&quot;">${sBlogTitle}</span>'
-	        +'			<div class="user-blog-btn">'
+	        +'            <div class="user-blog-btn">'
 	        +'        <span class="user_write-icon"><i class="fa-solid fa-pen-to-square fa-sm" style="color: #A6A6A6;"></i></span>'
-	        +'        <span class="user_settings-icon"><i class="fa-solid fa-gear fa-sm" style="color: #A6A6A6;" onclick="location.href=&quot;${ctp}/blogEdit/${sMid}&quot;"></i></span>'
-	        +'			</div>'
+	        +'        <span class="user_settings-icon"><i class="fa-solid fa-gear fa-sm" style="color: #A6A6A6;" onclick="location.href=&quot;CategoryEdit/${sMid}&quot;"></i></span>'
+	        +'            </div>'
 	        +'    </div>'
 	        +'</div>'
 	        +'<hr/>'
@@ -156,8 +166,18 @@
 	        +'    <span onclick="location.href=&quot;UserLogout.u&quot;">로그아웃</span>'
 	        +'</div>';
 	        document.querySelector('.menu-right-bar').appendChild(headerLayer);
+	        document.addEventListener('click', handleClickOutsideProfile);
 	    } else { // 프로필 버튼의 header_layer가 있는 경우 제거
 	        profileHeaderLayer.remove();
+	        document.removeEventListener('click', handleClickOutsideProfile);
+	    }
+	}
+
+	function handleClickOutsideProfile(e) {
+	    let profileHeaderLayer = document.querySelector('.menu-right-bar .layer_profile');
+	    if (profileHeaderLayer && !profileHeaderLayer.contains(e.target) && !e.target.matches('.menu-right-bar *')) {
+	        profileHeaderLayer.remove();
+	        document.removeEventListener('click', handleClickOutsideProfile);
 	    }
 	}
 </script>

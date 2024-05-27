@@ -569,12 +569,12 @@
 	    background-size: 16px 9px;
 	}
 	.layer_news {
-	    top: 99px;
+	    top: 85px;
 	    right: 128px;
 	    width: 400px;
 	}
 	.layer_profile {
-		top: 99px;
+		top: 85px;
 	    right: 53px;
 	    width: 250px;
 	    padding: 20px;

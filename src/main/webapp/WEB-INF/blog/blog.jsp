@@ -54,8 +54,9 @@
         <div class="categories">
             <ul>
             	<li>전체보기 (27)</li>
-                <li>일기 (22)</li>
-                <li>리뷰 (5)</li>
+            	<c:forEach var="cVo" items="${cVos}" varStatus="st">
+                <li>${cVo.category}</li>
+            	</c:forEach>
             </ul>
         </div>
         <hr/>

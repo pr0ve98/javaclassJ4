@@ -3,6 +3,7 @@ package blog;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -89,6 +90,7 @@ public class BlogServlet extends HttpServlet {
         
         BlogVO bVo = bDao.getUserBlog(mid);
         UserVO uVo = uDao.getUserIdCheck(mid);
+        ArrayList<CategoryVO> cVos = bDao.getCategory(bVo.getBlogIdx());
         
         // 유저가 없으면 메인페이지로 이동
         if(bVo.getBlogMid() == null && uVo.getMid() == null) {
@@ -99,6 +101,7 @@ public class BlogServlet extends HttpServlet {
         
         request.setAttribute("bVo", bVo);
         request.setAttribute("uVo", uVo);
+        request.setAttribute("cVos", cVos);
         
         String viewPage = "/WEB-INF/blog/blog.jsp";
         dispatcher = request.getRequestDispatcher(viewPage);
