@@ -56,6 +56,7 @@
 	}
 	body {
 	    font-family: 'Pretendard-Light';
+	    cursor: default;
 	}
 	header {
 	    display: flex;
@@ -221,6 +222,7 @@
 	    color: #333;
 	    text-decoration: none;
 	    margin-bottom: 10px;
+	    cursor: pointer;
 	}
 	
 	.action-link i {

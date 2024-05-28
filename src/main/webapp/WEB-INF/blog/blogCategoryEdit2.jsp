@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>H-Blog</title>
+<title>${bVo.blogTitle} - 카테고리 관리</title>
 <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico">
 <%@ include file="/include/bs4.jsp"%>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -27,17 +27,17 @@
 			<div class="sidebar">
 		        <div class="profile">
 		            <img src="${ctp}/images/user/${uVo.userImg}" alt="Profile" class="profile-img">
-		            <div class="profile-name">${bVo.blogTitle}</div>
+		            <div class="profile-name" onclick="location.href='${ctp}/blog/${uVo.mid}';">${bVo.blogTitle}</div>
 		            <div class="profile-link">${bVo.blogIntro}</div>
 		        </div>
 		        <nav>
 		            <ul>
-		                <li class="parent-li"><i class="fa-solid fa-gear mr-2" style="color: #363636;"></i>기본 설정</li>
+		                <li class="parent-li" style="cursor:pointer;" onclick="location.href='${ctp}/BlogEdit/${sMid}';"><i class="fa-solid fa-gear mr-2" style="color: #363636;"></i>기본 설정</li>
 		                <hr/>
 		                <li class="parent-li active"><i class="fa-regular fa-image mr-2"></i>콘텐츠</li>
 		                <ul>
 		                    <li>글 관리</li>
-		                    <li class="active">카테고리 관리</li>
+		                    <li class="active" onclick="location.href='${ctp}/CategoryEdit/${sMid}';">카테고리 관리</li>
 		                </ul>
 		                <hr/>
 		                <li class="parent-li"><i class="fa-regular fa-comment mr-2" style="color: #424242;"></i>댓글·방명록</li>
@@ -52,40 +52,41 @@
 		        <h1>카테고리 관리</h1>
 		        <div class="category-manager">
 		            <div class="category-list">
-		        		하위카테고리를 추가하려면 상위 카테고리를 선택 후 카테고리를 추가해주세요.<br/>
+		        		하위 카테고리를 추가하려면 상위 카테고리를 선택 후 카테고리를 추가해주세요.<br/>
 		        		카테고리를 추가했을 경우 적용 버튼을 누르고 수정, 삭제해주세요.
 		                <div class="category-box">
-					    <ul class="list-group" id="category-list">
-					        <c:forEach var="cPVo" items="${cPVos}">
-					            <li class="parent-category">
-					                <div class="list-group-item">
-					                    <strong>${cPVo.category}</strong>
-				                    	<div class="edit-btns">
-					            			<input type="button" value="수정" onclick="categoryEdit(${cPvo.caIdx})" class="proBtn-sm mr-1">
-					            			<input type="button" value="삭제" class="proBtn-sm mr-1">
-					            		</div>
-					                </div>
-					                <ul class="list-group-child mt-2" id="parent-${cPVo.caIdx}">
-					                    <c:forEach var="cCVo" items="${cCVos}">
-					                        <c:if test="${cCVo.parentCategoryIdx == cPVo.caIdx}">
-					                            <li class="list-group-item" data-id="${cCVo.caIdx}">
-					                                ${cCVo.category}
-						                           	<div class="edit-btns">
-								            			<input type="button" value="수정" onclick="categoryEdit(${cPvo.caIdx})" class="proBtn-sm mr-1">
-								            			<input type="button" value="삭제" class="proBtn-sm mr-1">
-							            			</div>
-					                            </li>
-					                        </c:if>
-					                    </c:forEach>
-					                </ul>
-					            </li>
-					        </c:forEach>
-					    </ul>
+						    <ul class="list-group" id="category-list">
+						        <c:forEach var="cPVo" items="${cPVos}">
+						            <li class="parent-category" id="parent-${cPVo.caIdx}">
+						                <div class="list-group-item">
+						                    <strong>${cPVo.category}</strong>
+						                    <div class="edit-btns">
+						                        <input type="button" value="추가" onclick="categoryPrAdd('parent-${cPVo.caIdx}-children')" class="proBtn-sm mr-1">
+						                        <input type="button" value="수정" onclick="categoryEditModal(${cPVo.caIdx},'${cPVo.category}')" data-target="#myModal" class="proBtn-sm mr-1">
+						                        <input type="button" value="삭제" onclick="categoryDeleteModal(${cPVo.caIdx},'${cPVo.category}')" class="proBtn-sm mr-1">
+						                    </div>
+						                </div>
+						                <ul class="list-group-child mt-2" id="parent-${cPVo.caIdx}-children">
+						                    <c:forEach var="cCVo" items="${cCVos}">
+						                        <c:if test="${cCVo.parentCategoryIdx == cPVo.caIdx}">
+						                            <li class="list-group-item" id="child-${cCVo.caIdx}" data-id="${cCVo.caIdx}">
+						                                ${cCVo.category}
+						                                <div class="edit-btns">
+						                                    <input type="button" value="수정" onclick="categoryEditModal(${cCVo.caIdx}, '${cCVo.category}')" data-target="#myModal" class="proBtn-sm mr-1">
+						                                    <input type="button" value="삭제" onclick="categoryDeleteModal(${cCVo.caIdx}, '${cCVo.category}')" class="proBtn-sm mr-1">
+						                                </div>
+						                            </li>
+						                        </c:if>
+						                    </c:forEach>
+						                </ul>
+						            </li>
+						        </c:forEach>
+						    </ul>
 						</div>
 				        <div class="category-btns mt-3">
 				        	<span>
 				        	<input type="button" value="적용" class="proBtn mr-1" onclick="categorySubmit()"/>
-				        	<input type="button" value="취소" class="proBtn" onclick="categoryReload()" />
+				        	<input type="button" value="취소" class="proBtn" onclick="location.reload()" />
 				        	</span>
 				        	<input type="button" value="카테고리 추가" class="proBtn" id="add-category" onclick="categoryAdd()" />
 				        </div>
@@ -96,6 +97,10 @@
 	</main>
 	<div class="footer"></div>
 	<script>
+		$(document).ready(function() {
+		    $(window).scrollTop(0);
+		});
+		
 	    // 알람 버튼
 	    function alarmBtn() {
 	        let profileHeaderLayer = document.querySelector('.menu-right-bar .layer_profile');
@@ -170,7 +175,7 @@
 	            +'    <span class="layer_profile_username">${uVo.nickName}</span>'
 	            +'    </div>'
 	            +'  <div class="u-mail_u-account"><span class="layer_profile_email">${uVo.email}</span>'
-	            +'    <span class="layer_profile_account-management" onclick="location.href=&quot;UserEdit.u&quot;">계정관리</span>'
+	            +'    <span class="layer_profile_account-management" onclick="location.href=&quot;${ctp}/UserEdit.u&quot;">계정관리</span>'
 	            +'</div>'
 	            +'        <hr/>'
 	            +'<div class="user_blogs">'
@@ -181,7 +186,7 @@
 	            +'        <span class="user_blog-title" onclick="location.href=&quot;${ctp}/blog/${sMid}&quot;">${bVo.blogTitle}</span>'
 	            +'            <div class="user-blog-btn">'
 	            +'        <span class="user_write-icon"><i class="fa-solid fa-pen-to-square fa-sm" style="color: #A6A6A6;"></i></span>'
-	            +'        <span class="user_settings-icon"><i class="fa-solid fa-gear fa-sm" style="color: #A6A6A6;" onclick="location.href=&quot;${ctp}/blogEdit/${sMid}&quot;"></i></span>'
+	            +'        <span class="user_settings-icon"><i class="fa-solid fa-gear fa-sm" style="color: #A6A6A6;" onclick="location.href=&quot;${ctp}/BlogEdit/${sMid}&quot;"></i></span>'
 	            +'            </div>'
 	            +'    </div>'
 	            +'</div>'
@@ -205,6 +210,8 @@
 	        }
 	    }
 	    
+	    let selectedParent = null;
+	    
 	    // 부모 카테고리 선택
 	    $(document).on('click', '.parent-category', function(e) {
 	        if (selectedParent) {
@@ -223,31 +230,38 @@
 	        }
 	    });
 	    
-	    let selectedParent = null;
 
 	    // 카테고리 추가함수
 	    function categoryAdd() {
 	    	let temp = Date.now();
 	    	
 	        if (selectedParent) {
-	            let parentCategoryId = $(selectedParent).find('ul').attr('id');
+	            let parentCategoryId = $(selectedParent).attr('id');
 	            let newSubCategoryHtml = '<li class="list-group-item" data-id="temp-child-'+temp+'">새 카테고리</li>';
 	            document.getElementById(parentCategoryId).innerHTML += newSubCategoryHtml;
 	        } else {
-	            let newParentCategoryHtml = '<li class="parent-category">'
+	            let newParentCategoryHtml = '<li class="parent-category" id="temp-parent-'+temp+'">'
 	                    +'<strong class="list-group-item">새 카테고리</strong>'
-	                    +'<ul class="list-group-child mt-2" id="temp-parent-'+temp+'"></ul>'
+	                    +'<ul class="list-group-child mt-2"></ul>'
 	                +'</li>';
 	            	document.getElementById('category-list').innerHTML += newParentCategoryHtml;
 	        }
 	    }
+	    
+	    // 카테고리 버튼으로 추가
+	    function categoryPrAdd(id) {
+	    	let temp = Date.now();
+	    	
+            let newSubCategoryHtml = '<li class="list-group-item" data-id="temp-child-'+temp+'">새 카테고리</li>';
+            document.getElementById(id).innerHTML += newSubCategoryHtml;
+		}
 	
 	    
 	 	// 변경사항 적용 함수
 	    function categorySubmit() {
 	        let categories = [];
 	        $('#category-list .parent-category').each(function() {
-	            let parentId = $(this).find('ul').attr('id');
+	            let parentId = $(this).attr('id');
 	            let parentName = $(this).find('> .list-group-item').text().trim();
 	            let subCategories = [];
 
@@ -273,11 +287,6 @@
 	            }
 	        });
 	    }
-	 
-	    // 카테고리 영역 부분 리로드(적용 취소)
-	    function categoryReload() {
-	        $('#category-list').load(window.location.href + ' #category-list');
-	    }
 	    
 	    // 수정 삭제 버튼 보이기/감추기
 	    $(".list-group-item").hover(
@@ -291,10 +300,136 @@
     	    }
 	    );
 	    
-	    // 카테고리 수정
-	    function categoryEdit(caIdx) {
+	    // 카테고리 수정 모달
+	    function categoryEditModal(caIdx, caName) {
+	    	let formHtml = '<div>변경할 이름을 적어주세요</div>'
+	    		+'<form class="form-inline" name="categoryEditForm" method="post">'
+	    		+'<div class="input-group">'
+	    		+'<input type="text" name="caName" id="caName" placeholder="'+caName+'" class="form-control" />'
+	    		+'<div class="input-group-append">'
+	    		+'<input type="button" value="변경" onclick="categoryEdit()" class="proBtn ml-2">'
+	    		+'<input type="hidden" name="caIdx" id="caIdx" value='+caIdx+' />'
+	    		+'</div></div></form>';
+			$("#myModal #modalTitle").text("카테고리 수정");
+			$("#myModal #modalText").html(formHtml);
 			
+		    $('#myModal').on('shown.bs.modal', function () {
+		        $('#caName').focus();
+		    });
+
+		    $('#myModal').modal('show');
+		}
+	    
+	    // 카테고리 수정
+	    function categoryEdit() {
+			let caName = categoryEditForm.caName.value.trim();
+			let caIdx = categoryEditForm.caIdx.value;
+			
+			if(caName == ""){
+				$("#error-name").show();
+				return;
+			}
+			
+			$("#error-name").hide();
+			
+			$.ajax({
+				url : "${ctp}/BlogCategoryEdit",
+				type : "post",
+				data : {caName : caName, caIdx : caIdx},
+				success : function(res) {
+					if(res != "0"){
+						location.reload();
+					}
+				},
+				error : function() {
+					$("#myModal #modalTitle").text("오류");
+					$("#myModal #modalText").text("전송 오류!");
+				    $('#myModal').modal('show');
+				}
+			});
+		}
+	    
+	    // 카테고리 삭제 모달
+	    function categoryDeleteModal(caIdx, caName) {
+			let htmlFooter = '<button type="button" class="btn btn-danger mr-2" onclick="categoryDelete('+caIdx+')">삭제</button>'
+				+'<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>';
+				
+				$("#myModal2 #modalTitle2").text("카테고리 삭제");
+				$("#myModal2 #modalText2").html("정말로 "+caName+" 카테고리를 삭제하시겠습니까?<br/>카테고리를 삭제하면 카테고리에 속한 글들이 <font color='red'>모두 삭제</font>되며<br/><font color='red'>상위 카테고리를 삭제하면 하위 카테고리도 같이 삭제됩니다</font>");
+				$("#myModal2 #modalFooter2").html(htmlFooter);
+				$('#myModal2').modal('show');
+
+		    $('#myModal2').modal('show');
+		}
+	    
+	    // 카테고리 삭제
+	    function categoryDelete(caIdx) {
+			$.ajax({
+				url : "${ctp}/BlogCategoryDelete",
+				type : "post",
+				data : {caIdx : caIdx},
+				success : function(res) {
+					if(res != "0"){
+						location.reload();
+					}
+				},
+				error : function() {
+					$("#myModal #modalTitle").text("오류");
+					$("#myModal #modalText").text("전송 오류!");
+				}
+			});
 		}
     </script>
+   <!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalTitle"></h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="modalText"></div>
+          <div id="error-name">카테고리 이름을 입력해야 합니다!</div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  <!-- 카테고리 삭제 모달 -->
+  <div class="modal fade" id="myModal2">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalTitle2"></h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="modalText2"></div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <div id="modalFooter2">
+          	
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </body>
 </html>

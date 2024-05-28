@@ -93,7 +93,7 @@ public class BlogServlet extends HttpServlet {
         ArrayList<CategoryVO> cVos = bDao.getCategory(bVo.getBlogIdx(), 0);
         
         // 유저가 없으면 메인페이지로 이동
-        if(bVo.getBlogMid() == null && uVo.getMid() == null) {
+        if(bVo.getBlogMid() == null || uVo.getMid() == null) {
             dispatcher = request.getRequestDispatcher("/");
             dispatcher.forward(request, response);
             return;

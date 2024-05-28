@@ -58,6 +58,7 @@
 	.font-bold {font-family: 'Pretendard-Bold';}
 	body {
 		font-family: 'Pretendard-Medium';
+		cursor: default;
 	}
 	.body-layout {
 		display: grid;
@@ -103,6 +104,7 @@
 	    font-weight: bold;
 	    margin: 10px 0 0;
 	    padding: 10px;
+	    cursor: pointer;
 	}
 	
 	.profile-link {
@@ -132,6 +134,7 @@
 	.parent-li {
 		font-size: 19px;
 		margin-left: 0;
+		cursor: default;
 	}
 	nav ul li {
 	    cursor: pointer;
@@ -590,6 +593,7 @@
 	    top: 85px;
 	    right: 128px;
 	    width: 400px;
+	    z-index: 99;
 	}
 	.layer_profile {
 		top: 85px;
@@ -597,6 +601,7 @@
 	    width: 250px;
 	    padding: 20px;
 	    font-family: 'Pretendard-Light';
+	    z-index: 99;
 	}
 	.sub-main{
 		margin: 100px 0;
@@ -788,5 +793,10 @@
 	}
 	#modalText {
 		font-family: 'Pretendard-Light';
+	}
+	#error-name {
+		display: none;
+		color: red;
+		font-size: 13px;
 	}
 </style>

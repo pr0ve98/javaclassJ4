@@ -27,7 +27,7 @@ public class CategoryEditOk extends HttpServlet {
         int tempCIdx = 0;
         if (categories != null) {
             for (String category : categories) {
-            	 System.out.println(category);
+            	 //System.out.println(category);
                  if (category.contains("parent")) {
                      String[] part = category.split("/");
                      String pCategoryName = part[1];

@@ -243,4 +243,20 @@ public class UserDAO {
 		}
 		return vo;
 	}
+
+	// 유저 탈퇴
+	public int setUserDelete(String mid) {
+		int res = 0;
+		try {
+			sql = "update hbUser set isDel=1 where mid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
 }

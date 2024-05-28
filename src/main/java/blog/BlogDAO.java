@@ -196,6 +196,7 @@ public class BlogDAO {
 		
 	}
 
+	// 최근 추가한 카테고리 id 가져오기
 	public int getLastInsertedCategoryId() {
 		try {
 			sql = "SELECT LAST_INSERT_ID()";
@@ -210,6 +211,72 @@ public class BlogDAO {
 			pstmtClose();
 		}
 		return -1;
+	}
+
+	// 카테고리 이름 수정
+	public int setCategoryNameUpdate(String caName, int caIdx) {
+		int res = 0;
+		try {
+			sql = "update hbCategory set category=? where caIdx=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, caName);
+			pstmt.setInt(2, caIdx);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+	
+	// 카테고리 삭제
+	public int setCategoryDelete(int caIdx) {
+		int res = 0;
+		try {
+			sql = "delete from hbCategory where caIdx=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, caIdx);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
+	// 회원 탈퇴시 블로그 삭제
+	public void setBlogDelete(String mid) {
+		try {
+			sql = "delete from hbBlog where blogMid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		
+	}
+
+	// 블로그 기본 정보 수정
+	public int setBlogEdit(String blogTitle, String blogIntro, String mid) {
+		int res = 0;
+		try {
+			sql = "update hbBlog set blogTitle=?, blogIntro=? where blogMid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, blogTitle);
+			pstmt.setString(2, blogIntro);
+			pstmt.setString(3, mid);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
 	}
 
 	

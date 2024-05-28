@@ -59,6 +59,7 @@
 	.font-bold {font-family: 'Pretendard-Bold';}
 	body {
 		font-family: 'Pretendard-Medium';
+		cursor: default;
 	}
 	.body-layout {
 		display: grid;

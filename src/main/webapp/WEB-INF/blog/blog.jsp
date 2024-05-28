@@ -45,11 +45,13 @@
             <img src="${ctp}/images/user/${uVo.userImg}" alt="profile">
             <div class="nickName">${uVo.nickName}</div>
             <div class="blog-intro">${bVo.blogIntro}</div>
+            <c:if test="${uVo.mid == sMid}">
             <hr/>
 	        <div class="actions">
 		        <a href="#" class="action-link"><i class="fas fa-pencil-alt"></i> 글쓰기</a>
-		        <a href="#" class="action-link"><i class="fas fa-cogs"></i> 블로그 관리</a>
+		        <div class="action-link" onclick="location.href='${ctp}/BlogEdit/${sMid}';"><i class="fas fa-cogs"></i> 블로그 관리</div>
 	    	</div>
+	    	</c:if>
         </div>
         <div class="categories">
             <ul>

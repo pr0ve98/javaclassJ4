@@ -147,6 +147,17 @@
 			editForm.submit();
 		}
 	}
+	
+	// 유저 탈퇴
+	function userDeleteCheck() {
+		let htmlFooter = '<button type="button" class="btn btn-danger mr-2" onclick="location.href=&quot;UserDeleteOk.u&quot;;">탈퇴</button>'
+		+'<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>';
+		
+		$("#myModal2 #modalTitle2").text("회원 탈퇴");
+		$("#myModal2 #modalText2").html("정말로 탈퇴하시겠습니까?<br/><font color='red'>다시 되돌릴 수 없습니다</font>");
+		$("#myModal2 #modalFooter2").html(htmlFooter);
+		$('#myModal2').modal('show');
+	}
 </script>
 </head>
 <body class="body-layout">
@@ -196,12 +207,13 @@
 						<tr>
 							<td colspan="2" class="table-content">
 								<input type="button" value="변경" onclick="userEditCheck()" class="proBtn mr-2"/>
-								<input type="button" value="돌아가기" class="proBtn" onclick="location.href='Main';"/>
+								<input type="button" value="메인으로" class="proBtn" onclick="location.href='Main';"/>
 							</td>
 						</tr>
 					</table>
 					<input type="hidden" name="mid" id="mid" value="${sMid}" />
 				</form>
+				<div class="text-right font-light" style="font-size:12px;cursor:pointer;" onclick="userDeleteCheck()">계정 탈퇴</div>
 			</div>
 		</div>
 	</div>
@@ -224,6 +236,32 @@
         <!-- Modal footer -->
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- The Modal -->
+  <div class="modal fade" id="myModal2">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalTitle2"></h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="modalText2"></div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <div id="modalFooter2">
+          	
+          </div>
         </div>
         
       </div>
