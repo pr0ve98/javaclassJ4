@@ -90,7 +90,7 @@ public class BlogServlet extends HttpServlet {
         
         BlogVO bVo = bDao.getUserBlog(mid);
         UserVO uVo = uDao.getUserIdCheck(mid);
-        ArrayList<CategoryVO> cVos = bDao.getCategory(bVo.getBlogIdx());
+        ArrayList<CategoryVO> cVos = bDao.getCategory(bVo.getBlogIdx(), 0);
         
         // 유저가 없으면 메인페이지로 이동
         if(bVo.getBlogMid() == null && uVo.getMid() == null) {

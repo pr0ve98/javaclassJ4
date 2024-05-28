@@ -91,11 +91,13 @@ public class BlogDAO {
 		}
 	}
 
-	// 카테고리 가져오기
-	public ArrayList<CategoryVO> getCategory(int blogIdx) {
+	// 부모 카테고리 가져오기
+	public ArrayList<CategoryVO> getCategory(int blogIdx, int sw) {
 		ArrayList<CategoryVO> vos = new ArrayList<CategoryVO>();
 		try {
-			sql = "select * from hbCategory where caBlogIdx=?";
+			if(sw == 0) sql = "select * from hbCategory where caBlogIdx=?";
+			else if(sw == 1) sql = "select * from hbCategory where caBlogIdx=? and parentCategoryIdx is null";
+			else sql = "select * from hbCategory where caBlogIdx=? and parentCategoryIdx is not null";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, blogIdx);
 			rs = pstmt.executeQuery();
@@ -114,6 +116,100 @@ public class BlogDAO {
 			rsClose();
 		}
 		return vos;
+	}
+
+	// 카테고리 추가
+	public void setCategoryInput(String pCategoryName, int blogIdx, int pIdx, int sw) {
+		try {
+			if(sw == 0) {
+				sql = "insert into hbCategory values(default, ?, ?, null, default)";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, blogIdx);
+				pstmt.setString(2, pCategoryName);
+			}
+			else if(sw == 1) {
+				sql = "insert into hbCategory values(default, ?, ?, ?, default)";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, blogIdx);
+				pstmt.setString(2, pCategoryName);
+				pstmt.setInt(3, pIdx);
+			}
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		
+	}
+
+	// idx로 카테고리 찾기
+	public CategoryVO getCategoryIdx(int pIdx) {
+		CategoryVO vo = new CategoryVO();
+		try {
+			sql = "select * from hbCategory where caIdx=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, pIdx);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				vo.setCaIdx(rs.getInt("caIdx"));
+				vo.setCaBlogIdx(rs.getInt("caBlogIdx"));
+				vo.setCategory(rs.getString("category"));
+				vo.setParentCategoryIdx(rs.getInt("parentCategoryIdx"));
+				vo.setPublicSetting(rs.getString("publicSetting"));
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vo;
+	}
+
+	// 카테고리가 있을시 업데이트
+	public void setCategoryUpdate(int caIdx, int caBlogIdx, String pCategoryName, int parentCategoryIdx,
+			String publicSetting) {
+		try {
+			if(parentCategoryIdx == 0) {
+				sql = "update hbCategory set caBlogIdx=?, category=?, publicSetting=? where caIdx=?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, caBlogIdx);
+				pstmt.setString(2, pCategoryName);
+				pstmt.setString(3, publicSetting);
+				pstmt.setInt(4, caIdx);
+			}
+			else {
+				sql = "update hbCategory set caBlogIdx=?, category=?, parentCategoryIdx=?, publicSetting=? where caIdx=?";
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, caBlogIdx);
+				pstmt.setString(2, pCategoryName);
+				pstmt.setInt(3, parentCategoryIdx);
+				pstmt.setString(4, publicSetting);
+				pstmt.setInt(5, caIdx);
+			}
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		
+	}
+
+	public int getLastInsertedCategoryId() {
+		try {
+			sql = "SELECT LAST_INSERT_ID()";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				return rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return -1;
 	}
 
 	

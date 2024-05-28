@@ -55,32 +55,32 @@
 		        		하위카테고리를 추가하려면 상위 카테고리를 선택 후 카테고리를 추가해주세요.<br/>
 		        		카테고리를 추가했을 경우 적용 버튼을 누르고 수정, 삭제해주세요.
 		                <div class="category-box">
-						    <ul class="list-group" id="category-list">
-						        <c:forEach var="cPVo" items="${cPVos}">
-						            <li class="parent-category" id="parent-${cPVo.caIdx}">
-						                <div class="list-group-item">
-						                    <strong>${cPVo.category}</strong>
-						                    <div class="edit-btns">
-						                        <input type="button" value="수정" onclick="categoryEdit(${cPVo.caIdx})" class="proBtn-sm mr-1">
-						                        <input type="button" value="삭제" class="proBtn-sm mr-1">
-						                    </div>
-						                </div>
-						                <ul class="list-group-child mt-2" id="parent-${cPVo.caIdx}-children">
-						                    <c:forEach var="cCVo" items="${cCVos}">
-						                        <c:if test="${cCVo.parentCategoryIdx == cPVo.caIdx}">
-						                            <li class="list-group-item" id="child-${cCVo.caIdx}" data-id="${cCVo.caIdx}">
-						                                ${cCVo.category}
-						                                <div class="edit-btns">
-						                                    <input type="button" value="수정" onclick="categoryEdit(${cCVo.caIdx})" class="proBtn-sm mr-1">
-						                                    <input type="button" value="삭제" class="proBtn-sm mr-1">
-						                                </div>
-						                            </li>
-						                        </c:if>
-						                    </c:forEach>
-						                </ul>
-						            </li>
-						        </c:forEach>
-						    </ul>
+					    <ul class="list-group" id="category-list">
+					        <c:forEach var="cPVo" items="${cPVos}">
+					            <li class="parent-category">
+					                <div class="list-group-item">
+					                    <strong>${cPVo.category}</strong>
+				                    	<div class="edit-btns">
+					            			<input type="button" value="수정" onclick="categoryEdit(${cPvo.caIdx})" class="proBtn-sm mr-1">
+					            			<input type="button" value="삭제" class="proBtn-sm mr-1">
+					            		</div>
+					                </div>
+					                <ul class="list-group-child mt-2" id="parent-${cPVo.caIdx}">
+					                    <c:forEach var="cCVo" items="${cCVos}">
+					                        <c:if test="${cCVo.parentCategoryIdx == cPVo.caIdx}">
+					                            <li class="list-group-item" data-id="${cCVo.caIdx}">
+					                                ${cCVo.category}
+						                           	<div class="edit-btns">
+								            			<input type="button" value="수정" onclick="categoryEdit(${cPvo.caIdx})" class="proBtn-sm mr-1">
+								            			<input type="button" value="삭제" class="proBtn-sm mr-1">
+							            			</div>
+					                            </li>
+					                        </c:if>
+					                    </c:forEach>
+					                </ul>
+					            </li>
+					        </c:forEach>
+					    </ul>
 						</div>
 				        <div class="category-btns mt-3">
 				        	<span>
@@ -292,33 +292,9 @@
 	    );
 	    
 	    // 카테고리 수정
-	    function categoryEdit(caIdx, type) {
+	    function categoryEdit(caIdx) {
 			
 		}
     </script>
-   <!-- The Modal -->
-  <div class="modal fade" id="myModal">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title" id="modalTitle"></h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-          <div id="modalText"></div>
-        </div>
-        
-        <!-- Modal footer -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>
-        </div>
-        
-      </div>
-    </div>
-  </div>
 </body>
 </html>

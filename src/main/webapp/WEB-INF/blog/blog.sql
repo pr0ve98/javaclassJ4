@@ -21,5 +21,8 @@ create table hbCategory (
 	parentCategoryIdx int,
 	publicSetting char(3) default '공개',
 	primary key(caIdx),
-	foreign key(caBlogIdx) references hbBlog(blogIdx) on delete cascade
+	foreign key(caBlogIdx) references hbBlog(blogIdx) on delete cascade,
+	foreign key(parentCategoryIdx) references hbCategory(caIdx) on delete cascade
 );
+
+drop table hbCategory;

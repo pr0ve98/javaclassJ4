@@ -3,6 +3,7 @@ package blog;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
@@ -45,10 +46,13 @@ public class CategoryEditServlet extends HttpServlet {
         
         BlogVO bVo = bDao.getUserBlog(mid);
         UserVO uVo = uDao.getUserIdCheck(mid);
+        ArrayList<CategoryVO> cPVos = bDao.getCategory(bVo.getBlogIdx(), 1); // 부모 카테고리만 가져오기
+        ArrayList<CategoryVO> cCVos = bDao.getCategory(bVo.getBlogIdx(), 2); // 자식 카테고리만 가져오기
         
         request.setAttribute("bVo", bVo);
         request.setAttribute("uVo", uVo);
-
+        request.setAttribute("cPVos", cPVos);
+        request.setAttribute("cCVos", cCVos);
         
         dispatcher = request.getRequestDispatcher(viewPage);
         dispatcher.forward(request, response);

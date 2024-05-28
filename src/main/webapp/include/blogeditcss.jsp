@@ -1,4 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <style>
 	@font-face {
 	    font-family: 'Pretendard-Thin';
@@ -361,8 +360,28 @@
 		cursor: pointer;
 		color: #747474;
 	}
-	.list-group-item {
-		position: static;
+	.proBtn-sm {
+		padding: 2px 5px;
+		border: 1px solid #ccc;
+		background-color: #fff;
+		cursor: pointer;
+		color: #747474;
+		font-size: 12px;
+	}
+	.proBtn-sm:active {
+		padding: 2px 5px;
+		border: 1px solid #ccc;
+		background-color: #eee;
+		cursor: pointer;
+		color: #747474;
+		font-size: 12px;
+	}
+	.edit-btns {
+	    position: absolute;
+	    top: 50%;
+	    right: 10px;
+	    transform: translateY(-50%);
+	    display: none;
 	}
 	
 	
@@ -525,7 +544,6 @@
 	}
 	input {
 	    font-family: 'Pretendard-Light';
-	    color: #D5D5D5;
 	}
 	.imgBox {
 		width: 200px;
