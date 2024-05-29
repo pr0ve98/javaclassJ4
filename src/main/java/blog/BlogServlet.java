@@ -90,7 +90,8 @@ public class BlogServlet extends HttpServlet {
         
         BlogVO bVo = bDao.getUserBlog(mid);
         UserVO uVo = uDao.getUserIdCheck(mid);
-        ArrayList<CategoryVO> cVos = bDao.getCategory(bVo.getBlogIdx(), 0);
+        ArrayList<CategoryVO> cPVos = bDao.getCategory(bVo.getBlogIdx(), 1); // 부모 카테고리만 가져오기
+        ArrayList<CategoryVO> cCVos = bDao.getCategory(bVo.getBlogIdx(), 2); // 자식 카테고리만 가져오기     
         
         // 유저가 없으면 메인페이지로 이동
         if(bVo.getBlogMid() == null || uVo.getMid() == null) {
@@ -101,7 +102,8 @@ public class BlogServlet extends HttpServlet {
         
         request.setAttribute("bVo", bVo);
         request.setAttribute("uVo", uVo);
-        request.setAttribute("cVos", cVos);
+        request.setAttribute("cPVos", cPVos);
+        request.setAttribute("cCVos", cCVos);
         
         String viewPage = "/WEB-INF/blog/blog.jsp";
         dispatcher = request.getRequestDispatcher(viewPage);

@@ -83,7 +83,7 @@ public class CategoryEditOk extends HttpServlet {
             }
         }
         else {
-            System.out.println("No categories received");
+            System.out.println("카테고리 없음");
         }
 	}
 }

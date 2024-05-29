@@ -17,7 +17,7 @@
 	<div class="menu-title">
 		<a class="navbar-brand" href="${ctp}/Main"><img src="${ctp}/images/logo.png" alt="logo" style="width: 200px;"></a>
 		<div class="menu-right-bar">
-			<button class="orangeBtn-sm" onclick="location.href='';">글쓰기</button>
+			<button class="orangeBtn-sm" onclick="location.href='${ctp}/ContentInput/${uVo.mid}';">글쓰기</button>
 			<i class="fa-solid fa-bell fa-xl mt-4" style="color: gray;" onclick="alarmBtn()"></i>
 			<div class="user-profile"><img src="${ctp}/images/user/user_basic.jpg" alt="유저프로필" onclick="profileBtn()"></div>
 		</div>
@@ -169,7 +169,7 @@
 	            +'    <div class="user_blog">'
 	            +'        <span class="user_blog-title" onclick="location.href=&quot;${ctp}/blog/${sMid}&quot;">${bVo.blogTitle}</span>'
 	            +'            <div class="user-blog-btn">'
-	            +'        <span class="user_write-icon"><i class="fa-solid fa-pen-to-square fa-sm" style="color: #A6A6A6;"></i></span>'
+	            +'        <span class="user_write-icon"><i class="fa-solid fa-pen-to-square fa-sm" style="color: #A6A6A6;" onclick="location.href=&quot;${ctp}/ContentInput/${sMid}&quot;"></i></span>'
 	            +'        <span class="user_settings-icon"><i class="fa-solid fa-gear fa-sm" style="color: #A6A6A6;" onclick="location.href=&quot;${ctp}/BlogEdit/${sMid}&quot;"></i></span>'
 	            +'            </div>'
 	            +'    </div>'

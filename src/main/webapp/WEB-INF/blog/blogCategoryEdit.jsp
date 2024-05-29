@@ -17,7 +17,7 @@
 	<div class="menu-title">
 		<a class="navbar-brand" href="${ctp}/Main"><img src="${ctp}/images/logo.png" alt="logo" style="width: 200px;"></a>
 		<div class="menu-right-bar">
-			<button class="orangeBtn-sm" onclick="location.href='';">글쓰기</button>
+			<button class="orangeBtn-sm" onclick="location.href='${ctp}/ContentInput/${uVo.mid}';">글쓰기</button>
 			<i class="fa-solid fa-bell fa-xl mt-4" style="color: gray;" onclick="alarmBtn()"></i>
 			<div class="user-profile"><img src="${ctp}/images/user/user_basic.jpg" alt="유저프로필" onclick="profileBtn()"></div>
 		</div>
@@ -59,8 +59,10 @@
 						        <c:forEach var="cPVo" items="${cPVos}">
 						            <li class="parent-category" id="parent-${cPVo.caIdx}">
 						                <div class="list-group-item">
-						                    <strong>${cPVo.category}</strong>
+						                    <strong>${cPVo.category}</strong><c:if test="${cPVo.publicSetting == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if>
 						                    <div class="edit-btns">
+						                    	<c:if test="${cPVo.publicSetting == '공개'}"><input type="button" value="비공개로 변경" onclick="categoryPrivateEdit(${cPVo.caIdx})" class="proBtn-sm mr-1"></c:if>
+						                    	<c:if test="${cPVo.publicSetting == '비공개'}"><input type="button" value="공개로 변경" onclick="categoryPublicEdit(${cPVo.caIdx})" class="proBtn-sm mr-1"></c:if>
 						                        <input type="button" value="추가" onclick="categoryPrAdd('parent-${cPVo.caIdx}-children')" class="proBtn-sm mr-1">
 						                        <input type="button" value="수정" onclick="categoryEditModal(${cPVo.caIdx},'${cPVo.category}')" data-target="#myModal" class="proBtn-sm mr-1">
 						                        <input type="button" value="삭제" onclick="categoryDeleteModal(${cPVo.caIdx},'${cPVo.category}')" class="proBtn-sm mr-1">
@@ -70,8 +72,10 @@
 						                    <c:forEach var="cCVo" items="${cCVos}">
 						                        <c:if test="${cCVo.parentCategoryIdx == cPVo.caIdx}">
 						                            <li class="list-group-item" id="child-${cCVo.caIdx}" data-id="${cCVo.caIdx}">
-						                                ${cCVo.category}
+						                                ${cCVo.category}<c:if test="${cCVo.publicSetting == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if>
 						                                <div class="edit-btns">
+						                                	<c:if test="${cCVo.publicSetting == '공개'}"><input type="button" value="비공개로 변경" onclick="categoryPrivateEdit(${cCVo.caIdx})" class="proBtn-sm mr-1"></c:if>
+						                    				<c:if test="${cCVo.publicSetting == '비공개'}"><input type="button" value="공개로 변경" onclick="categoryPublicEdit(${cCVo.caIdx})" class="proBtn-sm mr-1"></c:if>
 						                                    <input type="button" value="수정" onclick="categoryEditModal(${cCVo.caIdx}, '${cCVo.category}')" data-target="#myModal" class="proBtn-sm mr-1">
 						                                    <input type="button" value="삭제" onclick="categoryDeleteModal(${cCVo.caIdx}, '${cCVo.category}')" class="proBtn-sm mr-1">
 						                                </div>
@@ -185,7 +189,7 @@
 	            +'    <div class="user_blog">'
 	            +'        <span class="user_blog-title" onclick="location.href=&quot;${ctp}/blog/${sMid}&quot;">${bVo.blogTitle}</span>'
 	            +'            <div class="user-blog-btn">'
-	            +'        <span class="user_write-icon"><i class="fa-solid fa-pen-to-square fa-sm" style="color: #A6A6A6;"></i></span>'
+	            +'        <span class="user_write-icon"><i class="fa-solid fa-pen-to-square fa-sm" style="color: #A6A6A6;" onclick="location.href=&quot;${ctp}/ContentInput/${sMid}&quot;"></i></span>'
 	            +'        <span class="user_settings-icon"><i class="fa-solid fa-gear fa-sm" style="color: #A6A6A6;" onclick="location.href=&quot;${ctp}/BlogEdit/${sMid}&quot;"></i></span>'
 	            +'            </div>'
 	            +'    </div>'
@@ -280,11 +284,17 @@
 	            traditional: true,
 	            data: {categories : categories, mid : '${sMid}'},
 	            success: function(res) {
-	                alert('카테고리가 성공적으로 저장되었습니다.');
-	                location.reload();
+					$("#myModal #modalTitle").text("카테고리 저장");
+					$("#myModal #modalText").text("카테고리가 저장됐어요!");
+				    $('#myModal').modal('show');
+			        $('#myModal').on('hide.bs.modal', function () {
+	                	location.reload();
+			        });
 	            },
 	            error: function() {
-	                alert('카테고리 저장 중 오류가 발생했습니다.');
+					$("#myModal #modalTitle").text("오류");
+					$("#myModal #modalText").text("전송 오류!");
+				    $('#myModal').modal('show');
 	            }
 	        });
 	    }
@@ -354,13 +364,11 @@
 	    function categoryDeleteModal(caIdx, caName) {
 			let htmlFooter = '<button type="button" class="btn btn-danger mr-2" onclick="categoryDelete('+caIdx+')">삭제</button>'
 				+'<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>';
-				
-				$("#myModal2 #modalTitle2").text("카테고리 삭제");
-				$("#myModal2 #modalText2").html("정말로 "+caName+" 카테고리를 삭제하시겠습니까?<br/>카테고리를 삭제하면 카테고리에 속한 글들이 <font color='red'>모두 삭제</font>되며<br/><font color='red'>상위 카테고리를 삭제하면 하위 카테고리도 같이 삭제됩니다</font>");
-				$("#myModal2 #modalFooter2").html(htmlFooter);
-				$('#myModal2').modal('show');
-
-		    $('#myModal2').modal('show');
+			
+			$("#myModal2 #modalTitle2").text("카테고리 삭제");
+			$("#myModal2 #modalText2").html("정말로 "+caName+" 카테고리를 삭제하시겠습니까?<br/>카테고리를 삭제하면 카테고리에 속한 글들이 <font color='red'>모두 삭제</font>되며<br/><font color='red'>상위 카테고리를 삭제하면 하위 카테고리도 같이 삭제됩니다</font>");
+			$("#myModal2 #modalFooter2").html(htmlFooter);
+			$('#myModal2').modal('show');
 		}
 	    
 	    // 카테고리 삭제
@@ -377,6 +385,60 @@
 				error : function() {
 					$("#myModal #modalTitle").text("오류");
 					$("#myModal #modalText").text("전송 오류!");
+					$('#myModal').modal('show');
+				}
+			});
+		}
+	    
+	    // 카테고리 비공개로 변경
+	    function categoryPrivateEdit(caIdx) {
+			$.ajax({
+				url : "${ctp}/BlogCategoryPrivate",
+				type : "post",
+				data : {caIdx : caIdx},
+				success : function(res) {
+					if(res != 0){
+						location.reload();
+					}
+					else {
+						$("#myModal #modalTitle").text("카테고리 오류");
+						$("#myModal #modalText").text("설정을 변경할 수 없었어요...");
+						$('#myModal').modal('show');
+					}
+				},
+				error : function() {
+					$("#myModal #modalTitle").text("오류");
+					$("#myModal #modalText").text("전송 오류!");
+					$('#myModal').modal('show');
+				}
+			});
+		}
+	    
+	    // 카테고리 공개로 변경
+	    function categoryPublicEdit(caIdx) {
+			$.ajax({
+				url : "${ctp}/BlogCategoryPublic",
+				type : "post",
+				data : {caIdx : caIdx},
+				success : function(res) {
+					if(res == "부모비공개"){
+						$("#myModal #modalTitle").text("카테고리 오류");
+						$("#myModal #modalText").text("먼저 상위 카테고리를 공개로 변경해주세요!");
+						$('#myModal').modal('show');
+					}
+					else if(res == "1") {
+						location.reload();
+					}
+					else {
+						$("#myModal #modalTitle").text("카테고리 오류");
+						$("#myModal #modalText").text("설정을 변경할 수 없었어요...");
+						$('#myModal').modal('show');
+					}
+				},
+				error : function() {
+					$("#myModal #modalTitle").text("오류");
+					$("#myModal #modalText").text("전송 오류!");
+					$('#myModal').modal('show');
 				}
 			});
 		}

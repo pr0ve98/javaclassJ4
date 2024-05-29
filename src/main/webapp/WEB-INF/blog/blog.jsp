@@ -48,7 +48,7 @@
             <c:if test="${uVo.mid == sMid}">
             <hr/>
 	        <div class="actions">
-		        <a href="#" class="action-link"><i class="fas fa-pencil-alt"></i> 글쓰기</a>
+		        <div class="action-link" onclick="location.href='${ctp}/ContentInput/${sMid}';"><i class="fas fa-pencil-alt"></i> 글쓰기</div>
 		        <div class="action-link" onclick="location.href='${ctp}/BlogEdit/${sMid}';"><i class="fas fa-cogs"></i> 블로그 관리</div>
 	    	</div>
 	    	</c:if>
@@ -56,9 +56,40 @@
         <div class="categories">
             <ul>
             	<li>전체보기 (27)</li>
-            	<c:forEach var="cVo" items="${cVos}" varStatus="st">
-                <li>${cVo.category}</li>
-            	</c:forEach>
+            	<c:forEach var="cPVo" items="${cPVos}">
+            		<c:if test="${uVo.mid == sMid}">
+			            <li id="parent-${cPVo.caIdx}">
+			                <strong>${cPVo.category}</strong><c:if test="${cPVo.publicSetting == '비공개'}"><i class="fa-solid fa-lock fa-2xs ml-2" style="color: gray;"></i></c:if>
+			                <ul id="parent-${cPVo.caIdx}-children">
+			                    <c:forEach var="cCVo" items="${cCVos}">
+			                        <c:if test="${cCVo.parentCategoryIdx == cPVo.caIdx}">
+			                            <li class="ml-2" id="child-${cCVo.caIdx}" data-id="${cCVo.caIdx}">
+			                                - ${cCVo.category}<c:if test="${cCVo.publicSetting == '비공개'}"><i class="fa-solid fa-lock fa-2xs ml-2" style="color: gray;"></i></c:if>
+			                            </li>
+			                        </c:if>
+			                    </c:forEach>
+			                </ul>
+			            </li>
+		            </c:if>
+            		<c:if test="${uVo.mid != sMid}">
+            			<c:if test="${cPVo.publicSetting == '공개'}">
+			            <li id="parent-${cPVo.caIdx}">
+			                <strong>${cPVo.category}</strong>
+			                <ul id="parent-${cPVo.caIdx}-children">
+			                    <c:forEach var="cCVo" items="${cCVos}">
+            						<c:if test="${cCVo.publicSetting == '공개'}">
+				                        <c:if test="${cCVo.parentCategoryIdx == cPVo.caIdx}">
+				                            <li class="ml-2" id="child-${cCVo.caIdx}" data-id="${cCVo.caIdx}">
+				                                - ${cCVo.category}
+				                            </li>
+				                        </c:if>
+			                		</c:if>
+			                    </c:forEach>
+			                </ul>
+			            </li>
+			            </c:if>
+		            </c:if>
+		        </c:forEach>
             </ul>
         </div>
         <hr/>
