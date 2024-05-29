@@ -4,13 +4,15 @@ public class ContentVO {
 	private int coIdx;
 	private int coBlogIdx;
 	private int categoryIdx;
+	private String title;
 	private String part;
 	private String wDate;
 	private int viewCnt;
 	private String content;
 	private String ctPreview;
 	private String cHostIp;
-	
+	private String coPublic;
+	private String imgName;
 	public int getCoIdx() {
 		return coIdx;
 	}
@@ -28,6 +30,12 @@ public class ContentVO {
 	}
 	public void setCategoryIdx(int categoryIdx) {
 		this.categoryIdx = categoryIdx;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
 	}
 	public String getPart() {
 		return part;
@@ -65,11 +73,26 @@ public class ContentVO {
 	public void setcHostIp(String cHostIp) {
 		this.cHostIp = cHostIp;
 	}
+	public String getCoPublic() {
+		return coPublic;
+	}
+	public void setCoPublic(String coPublic) {
+		this.coPublic = coPublic;
+	}
+	public String getImgName() {
+		return imgName;
+	}
+	public void setImgName(String imgName) {
+		this.imgName = imgName;
+	}
 	@Override
 	public String toString() {
-		return "ContentVO [coIdx=" + coIdx + ", coBlogIdx=" + coBlogIdx + ", categoryIdx=" + categoryIdx + ", part="
-				+ part + ", wDate=" + wDate + ", viewCnt=" + viewCnt + ", content=" + content + ", ctPreview="
-				+ ctPreview + ", cHostIp=" + cHostIp + "]";
+		return "ContentVO [coIdx=" + coIdx + ", coBlogIdx=" + coBlogIdx + ", categoryIdx=" + categoryIdx + ", title="
+				+ title + ", part=" + part + ", wDate=" + wDate + ", viewCnt=" + viewCnt + ", content=" + content
+				+ ", ctPreview=" + ctPreview + ", cHostIp=" + cHostIp + ", coPublic=" + coPublic + ", imgName="
+				+ imgName + "]";
 	}
+
+	
 	
 }

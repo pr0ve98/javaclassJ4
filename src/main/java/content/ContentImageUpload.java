@@ -24,7 +24,7 @@ public class ContentImageUpload extends HttpServlet {
 		MultipartRequest multipartRequest = new MultipartRequest(request, realPath, maxSize, encoding, new DefaultFileRenamePolicy());
 		String img = multipartRequest.getFilesystemName("file") == null ? "no_image.jpg" : multipartRequest.getFilesystemName("file");
 		
-		String filePath = request.getServletContext().getRealPath("/images/user/");
+		String filePath = request.getServletContext().getRealPath("/images/content/");
 		File file = new File(filePath+img);
 		
         response.setContentType("text/plain");

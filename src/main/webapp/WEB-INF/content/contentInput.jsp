@@ -22,16 +22,28 @@
 	 src: url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix') format('embedded-opentype'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff') format('woff'), url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf') format('truetype');
 	}
 	@font-face {
-	    font-family: '부크크명조';
-	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/BookkMyungjo-Lt.woff2') format('woff2');
-	    font-weight: 400;
+	    font-family: '리디바탕';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff') format('woff');
+	    font-weight: normal;
 	    font-style: normal;
 	}
 	@font-face {
-	     font-family: '에스코어드림';
-	     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
-	     font-weight: normal;
-	     font-style: normal;
+	    font-family: '서울남산체';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/SeoulNamsanM.woff') format('woff');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	@font-face {
+	    font-family: '둘기마요고딕';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.1/Dovemayo_gothic.woff2') format('woff2');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+	@font-face {
+	    font-family: '매일옥자체';
+	    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403@1.0/Ownglyph_Dailyokja-Rg.woff2') format('woff2');
+	    font-weight: normal;
+	    font-style: normal;
 	}
 	@font-face {
 	    font-family: '밑미폰트';
@@ -40,12 +52,13 @@
 	    font-style: normal;
 	}
 	#editor-container {
+		width: 100%;
 		margin: 0 auto;
 	}
     .note-editable {
       margin: 10px;
       line-height: 0.5;
-      font-family: '나눔바른고딕', '부크크명조', '에스코어드림', '밑미폰트', sans-serif;
+      font-family: '나눔바른고딕', '리디바탕', '서울남산체', '둘기마요고딕', '매일옥자체', '밑미폰트', sans-serif;
       background-color: #fff;
     }
     input[type="text"] {
@@ -63,21 +76,21 @@
 	        let headerLayer = document.createElement('div');
 	        headerLayer.className = 'header_layer layer_write';
 	        headerLayer.innerHTML = '<div class="layer_write_header">'
-	        	+'<form name="contentInputForm" method="post">'
+	        	+'<form id="contentInputForm" method="post">'
 		        +'<table class="table table-borderless text-center">'
 		        +'<tr><td class="table-label">카테고리</td>'
 		        +'<td class="table-content">'
-		        +'<select name="category" class="custom-select">'
+		        +'<select name="category" id="category" class="custom-select">'
 		        +'<c:forEach var="cPVo" items="${cPVos}">'
-		        +'<option value="${cPVo.category}">${cPVo.category}</option>'
+		        +'<option value="${cPVo.caIdx}">${cPVo.category}</option>'
 		        +'<c:forEach var="cCVo" items="${cCVos}">'
 		        +'<c:if test="${cCVo.parentCategoryIdx == cPVo.caIdx}">'
-		        +'<option value="${cCVo.category}">&nbsp;-&nbsp;${cCVo.category}</option>'
+		        +'<option value="${cCVo.caIdx}">&nbsp;-&nbsp;${cCVo.category}</option>'
 		        +'</c:if></c:forEach></c:forEach>'
 		        +'</td></tr>'
 		        +'<tr><td class="table-label">주제</td>'
 		        +'<td class="table-content">'
-		        +'<select name="part" class="custom-select">'
+		        +'<select name="part" id="part" class="custom-select">'
 		        +'<option value="없음" selected>주제 선택 안 함</option>'
 		        +'<option>일상</option>'
 		        +'<option>취미</option>'
@@ -90,14 +103,15 @@
 		        +'</td></tr>'
 		        +'<tr><td class="table-label">공개 설정</td>'
 		        +'<td class="table-content">'
-		        +'<input type="radio" name="publicSetting" value="공개" checked>&nbsp;공개&nbsp; &nbsp;&nbsp; &nbsp;'
-		        +'<input type="radio" name="publicSetting" value="비공개"/>&nbsp;비공개'
+		        +'<input type="radio" name="publicSetting" id="publicSetting1" value="공개" checked>&nbsp;공개&nbsp; &nbsp;&nbsp; &nbsp;'
+		        +'<input type="radio" name="publicSetting" id="publicSetting2" value="비공개"/>&nbsp;비공개'
 		        +'</td></tr>'
 		        +'<tr><td colspan="2" style="margin:0 auto;">'
-		        +'<input type="button" class="mt-2 proBtn" value="작성" onclick="writeBtn()">'
+		        +'<input type="button" class="mt-2 proBtn" value="작성" onclick="writeContent()">'
 		        +'</td></tr>'
 				+'</table>'
 				+'<input type="hidden" name="mid" id="mid" value="${sMid}" />'
+				+'<input type="hidden" name="hostIp" id="hostIp" value="${pageContext.request.remoteAddr}" />'
 				+'</form>'
 	        	+'</div>';
 	        document.querySelector('.menu-right-bar').appendChild(headerLayer);
@@ -120,20 +134,20 @@
 <body class="body-layout">
 	<div class="menu-title">
 		<a class="navbar-brand" href="${ctp}/Main"><img src="${ctp}/images/logo.png" alt="logo" style="width: 200px;"></a>
-<div class="menu-right-bar">
-	<button class="orangeBtn-sm" onclick="writeBtn()">작성</button>
-	</div>
-</div>
-<main>
-	<div class="container">
-		<div id="editor-container">
-			<form id="postForm" method="post">
-				<input type="text" name="title" id="title" placeholder="제목을 입력하세요" class="form-control mb-3" />
-		  		<textarea id="summernote" name="content"></textarea>
-			</form>
+		<div class="menu-right-bar">
+			<button class="orangeBtn-sm" onclick="writeBtn()">작성</button>
 		</div>
 	</div>
-</main>
+	<main>
+		<div class="container">
+			<div id="editor-container">
+				<form id="postForm" method="post">
+					<input type="text" name="title" id="title" placeholder="제목을 입력하세요" class="form-control mb-3" />
+			  		<textarea id="summernote" name="content"></textarea>
+				</form>
+			</div>
+		</div>
+	</main>
 
 <!-- Summernote JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
@@ -165,10 +179,11 @@
   </div>
 
 <script>
-	let initialContent = '';
+	let initialImages = [];
+	let currentImages = [];
 	
     $(document).ready(function() {
-    	var fontList = ['나눔바른고딕', '부크크명조', '에스코어드림', '밑미폰트'];
+    	var fontList = ['나눔바른고딕', '리디바탕', '서울남산체', '둘기마요고딕', '매일옥자체', '밑미폰트'];
       $('#summernote').summernote({
     	lang: 'ko-KR',
         tabsize: 2,
@@ -188,8 +203,8 @@
 		fontSizes: ['10','11','12','14','16','18','20','22','24'],
         callbacks: {
             onInit: function() {
-                // 기본 줄 간격 설정 (비율로 설정)
-                $('.note-editable').css('line-height', '0.5');
+            	// 초기 내용 저장
+            	initialContent = $('#summernote').summernote('code');
                 // 기본 폰트 설정
                 $('.note-editable').css('font-family', '나눔바른고딕');
               },
@@ -216,30 +231,31 @@
 	        	}
 	          },
               onChange: function(contents, $editable) {
-                  // 삭제된 이미지 감지
-                  let currentContent = $('#summernote').summernote('code');
-                  detectDeletedImages(initialContent, currentContent);
-                  initialContent = currentContent;
+                  currentImages = getCurrentImages(); // 현재 에디터의 모든 이미지 배열로 가져옴
+                  detectDeletedImages(initialImages, currentImages); // 초기 이미지 배열과 현재 이미지 배열 비교해 삭제이미지 감지해 삭제
+                  initialImages = currentImages; // 현재 이미지 배열을 초기 이미지 배열로 설정
                 }
        		}
       });
     });
 
+    	// 이미지 등록
 		function uploadImage(file) {
 			let data = new FormData();
 			data.append("file", file);
 
 			$.ajax({
-			  url: '${ctp}/ContentImageUpload', // 이미지를 업로드할 서버 URL을 여기에 넣습니다.
+			  url: '${ctp}/ContentImageUpload',
 			  cache: false,
 			  contentType: false,
 			  processData: false,
 			  data: data,
 			  type: "POST",
 			  success: function(url) {
-			    $('#summernote').summernote('insertImage', url, function ($image) {
-			      $image.attr('src', url);
-			    });
+		          $('#summernote').summernote('insertImage', url, function ($image) {
+		              $image.attr('src', url);
+		              initialImages.push(url); // 추가된 이미지를 초기 이미지 목록에 추가
+		            });
 			  },
 			  error: function() {
    				$("#myModal #modalTitle").text("전송 오류");
@@ -249,34 +265,96 @@
 			});
 		}
 		
-		function detectDeletedImages(initialContent, currentContent) {
-		      let initialImages = $(initialContent).find('img');
-		      let currentImages = $(currentContent).find('img');
-
-		      initialImages.each(function() {
-		        let src = $(this).attr('src');
-		        if (currentImages.filter("[src='${src}']").length === 0) {
-		          // 이미지가 삭제된 경우
-		          deleteImage(src);
-		        }
-		      });
-		    }
+		// 현재 에디터에 포함된 이미지 URL을 배열로 반환
+		function getCurrentImages() {
+			  return $('#summernote').next('.note-editor').find('.note-editable img').map(function() {
+			    return $(this).attr('src');
+			  }).get();
+			}
+	    
+	    function detectDeletedImages(initialImages, currentImages) {
+	        initialImages.forEach(function(src) {
+	          // 이미지가 삭제된 경우
+	          if (!currentImages.includes(src)) {
+	            deleteImage(src);
+	          }
+	        });
+	      }
 		
+	    // 이미지 삭제
 	    function deleteImage(src) {
 	        $.ajax({
 	          url: '${ctp}/ContentImageDelete', // 이미지를 삭제할 서버 URL을 여기에 넣습니다.
 	          type: 'POST',
 	          data: { src : src },
-	          success: function(res) {
-	        	  if(res != "0"){
-	            	console.log('이미지 삭제 성공:', response);
-	        	  }
-	          },
 	          error: function() {
 	            console.log('이미지 삭제 실패');
 	          }
 	        });
 	      }
+	    
+	    // 글 작성
+	    function writeContent() {
+			let mid = $('#mid').val();
+			let title = $('#title').val().trim();
+			let content = $('#summernote').summernote('code').trim();
+			let category = $('#category').val();
+			let part = $('#part').val();
+			let hostIp = $('#hostIp').val();
+			let publicSetting = $('input[name="publicSetting"]:checked').val();
+			
+			if (title == '') {
+   				$("#myModal #modalTitle").text("글 제목");
+   				$("#myModal #modalText").text("글 제목을 입력하세요!");
+   			    $('#myModal').modal('show');
+   		        $('#myModal').on('hide.bs.modal', function () {
+					$('#title').focus();
+   		        });
+				return false;
+			}
+			
+			if (content == '' || content == '<p><br></p>') {
+   				$("#myModal #modalTitle").text("글 내용");
+   				$("#myModal #modalText").text("글 내용을 입력하세요!");
+   			    $('#myModal').modal('show');
+   		        $('#myModal').on('hide.bs.modal', function () {
+					$('#summernote').focus();
+   		        });
+				return false;
+			}
+			
+			
+			let query = {
+				mid : mid,
+				title : title,
+				content : content,
+				category : category,
+				part : part,
+				hostIp : hostIp,
+				publicSetting : publicSetting
+			}
+			  
+			  $.ajax({
+				  url : "${ctp}/ContentInputOk",
+				  type : "post",
+				  data : query,
+				  success : function(res) {
+					if(res != "0"){
+						location.href="${ctp}/blog/${sMid}";
+					}
+					else {
+		   				$("#myModal #modalTitle").text("작성 오류");
+		   				$("#myModal #modalText").text("게시글 등록 실패!");
+		   			    $('#myModal').modal('show');
+					}
+				},
+				error : function() {
+	   				$("#myModal #modalTitle").text("전송 오류");
+	   				$("#myModal #modalText").text("전송 오류!");
+	   			    $('#myModal').modal('show');
+				}
+			});
+		}
   </script>
 </body>
 </html>
