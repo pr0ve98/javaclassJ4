@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import content.ContentDAO;
+import content.ContentVO;
 import user.UserDAO;
 import user.UserVO;
 
@@ -50,6 +52,7 @@ public class BlogServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BlogDAO bDao = new BlogDAO();
 		UserDAO uDao = new UserDAO();
+		ContentDAO coDao = new ContentDAO();
 		RequestDispatcher dispatcher = null;
 		HttpSession session = request.getSession();
 		
@@ -90,8 +93,6 @@ public class BlogServlet extends HttpServlet {
         
         BlogVO bVo = bDao.getUserBlog(mid);
         UserVO uVo = uDao.getUserIdCheck(mid);
-        ArrayList<CategoryVO> cPVos = bDao.getCategory(bVo.getBlogIdx(), 1); // 부모 카테고리만 가져오기
-        ArrayList<CategoryVO> cCVos = bDao.getCategory(bVo.getBlogIdx(), 2); // 자식 카테고리만 가져오기     
         
         // 유저가 없으면 메인페이지로 이동
         if(bVo.getBlogMid() == null || uVo.getMid() == null) {
@@ -100,10 +101,15 @@ public class BlogServlet extends HttpServlet {
             return;
         }
         
+        ArrayList<CategoryVO> cPVos = bDao.getCategory(bVo.getBlogIdx(), 1); // 부모 카테고리만 가져오기
+        ArrayList<CategoryVO> cCVos = bDao.getCategory(bVo.getBlogIdx(), 2); // 자식 카테고리만 가져오기     
+        ArrayList<ContentVO> coAllVos = coDao.getContentList(bVo.getBlogIdx()); // 전체글
+        
         request.setAttribute("bVo", bVo);
         request.setAttribute("uVo", uVo);
         request.setAttribute("cPVos", cPVos);
         request.setAttribute("cCVos", cCVos);
+        request.setAttribute("coAllVos", coAllVos);
         
         String viewPage = "/WEB-INF/blog/blog.jsp";
         dispatcher = request.getRequestDispatcher(viewPage);

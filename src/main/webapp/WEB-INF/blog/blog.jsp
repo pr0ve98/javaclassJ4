@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="ko">
@@ -28,17 +29,19 @@
     <section class="posts">
     	<b>전체 글 <span style="color:#ff7200">27</span></b>
     	<hr/>
+    	<c:forEach var="coAllVo" items="${coAllVos}">
         <div class="post">
             <div class="post-content">
-                <h2>오늘은 별로 안 바빴다</h2>
-                <p>오늘은 별로 안 바빴다... (본문 내용)</p>
-                <span>일기 · 2023.03.22</span>
+                <h2><b>${coAllVo.title}</b></h2>
+                <p>${coAllVo.ctPreview}</p>
+                <span>${coAllVo.categoryName} · ${fn:substring(coAllVo.wDate, 0, 10)}</span>
             </div>
             <div class="post-thumbnail">
-                <img src="${ctp}/images/test2.jpg" alt="thumbnail">
+            	<c:set var="thumbnailImg" value="${fn:split(coAllVo.imgName, '/')}"/>
+                <img src="${ctp}/images/content/${thumbnailImg[0]}" alt="thumbnail">
             </div>
         </div>
-        <!-- 다른 게시물들 추가 -->
+        </c:forEach>
     </section>
     <aside>
         <div class="profile">

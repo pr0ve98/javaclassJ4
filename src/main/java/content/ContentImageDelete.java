@@ -18,9 +18,10 @@ public class ContentImageDelete extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String imageUrl = request.getParameter("src");
-
+        imageUrl = imageUrl.substring(imageUrl.lastIndexOf("/")+1);
+        
         if (imageUrl != null) {
-            String realPath = request.getServletContext().getRealPath(imageUrl);
+            String realPath = request.getServletContext().getRealPath("/images/content/"+imageUrl);
 
             File file = new File(realPath);
             if (file.exists() && file.isFile()) {
@@ -28,15 +29,15 @@ public class ContentImageDelete extends HttpServlet {
                     response.getWriter().write("1");
                 }
                 else {
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to delete image");
+                	response.getWriter().write("0");
                 }
             }
             else {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Image not found");
+            	response.getWriter().write("0");
             }
         }
         else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid image URL");
+        	response.getWriter().write("0");
         }
     }
 }

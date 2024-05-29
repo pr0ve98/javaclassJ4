@@ -282,6 +282,29 @@
 		background-color: #eee;
 		height: 48px;
 	}
+	.grayBtn-sm{
+		font-family: 'Pretendard-Light';
+		display: inline-block;
+		outline: none;
+		cursor: pointer;
+		font-size: 13px;
+		line-height: 1;
+		border-radius: 500px;
+		transition-property: background-color,border-color,color,box-shadow,filter;
+		transition-duration: .3s;
+		border: 1px solid transparent;
+		letter-spacing: 2px;
+		min-width: 120px;
+		text-transform: uppercase;
+		white-space: normal;
+		font-weight: 600;
+		text-align: center;
+		padding: 14px 14px 18px;
+		color: gray;
+		background-color: #eee;
+		height: 42px;
+		margin-top: 5px;
+	}
 	i{
 		cursor: pointer;
 	}
@@ -289,7 +312,7 @@
 	    background-color: #afeeee;
 	    color: gray;
 	}
-	.grayBtn:hover{
+	.grayBtn:hover, .grayBtn-sm:hover{
 	    background-color: #ddd;
 	}
 	.menu-right-bar {

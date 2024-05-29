@@ -13,6 +13,9 @@ public class ContentVO {
 	private String cHostIp;
 	private String coPublic;
 	private String imgName;
+	
+	private String categoryName;
+	
 	public int getCoIdx() {
 		return coIdx;
 	}
@@ -85,14 +88,18 @@ public class ContentVO {
 	public void setImgName(String imgName) {
 		this.imgName = imgName;
 	}
+	public String getCategoryName() {
+		return categoryName;
+	}
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
 	@Override
 	public String toString() {
 		return "ContentVO [coIdx=" + coIdx + ", coBlogIdx=" + coBlogIdx + ", categoryIdx=" + categoryIdx + ", title="
 				+ title + ", part=" + part + ", wDate=" + wDate + ", viewCnt=" + viewCnt + ", content=" + content
 				+ ", ctPreview=" + ctPreview + ", cHostIp=" + cHostIp + ", coPublic=" + coPublic + ", imgName="
-				+ imgName + "]";
+				+ imgName + ", categoryName=" + categoryName + "]";
 	}
 
-	
-	
 }
