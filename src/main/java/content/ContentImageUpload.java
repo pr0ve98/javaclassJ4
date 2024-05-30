@@ -21,12 +21,11 @@ public class ContentImageUpload extends HttpServlet {
         int maxSize = 1024 * 1024 * 10; // 10MB
         String encoding = "UTF-8";
 
-        // MultipartRequest 객체 생성
         MultipartRequest multipartRequest = new MultipartRequest(request, realPath, maxSize, encoding, new DefaultFileRenamePolicy());
 
         // 업로드된 파일명 저장
         StringBuilder filePaths = new StringBuilder();
-        Enumeration<?> files = multipartRequest.getFileNames();
+        Enumeration files = multipartRequest.getFileNames();
         while (files.hasMoreElements()) {
             String name = (String) files.nextElement();
             String fileName = multipartRequest.getFilesystemName(name);
@@ -40,8 +39,6 @@ public class ContentImageUpload extends HttpServlet {
 
         //System.out.println("File Paths: " + filePaths.toString());
 
-        // 응답 설정
-        response.setContentType("text/plain");
         response.getWriter().write(filePaths.toString());
     }
 }

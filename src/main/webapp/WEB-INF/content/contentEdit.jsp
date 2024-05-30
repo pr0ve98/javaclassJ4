@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${bVo.blogTitle} - 글 작성</title>
+<title>글작성</title>
 <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico">
 <%@ include file="/include/bs4.jsp"%>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
@@ -247,18 +247,6 @@
 	                    }
 	                }
 	            },
-	            onPaste: function(e) {
-                    let clipboardData = e.originalEvent.clipboardData;
-                    if (clipboardData && clipboardData.items) {
-                        let items = clipboardData.items;
-                        for (let i = 0; i < items.length; i++) {
-                            if (items[i].type.indexOf('image') != -1) {
-                                let file = items[i].getAsFile();
-                                uploadImage(file);
-                            }
-                        }
-                    }
-                },
 	            onChange: function(contents, $editable) {
 	                currentImages = getCurrentImages();
 	                detectDeletedImages(initialImages, currentImages);

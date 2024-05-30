@@ -64,11 +64,109 @@ public class ContentDAO {
 	}
 
 	// 전체글 가져오기
-	public ArrayList<ContentVO> getContentList(int blogIdx) {
+	public ArrayList<ContentVO> getContentList(int startIndexNo, int pageSize, int blogIdx, String user, int categoryIdx, ArrayList<CategoryVO> categoryIdxs) {
 		ArrayList<ContentVO> vos = new ArrayList<ContentVO>();
 		try {
-			sql = "select * from hbContent order by coIdx desc";
-			pstmt = conn.prepareStatement(sql);
+			if(categoryIdxs == null) { // 자식 카테고리
+				if(user.equals("주인")) {
+					if(categoryIdx == 0) {
+						sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+								+ "from hbContent where coBlogIdx=? order by coIdx desc limit ?,?";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+						pstmt.setInt(2, startIndexNo);
+						pstmt.setInt(3, pageSize);
+					}
+					else {
+						sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+								+ "from hbContent where coBlogIdx=? and categoryIdx=? order by coIdx desc limit ?,?";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+						pstmt.setInt(2, categoryIdx);
+						pstmt.setInt(3, startIndexNo);
+						pstmt.setInt(4, pageSize);
+					}
+				}
+				else {
+					if(categoryIdx == 0) {
+						sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+								+ "from hbContent where coPublic='공개' and coBlogIdx=? order by coIdx desc limit ?,?";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+						pstmt.setInt(2, startIndexNo);
+						pstmt.setInt(3, pageSize);
+					}
+					else {
+						sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+								+ "from hbContent where coPublic='공개' and coBlogIdx=? and categoryIdx=? order by coIdx desc limit ?,?";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+						pstmt.setInt(2, categoryIdx);
+						pstmt.setInt(3, startIndexNo);
+						pstmt.setInt(4, pageSize);
+					}
+				}
+			}
+			else { // 부모카테고리
+				if(user.equals("주인")) {
+					if(categoryIdx == 0) {
+						sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+								+ "from hbContent where coBlogIdx=? order by coIdx desc limit ?,?";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+						pstmt.setInt(2, startIndexNo);
+						pstmt.setInt(3, pageSize);
+					}
+					else {
+						sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+								+ "from hbContent where coBlogIdx=? and categoryIdx in (?,";
+						for(int i=0; i<categoryIdxs.size(); i++) {
+							sql += "?,";
+						}
+						sql = sql.substring(0, sql.lastIndexOf(","));
+						sql += ") order by coIdx desc limit ?,?";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+						pstmt.setInt(2, categoryIdx);
+						int cnt = 3;
+						for(CategoryVO vo : categoryIdxs) {
+							pstmt.setInt(cnt, vo.getCaIdx());
+							cnt++;
+						}
+						pstmt.setInt(cnt, startIndexNo);
+						pstmt.setInt(cnt+1, pageSize);
+					}
+				}
+				else {
+					if(categoryIdx == 0) {
+						sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+								+ "from hbContent where coPublic='공개' and coBlogIdx=? order by coIdx desc limit ?,?";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+						pstmt.setInt(2, startIndexNo);
+						pstmt.setInt(3, pageSize);
+					}
+					else {
+						sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+								+ "from hbContent where coPublic='공개' and coBlogIdx=? and categoryIdx in (?,";
+						for(int i=0; i<categoryIdxs.size(); i++) {
+							sql += "?,";
+						}
+						sql = sql.substring(0, sql.lastIndexOf(","));
+						sql += ") order by coIdx desc limit ?,?";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+						pstmt.setInt(2, categoryIdx);
+						int cnt = 3;
+						for(CategoryVO vo : categoryIdxs) {
+							pstmt.setInt(cnt, vo.getCaIdx());
+							cnt++;
+						}
+						pstmt.setInt(cnt, startIndexNo);
+						pstmt.setInt(cnt+1, pageSize);
+					}
+				}
+			}
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -90,6 +188,9 @@ public class ContentDAO {
 				CategoryVO cVo = bDao.getCategoryIdx(vo.getCategoryIdx());
 				vo.setCategoryName(cVo.getCategory());
 				
+				vo.setHour_diff(rs.getInt("hour_diff"));
+				vo.setMin_diff(rs.getInt("min_diff"));
+				
 				vos.add(vo);
 			}
 		} catch (SQLException e) {
@@ -98,6 +199,97 @@ public class ContentDAO {
 			pstmtClose();
 		}
 		return vos;
+	}
+
+	// 총 게시글 수
+	public int getContentCnt(int blogIdx, String user, int categoryIdx, ArrayList<CategoryVO> categoryIdxs) {
+		int totRecCnt = 0;
+		try {
+			if(categoryIdxs == null) { // 자식 카테고리
+				if(user.equals("주인")) {
+					if(categoryIdx == 0) {
+						sql = "select count(*) as cnt from hbContent where coBlogIdx=?";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+					}
+					else {
+						sql = "select count(*) as cnt from hbContent where coBlogIdx=? and categoryIdx=?";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+						pstmt.setInt(2, categoryIdx);
+					}
+				}
+				else {
+					if(categoryIdx == 0) {
+						sql = "select count(*) as cnt from hbContent where coBlogIdx=? and coPublic='공개'";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+					}
+					else {
+						sql = "select count(*) as cnt from hbContent where coBlogIdx=? and coPublic='공개' and categoryIdx=?";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+						pstmt.setInt(2, categoryIdx);
+					}
+				}
+			}
+			else { // 부모카테고리
+				if(user.equals("주인")) {
+					if(categoryIdx == 0) {
+						sql = "select count(*) as cnt from hbContent where coBlogIdx=?";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+					}
+					else {
+						sql = "select count(*) as cnt from hbContent where coBlogIdx=? and categoryIdx in (?,";
+						for(int i=0; i<categoryIdxs.size(); i++) {
+							sql += "?,";
+						}
+						sql = sql.substring(0, sql.lastIndexOf(","));
+						sql += ")";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+						pstmt.setInt(2, categoryIdx);
+						int cnt = 3;
+						for(CategoryVO vo : categoryIdxs) {
+							pstmt.setInt(cnt, vo.getCaIdx());
+							cnt++;
+						}
+					}
+				}
+				else {
+					if(categoryIdx == 0) {
+						sql = "select count(*) as cnt from hbContent where coBlogIdx=? and coPublic='공개'";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+					}
+					else {
+						sql = "select count(*) as cnt from hbContent where coBlogIdx=? and coPublic='공개' and categoryIdx in (?,";
+						for(int i=0; i<categoryIdxs.size(); i++) {
+							sql += "?,";
+						}
+						sql = sql.substring(0, sql.lastIndexOf(","));
+						sql += ")";
+						pstmt = conn.prepareStatement(sql);
+						pstmt.setInt(1, blogIdx);
+						pstmt.setInt(2, categoryIdx);
+						int cnt = 3;
+						for(CategoryVO vo : categoryIdxs) {
+							pstmt.setInt(cnt, vo.getCaIdx());
+							cnt++;
+						}
+					}
+				}
+			}
+			rs = pstmt.executeQuery();
+			rs.next();
+			totRecCnt = rs.getInt("cnt");
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return totRecCnt;
 	}
 	
 	

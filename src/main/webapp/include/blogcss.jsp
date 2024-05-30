@@ -122,9 +122,24 @@
 	}
 	.post {
 	    display: flex;
-	    margin-bottom: 20px;
 	    padding: 20px;
+	    position: relative;
 	}
+    .post::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(213, 213, 213, 0.2);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .post:hover::after {
+        opacity: 1;
+    }
 	.post-content {
 	    flex: 3;
 	}
@@ -234,7 +249,6 @@
 	    text-decoration: underline;
 	}
 	.categories,
-	.tags,
 	.recent-comments,
 	.counter {
 	    padding: 10px;
@@ -277,8 +291,8 @@
 	}
 	.home-button {
 	    position: fixed;
-	    bottom: 20px;
-	    right: 20px;
+	    top: 25px;
+	    right: 45px;
 	    background-color: #ff7200;
 	    color: #fff;
 	    border-radius: 50%;
@@ -298,5 +312,55 @@
 	
 	.home-button i {
 	    font-size: 24px;
+	}
+	
+	.pagination {
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	}
+	
+	.pagination a {
+	    color: black;
+	    float: left;
+	    padding: 8px 16px;
+	    text-decoration: none;
+	    transition: background-color .3s;
+	    border-radius: 50%;
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    height: 32px;
+	    width: 32px;
+	    text-align: center;
+	    margin: 0 4px;
+	}
+	
+	.pagination a.active {
+	    background-color: black;
+	    color: white;
+	    border-radius: 50%;
+	}
+	
+	.pagination a:hover:not(.active) {
+	    background-color: #ddd;
+	}
+	a:link {
+  		color : #212529;
+	}
+	a:visited {
+	  color : #212529;
+	}
+	a:hover {
+	  color : #212529;
+	  text-decoration-line: none;
+	}
+	a:active {
+	  color : #212529;
+	}
+	
+	.category-ac {
+		font-family: Pretendard-Medium;
+		color: #ff7200;
 	}
 </style>

@@ -17,6 +17,7 @@ import org.jsoup.select.Elements;
 
 import blog.BlogDAO;
 import blog.BlogVO;
+import blog.CategoryVO;
 
 @SuppressWarnings("serial")
 @WebServlet("/ContentInputOk")
@@ -52,15 +53,23 @@ public class ContentInputOk extends HttpServlet {
         Document docImg = Jsoup.parse(content);
         Elements imgElements = docImg.select("img");
 
+        String fileName = "";
         for (Element imgElement : imgElements) {
             String src = imgElement.attr("src");
-            String fileName = src.substring(src.lastIndexOf("/") + 1);
+            if(src.contains("http")) {
+            	fileName = src;
+            }
+            else fileName = src.substring(src.lastIndexOf("/") + 1);
             imagesName.add(fileName);
         }
         String imageFileName = String.join("/", imagesName);
         
         BlogDAO bDao = new BlogDAO();
         BlogVO bVo = bDao.getUserBlog(mid);
+        
+        // 카테고리가 비공개면 공개 설정을 비공개로 변경
+        CategoryVO cVo = bDao.getCategoryIdx(caIdx);
+        if(cVo.getPublicSetting().equals("비공개")) publicSetting = "비공개";
         
         ContentVO vo = new ContentVO();
         vo.setCoBlogIdx(bVo.getBlogIdx());

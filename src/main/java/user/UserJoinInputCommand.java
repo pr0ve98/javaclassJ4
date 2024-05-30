@@ -57,6 +57,11 @@ public class UserJoinInputCommand implements UserInterface {
 		BlogDAO bDao = new BlogDAO();
 		bDao.setInputBlog(mid, bVo.getBlogTitle(), bVo.getBlogIntro());
 		
+		bVo = bDao.getUserBlog(mid);
+		
+		// 블로그 기본 카테고리 생성
+		bDao.setCategoryInput("기본카테고리", bVo.getBlogIdx(), 0, 0);
+		
 		
 		if(res != 0) {
 			request.setAttribute("title", "회원가입 성공");

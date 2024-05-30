@@ -60,6 +60,7 @@
 		font-family: 'Pretendard-Medium';
 		cursor: default;
 		background-color: #F6F6F6;
+		overflow: hidden;
 	}
 	.body-layout {
 		display: grid;
@@ -71,6 +72,7 @@
 		display: flex;
  		padding: 20px 30px;
  		justify-content: space-between;
+ 		background-color: #fff;
 	}
 	main {
 		grid-area: content;

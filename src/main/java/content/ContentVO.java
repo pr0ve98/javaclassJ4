@@ -15,6 +15,8 @@ public class ContentVO {
 	private String imgName;
 	
 	private String categoryName;
+	private int hour_diff;
+	private int min_diff;
 	
 	public int getCoIdx() {
 		return coIdx;
@@ -94,12 +96,25 @@ public class ContentVO {
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
+	public int getHour_diff() {
+		return hour_diff;
+	}
+	public void setHour_diff(int hour_diff) {
+		this.hour_diff = hour_diff;
+	}
+	public int getMin_diff() {
+		return min_diff;
+	}
+	public void setMin_diff(int min_diff) {
+		this.min_diff = min_diff;
+	}
 	@Override
 	public String toString() {
 		return "ContentVO [coIdx=" + coIdx + ", coBlogIdx=" + coBlogIdx + ", categoryIdx=" + categoryIdx + ", title="
 				+ title + ", part=" + part + ", wDate=" + wDate + ", viewCnt=" + viewCnt + ", content=" + content
 				+ ", ctPreview=" + ctPreview + ", cHostIp=" + cHostIp + ", coPublic=" + coPublic + ", imgName="
-				+ imgName + ", categoryName=" + categoryName + "]";
+				+ imgName + ", categoryName=" + categoryName + ", hour_diff=" + hour_diff + ", min_diff=" + min_diff
+				+ "]";
 	}
 
 }

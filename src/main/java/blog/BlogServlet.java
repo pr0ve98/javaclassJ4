@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import common.Pagination;
 import content.ContentDAO;
 import content.ContentVO;
 import user.UserDAO;
@@ -103,13 +104,29 @@ public class BlogServlet extends HttpServlet {
         
         ArrayList<CategoryVO> cPVos = bDao.getCategory(bVo.getBlogIdx(), 1); // 부모 카테고리만 가져오기
         ArrayList<CategoryVO> cCVos = bDao.getCategory(bVo.getBlogIdx(), 2); // 자식 카테고리만 가져오기     
-        ArrayList<ContentVO> coAllVos = coDao.getContentList(bVo.getBlogIdx()); // 전체글
+        
+        String user = "";
+        if(mid.equals(sMid)) user = "주인";
+        else user = "일반";
+        
+    	// 페이지네이션 처리
+    	int page = request.getParameter("page")==null ? 1 : Integer.parseInt(request.getParameter("page"));
+    	int pageSize = request.getParameter("pageSize")==null ? 10 : Integer.parseInt(request.getParameter("pageSize"));
+    	int categoryIdx = request.getParameter("categoryIdx")==null ? 0 : Integer.parseInt(request.getParameter("categoryIdx"));
+    	
+    	Pagination.pageChange(request, page, pageSize, user, bVo.getBlogIdx(), categoryIdx);
+        	
+        String userMid = uVo.getMid();
+        String nickName = uVo.getNickName();
+        String userImg = uVo.getUserImg();
+        
+        request.setAttribute("userMid", userMid);
+        request.setAttribute("nickName", nickName);
+        request.setAttribute("userImg", userImg);
         
         request.setAttribute("bVo", bVo);
-        request.setAttribute("uVo", uVo);
         request.setAttribute("cPVos", cPVos);
         request.setAttribute("cCVos", cCVos);
-        request.setAttribute("coAllVos", coAllVos);
         
         String viewPage = "/WEB-INF/blog/blog.jsp";
         dispatcher = request.getRequestDispatcher(viewPage);
