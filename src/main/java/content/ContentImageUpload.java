@@ -31,9 +31,9 @@ public class ContentImageUpload extends HttpServlet {
             String fileName = multipartRequest.getFilesystemName(name);
             if (fileName != null) {
                 if (filePaths.length() > 0) {
-                    filePaths.append("/");
+                    filePaths.append("|");
                 }
-                filePaths.append(request.getContextPath() + "/images/content/" + fileName+"///");
+                filePaths.append(request.getContextPath() + "/images/content/" + fileName);
             }
         }
 

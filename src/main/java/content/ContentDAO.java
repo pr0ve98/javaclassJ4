@@ -291,7 +291,43 @@ public class ContentDAO {
 		}
 		return totRecCnt;
 	}
-	
-	
+
+	// 게시글 가져오기
+	public ContentVO getContent(int coIdx) {
+		ContentVO vo = new ContentVO();
+		try {
+			sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff,"
+					+ " timestampdiff(minute, wDate, now()) as min_diff from hbContent where coIdx=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, coIdx);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				vo.setCoIdx(rs.getInt("coIdx"));
+				vo.setCoBlogIdx(rs.getInt("coBlogIdx"));
+				vo.setCategoryIdx(rs.getInt("categoryIdx"));
+				vo.setTitle(rs.getString("title"));
+				vo.setPart(rs.getString("part"));
+				vo.setwDate(rs.getString("wDate"));
+				vo.setViewCnt(rs.getInt("viewCnt"));
+				vo.setContent(rs.getString("content"));
+				vo.setCtPreview(rs.getString("ctPreview"));
+				vo.setcHostIp(rs.getString("cHostIp"));
+				vo.setCoPublic(rs.getString("coPublic"));
+				vo.setImgName(rs.getString("imgName"));
+				
+				BlogDAO bDao = new BlogDAO();
+				CategoryVO cVo = bDao.getCategoryIdx(vo.getCategoryIdx());
+				vo.setCategoryName(cVo.getCategory());
+				
+				vo.setHour_diff(rs.getInt("hour_diff"));
+				vo.setMin_diff(rs.getInt("min_diff"));
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vo;
+	}
 
 }

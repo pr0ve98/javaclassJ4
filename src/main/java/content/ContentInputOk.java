@@ -50,19 +50,15 @@ public class ContentInputOk extends HttpServlet {
         
         // content에서 이미지 파일명만 가져오기
         List<String> imagesName = new ArrayList<>();
-        Document docImg = Jsoup.parse(content);
-        Elements imgElements = docImg.select("img");
-
-        String fileName = "";
+        Elements imgElements = doc.select("img");
         for (Element imgElement : imgElements) {
             String src = imgElement.attr("src");
-            if(src.contains("http")) {
-            	fileName = src;
-            }
-            else fileName = src.substring(src.lastIndexOf("/") + 1);
+            String fileName = "";
+            if(src.indexOf("http") == -1) fileName = src.substring(src.lastIndexOf("/") + 1);
+            else fileName = src;
             imagesName.add(fileName);
         }
-        String imageFileName = String.join("/", imagesName);
+        String imageFileName = String.join("|", imagesName);
         
         BlogDAO bDao = new BlogDAO();
         BlogVO bVo = bDao.getUserBlog(mid);

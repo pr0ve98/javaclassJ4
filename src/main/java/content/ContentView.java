@@ -1,4 +1,4 @@
-package blog;
+package content;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -18,15 +18,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import blog.BlogDAO;
+import blog.BlogVO;
+import blog.CategoryVO;
 import common.Pagination;
-import content.ContentDAO;
-import content.ContentVO;
 import user.UserDAO;
 import user.UserVO;
 
 @SuppressWarnings("serial")
-@WebServlet("/blog/*")
-public class BlogServlet extends HttpServlet {
+@WebServlet("/content/*")
+public class ContentView extends HttpServlet {
 	private final Map<String, Map<String, LocalDateTime>> visitMap = new ConcurrentHashMap<>(); // 블로그별 방문자 IP와 마지막 방문 시간 저장하는 맵
 	private final Map<String, Integer> todayVisit = new ConcurrentHashMap<>(); // 블로그별 오늘 방문자수 저장하는 맵
 	
@@ -102,9 +103,25 @@ public class BlogServlet extends HttpServlet {
             return;
         }
         
+        int coIdx = request.getParameter("coIdx")==null ? 0 : Integer.parseInt(request.getParameter("coIdx"));
+        
+        if(coIdx == 0) {
+            dispatcher = request.getRequestDispatcher("/blog/"+mid);
+            dispatcher.forward(request, response);
+            return;
+        }
+        
         ArrayList<CategoryVO> cVos = bDao.getCategory(bVo.getBlogIdx(), 0); // 전체 카테고리 가져오기
         ArrayList<CategoryVO> cPVos = bDao.getCategory(bVo.getBlogIdx(), 1); // 부모 카테고리만 가져오기
-        ArrayList<CategoryVO> cCVos = bDao.getCategory(bVo.getBlogIdx(), 2); // 자식 카테고리만 가져오기     
+        ArrayList<CategoryVO> cCVos = bDao.getCategory(bVo.getBlogIdx(), 2); // 자식 카테고리만 가져오기
+        
+        ContentVO contentVo = coDao.getContent(coIdx);
+        
+        if(contentVo.getTitle() == null || (contentVo.getCoPublic().equals("비공개") && !mid.equals(sMid))) {
+            dispatcher = request.getRequestDispatcher("/blog/"+mid);
+            dispatcher.forward(request, response);
+            return;
+        }
         
         String user = mid.equals(sMid) ? "주인" : "일반";
         
@@ -114,6 +131,8 @@ public class BlogServlet extends HttpServlet {
     	int categoryIdx = request.getParameter("categoryIdx")==null ? 0 : Integer.parseInt(request.getParameter("categoryIdx"));
     	
     	Pagination.pageChange(request, page, pageSize, user, bVo.getBlogIdx(), categoryIdx);
+        
+        request.setAttribute("contentVo", contentVo);
         	
         String userMid = uVo.getMid();
         String nickName = uVo.getNickName();
@@ -128,7 +147,7 @@ public class BlogServlet extends HttpServlet {
         request.setAttribute("cPVos", cPVos);
         request.setAttribute("cCVos", cCVos);
         
-        String viewPage = "/WEB-INF/blog/blog.jsp";
+        String viewPage = "/WEB-INF/content/contentView.jsp";
         dispatcher = request.getRequestDispatcher(viewPage);
         dispatcher.forward(request, response);
 	}

@@ -1,13 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${bVo.blogTitle}</title>
+<title>${contentVo.title} - 에이치로그</title>
 <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <%@ include file="/include/bs4.jsp"%>
@@ -26,70 +27,57 @@
     </div>
 </header>
 <main class="container">
-    <section class="posts">
-    	<c:if test="${param.categoryIdx == null}">
-    	<b>전체 글 <span style="color:#ff7200">${totRecCnt}</span></b>
-    	</c:if>
-    	<c:forEach var="cVo" items="${cVos}">
-    	<c:if test="${cVo.caIdx == param.categoryIdx}">
-    	<b>${cVo.category} 글 <span style="color:#ff7200">${totRecCnt}</span></b>
-    	</c:if>
-    	</c:forEach>
-    	<hr/>
-    	<c:if test="${coVos.size() == 0}">
-    		<div class="post">
-	    		<div class="post-content">
-	    			<div class="text-center">작성된 글이 없습니다.</div>
-	    		</div>
-    		</div>
-	    	<hr/>
-    	</c:if>
-    	<c:forEach var="coVo" items="${coVos}">
-        <div class="post">
-            <div class="post-content">
-            	<c:if test="${param.categoryIdx != null}">
-                <h2><b><a href="${ctp}/content/${userMid}?coIdx=${coVo.coIdx}&categoryIdx=${param.categoryIdx}">${coVo.title}</a></b></h2>
-                </c:if>
-            	<c:if test="${param.categoryIdx == null}">
-                <h2><b><a href="${ctp}/content/${userMid}?coIdx=${coVo.coIdx}">${coVo.title}</a></b></h2>
-                </c:if>
-                <p>${coVo.ctPreview}</p>
-                <span>${coVo.categoryName} · 
-                <c:if test="${coVo.hour_diff < 1}">${coVo.min_diff}분 전</c:if>
-                <c:if test="${coVo.hour_diff < 24 && coVo.hour_diff >= 1}">${coVo.hour_diff}시간 전</c:if>
-                <c:if test="${coVo.hour_diff >= 24}">${fn:substring(coVo.wDate, 0, 10)}</c:if>
-                </span>
-            </div>
-            <c:if test="${coVo.imgName != null && coVo.imgName != ''}">
-	            <div class="post-thumbnail">
-	            	<c:set var="thumbnailImg" value="${fn:split(coVo.imgName, '|')}"/>
-	            	<c:if test="${fn:indexOf(thumbnailImg[0], 'http')== -1}">
-	                <img src="${ctp}/images/content/${thumbnailImg[0]}" alt="thumbnail">
-	                </c:if>
-	            	<c:if test="${fn:indexOf(thumbnailImg[0], 'http')!= -1}">
-	                <img src="${thumbnailImg[0]}" alt="thumbnail">
-	                </c:if>
-	            </div>
-            </c:if>
-            <c:if test="${coVo.imgName == null || coVo.imgName == ''}">
-	            <div class="post-thumbnail">
-	                <img src="${ctp}/images/content/no_image.jpg" alt="thumbnail">
-	            </div>
-            </c:if>
+	<section class="posts">
+		 <div class="post-list">
+		 <div>전체 35개의 글 목록닫기</div>
+            <table>
+               <tr style="color:#D5D5D5;">
+                   <td class="title">글 제목</td>
+                   <td class="viewCnt">조회수</td>
+                   <td class="wDate">작성일</td>
+               </tr>
+               <tr>
+                   <td class="title">05.16 | 도너츠 사봤다</td>
+                   <td class="viewCnt">18</td>
+                   <td class="wDate">2024. 5. 16.</td>
+               </tr>
+            </table>
+            <div class="page-menu">
+	            <button class="proBtn-sm">글관리 열기</button>
+		        <div class="pagination">
+			        <c:if test="${curBlock > 0}"><a href="${ctp}/blog/${userMid}?page=${(curBlock-1)*blockSize + 1}&pageSize=${pageSize}"><i class="fa-solid fa-angle-left fa-2xs"></i></a></c:if>
+			        <c:forEach var="i" begin="${(curBlock*blockSize)+1}" end="${(curBlock*blockSize) + blockSize}" varStatus="st">
+				        <c:if test="${i <= totPage && i == page}"><a href="${ctp}/blog/${userMid}?page=${i}&pageSize=${pageSize}" class="active">${i}</a></c:if>
+				        <c:if test="${i <= totPage && i != page}"><a href="${ctp}/blog/${userMid}?page=${i}&pageSize=${pageSize}">${i}</a></c:if>
+			        </c:forEach>
+			        <c:if test="${curBlock < lastBlock}"><a href="${ctp}/blog/${userMid}?page=${(curBlock+1)*blockSize+1}&pageSize=${pageSize}"><i class="fa-solid fa-angle-right fa-2xs"></i></a></c:if>
+		    	</div>
+	               <select class="proBtn-sm">
+	                   <option value="5">5줄 보기</option>
+	                   <option value="10">10줄 보기</option>
+	                   <option value="15">15줄 보기</option>
+	                   <option value="20">20줄 보기</option>
+	               </select>
+	        </div>
         </div>
-        <hr/>
-        </c:forEach>
-        <!-- 페이지네이션 시작 -->
-        <div class="pagination">
-	        <c:if test="${curBlock > 0}"><a href="${ctp}/blog/${userMid}?page=${(curBlock-1)*blockSize + 1}&pageSize=${pageSize}"><i class="fa-solid fa-angle-left fa-2xs"></i></a></c:if>
-	        <c:forEach var="i" begin="${(curBlock*blockSize)+1}" end="${(curBlock*blockSize) + blockSize}" varStatus="st">
-		        <c:if test="${i <= totPage && i == page}"><a href="${ctp}/blog/${userMid}?page=${i}&pageSize=${pageSize}" class="active">${i}</a></c:if>
-		        <c:if test="${i <= totPage && i != page}"><a href="${ctp}/blog/${userMid}?page=${i}&pageSize=${pageSize}">${i}</a></c:if>
-	        </c:forEach>
-	        <c:if test="${curBlock < lastBlock}"><a href="${ctp}/blog/${userMid}?page=${(curBlock+1)*blockSize+1}&pageSize=${pageSize}"><i class="fa-solid fa-angle-right fa-2xs"></i></a></c:if>
-    	</div>
-    	<!-- 페이지네이션 끝 -->
-    </section>
+        <div class="post-detail">
+            <h5>${contentVo.categoryName}</h5>
+            <h1 class="mb-5">${contentVo.title}</h1>
+            <div class="post-data">
+            	<div>
+            		<img src="${ctp}/images/user/${userImg}" alt="profile" class="mr-2">
+	                <span class="author mr-2">${nickName}</span>
+	                <span class="date">
+	                	<fmt:parseDate value="${contentVo.wDate}" var="wDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
+						<fmt:formatDate value="${wDate}" pattern="yyyy.MM.dd HH:mm" />
+	                </span>
+                </div>
+				<i class="fa-solid fa-bars fa-xl" style="color: #D5D5D5;"></i>
+            </div>
+            <hr/>
+            <div class="content">${contentVo.content}</div>
+        </div>
+	</section>
     <aside>
         <div class="profile">
             <img src="${ctp}/images/user/${userImg}" alt="profile">

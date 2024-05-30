@@ -214,10 +214,30 @@
 	<script>
 	let initialImages = [];
 	let currentImages = [];
+	let isWriteButtonClicked = false;
+	
+    // 페이지 로드 시 폼 제출 상태 확인 및 초기화(뒤로가기 했을 때 폼 초기화 하기 위해)
+    window.addEventListener('load', function() {
+        if (localStorage.getItem('formSubmitted') == 'true') {
+            resetForm();
+            localStorage.removeItem('formSubmitted'); // 상태 제거
+        }
+    });
+
+    function resetForm() {
+        let postForm = document.getElementById('postForm');
+        let contentInputForm = document.getElementById('contentInputForm');
+        if (postForm) {
+        	postForm.reset();
+        }
+        if (contentInputForm) {
+        	contentInputForm.reset();
+        }
+    }
 
 	// 썸머노트 기본설정
 	$(document).ready(function() {
-	    var fontList = ['나눔바른고딕', '리디바탕', '서울남산체', '둘기마요고딕', '매일옥자체', '밑미폰트'];
+	    let fontList = ['나눔바른고딕', '리디바탕', '서울남산체', '둘기마요고딕', '매일옥자체', '밑미폰트'];
 	    $('#summernote').summernote({
 	        lang: 'ko-KR',
 	        tabsize: 2,
@@ -228,7 +248,7 @@
 	            ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
 	            ['color', ['forecolor', 'color']],
 	            ['para', ['ul', 'ol', 'paragraph']],
-	            ['insert', ['picture', 'link', 'video']],
+	            ['insert', ['picture', 'video']],
 	            ['view', ['help']]
 	        ],
 	        fontNames: fontList,
@@ -247,18 +267,6 @@
 	                    }
 	                }
 	            },
-	            onPaste: function(e) {
-                    let clipboardData = e.originalEvent.clipboardData;
-                    if (clipboardData && clipboardData.items) {
-                        let items = clipboardData.items;
-                        for (let i = 0; i < items.length; i++) {
-                            if (items[i].type.indexOf('image') != -1) {
-                                let file = items[i].getAsFile();
-                                uploadImage(file);
-                            }
-                        }
-                    }
-                },
 	            onChange: function(contents, $editable) {
 	                currentImages = getCurrentImages();
 	                detectDeletedImages(initialImages, currentImages);
@@ -298,15 +306,9 @@
 	            data: data,
 	            type: "POST",
 	            success: function(response) {
-	                let urls = response.split("///");
-	                urls.forEach(function(url) {
-	                    $('#summernote').summernote('insertImage', url, function($image) {
-	                        let imgHTML = '<div>'
-                                +'<img src="${url}" style="width: 300px;"/></div>';
-              				$('#summernote').summernote('pasteHTML', imgHTML);
-	                        initialImages.push(url);
-	                    });
-	                });
+                    $('#summernote').summernote('insertImage', response, function($image) {
+                        initialImages.push(response);
+                    });
 	            },
 	            error: function() {
 	                $("#myModal #modalTitle").text("전송 오류");
@@ -390,6 +392,8 @@
 	            data: query,
 	            success: function(res) {
 	                if (res != "0") {
+	                	localStorage.setItem('formSubmitted', 'true'); // 제출 상태 저장
+	                	isWriteButtonClicked = true;
 	                    location.href = "${ctp}/blog/${sMid}";
 	                } else {
 	                    $("#myModal #modalTitle").text("작성 오류");
@@ -405,13 +409,15 @@
 	        });
 	    }
 	    
-	    // 페이지 떠날 때 작성하지 않은 파일들 삭제
+ 	    // 페이지 떠날 때 작성하지 않은 파일들 삭제
 		window.onbeforeunload = function() {
-		    if (initialImages.length > 0) {
-		        initialImages.forEach(function(src) {
-		            deleteImage(src);
-		        });
-		    }
+ 	    	if(isWriteButtonClicked == false) {
+			    if (initialImages.length > 0) {
+			        initialImages.forEach(function(src) {
+			            deleteImage(src);
+			        });
+			    }
+ 	    	}
 		};
 
   </script>

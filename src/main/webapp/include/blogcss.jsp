@@ -54,6 +54,66 @@
 	    font-weight: 900;
 	    font-style: normal;
 	}
+	@font-face {
+		font-family: '나눔바른고딕';
+		font-style: normal;
+		font-weight: 400;
+		src:
+			url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot');
+		src:
+			url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.eot?#iefix')
+			format('embedded-opentype'),
+			url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.woff')
+			format('woff'),
+			url('//fastly.jsdelivr.net/font-nanumlight/1.0/NanumBarunGothicWeb.ttf')
+			format('truetype');
+	}
+	
+	@font-face {
+		font-family: '리디바탕';
+		src:
+			url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff')
+			format('woff');
+		font-weight: normal;
+		font-style: normal;
+	}
+	
+	@font-face {
+		font-family: '서울남산체';
+		src:
+			url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/SeoulNamsanM.woff')
+			format('woff');
+		font-weight: normal;
+		font-style: normal;
+	}
+	
+	@font-face {
+		font-family: '둘기마요고딕';
+		src:
+			url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.1/Dovemayo_gothic.woff2')
+			format('woff2');
+		font-weight: normal;
+		font-style: normal;
+	}
+	
+	@font-face {
+		font-family: '매일옥자체';
+		src:
+			url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403@1.0/Ownglyph_Dailyokja-Rg.woff2')
+			format('woff2');
+		font-weight: normal;
+		font-style: normal;
+	}
+	
+	@font-face {
+		font-family: '밑미폰트';
+		src:
+			url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_1@1.0/Ownglyph_meetme-Rg.woff2')
+			format('woff2');
+		font-weight: normal;
+		font-style: normal;
+	}
+	
 	body {
 	    font-family: 'Pretendard-Light';
 	    cursor: default;
@@ -125,21 +185,6 @@
 	    padding: 20px;
 	    position: relative;
 	}
-    .post::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(213, 213, 213, 0.2);
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-
-    .post:hover::after {
-        opacity: 1;
-    }
 	.post-content {
 	    flex: 3;
 	}
@@ -358,9 +403,83 @@
 	a:active {
 	  color : #212529;
 	}
-	
+	.proBtn {
+		padding: 5px 10px;
+		border: 1px solid #ccc;
+		background-color: #fff;
+		cursor: pointer;
+		color: #747474;
+	}
+	.proBtn:active {
+		padding: 5px 10px;
+		border: 1px solid #ccc;
+		background-color: #eee;
+		cursor: pointer;
+		color: #747474;
+	}
+	.proBtn-sm {
+		padding: 2px 5px;
+		border: 1px solid #ccc;
+		background-color: #fff;
+		cursor: pointer;
+		color: #747474;
+		font-size: 12px;
+	}
+	.proBtn-sm:active {
+		padding: 2px 5px;
+		border: 1px solid #ccc;
+		background-color: #eee;
+		cursor: pointer;
+		color: #747474;
+		font-size: 12px;
+	}
 	.category-ac {
 		font-family: Pretendard-Medium;
 		color: #ff7200;
+	}
+	.page-menu {
+		display: flex;
+	    justify-content: space-between;
+	    align-items: center;
+	    margin-bottom: 100px;
+	}
+	.post-list table {
+	    width: 100%;
+	    border-collapse: collapse;
+	    font-size: 12px;
+	    margin-bottom: 20px;
+	}
+	.post-list th, .post-list td {
+	    border-bottom: 1px solid #ddd;
+	    padding: 8px;
+	}
+	.title {text-align: left;}
+	.viewCnt {text-align: center;}
+	.wDate {text-align: right;}
+	.post-detail{
+		text-align: center;
+	}
+	.post-data {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+		padding: 0 10px;
+	}
+	.post-data img {
+	    width: 30px;
+	    height: 30px;
+	    border-radius: 50%;
+	    object-fit: cover;
+	}
+	.date {color: #D5D5D5;}
+	.content {
+		margin: 40px 0;
+	}
+	.content img {
+		max-width: 780px;
+	}
+	.content p {
+		margin: 0;
 	}
 </style>
