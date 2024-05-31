@@ -20,18 +20,17 @@ import blog.BlogVO;
 import blog.CategoryVO;
 
 @SuppressWarnings("serial")
-@WebServlet("/ContentInputOk")
-public class ContentInputOk extends HttpServlet {
+@WebServlet("/ContentEditOk")
+public class ContentEditOk extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String mid = request.getParameter("mid")==null ? "" : request.getParameter("mid");
 		String title = request.getParameter("title")==null ? "" : request.getParameter("title");
 		String content = request.getParameter("content")==null ? "" : request.getParameter("content");
 		int caIdx = request.getParameter("category")==null ? 0 : Integer.parseInt(request.getParameter("category"));
 		String part = request.getParameter("part")==null ? "" : request.getParameter("part");
 		String hostIp = request.getParameter("hostIp")==null ? "" : request.getParameter("hostIp");
 		String publicSetting = request.getParameter("publicSetting")==null ? "" : request.getParameter("publicSetting");
-		
+		int coIdx = request.getParameter("coIdx")==null ? 0 : Integer.parseInt(request.getParameter("coIdx"));
 		
 		/*
 		 * System.out.println("MID: " + mid); System.out.println("Title: " + title);
@@ -61,14 +60,12 @@ public class ContentInputOk extends HttpServlet {
         String imageFileName = String.join("|", imagesName);
         
         BlogDAO bDao = new BlogDAO();
-        BlogVO bVo = bDao.getUserBlog(mid);
         
         // 카테고리가 비공개면 공개 설정을 비공개로 변경
         CategoryVO cVo = bDao.getCategoryIdx(caIdx);
         if(cVo.getPublicSetting().equals("비공개")) publicSetting = "비공개";
         
         ContentVO vo = new ContentVO();
-        vo.setCoBlogIdx(bVo.getBlogIdx());
         vo.setCategoryIdx(caIdx);
         vo.setTitle(title);
         vo.setPart(part);
@@ -79,7 +76,7 @@ public class ContentInputOk extends HttpServlet {
         vo.setImgName(imageFileName);
         
         ContentDAO cDao = new ContentDAO();
-        int res = cDao.setContentInput(vo);
+        int res = cDao.setContentUpdate(vo, coIdx);
         
         response.getWriter().write(res+"/"+caIdx);
 	}

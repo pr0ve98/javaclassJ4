@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${bVo.blogTitle} - 기본정보 관리</title>
+<title>${bVo.blogTitle} - 글 관리</title>
 <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico">
 <%@ include file="/include/bs4.jsp"%>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -32,11 +32,11 @@
 		        </div>
 		        <nav>
 		            <ul>
-		                <li class="parent-li active" style="cursor:pointer;" onclick="location.href='${ctp}/BlogEdit/${sMid}';"><i class="fa-solid fa-gear mr-2"></i>기본 설정</li>
+		                <li class="parent-li" style="cursor:pointer;" onclick="location.href='${ctp}/BlogEdit/${sMid}';"><i class="fa-solid fa-gear mr-2"></i>기본 설정</li>
 		                <hr/>
-		                <li class="parent-li"><i class="fa-regular fa-image mr-2"></i>콘텐츠</li>
+		                <li class="parent-li active"><i class="fa-regular fa-image mr-2"></i>콘텐츠</li>
 		                <ul>
-		                    <li onclick="location.href='${ctp}/ContentsEdit/${sMid}';">글 관리</li>
+		                    <li class="active" onclick="location.href='${ctp}/ContentsEdit/${sMid}';">글 관리</li>
 		                    <li onclick="location.href='${ctp}/CategoryEdit/${sMid}';">카테고리 관리</li>
 		                </ul>
 		                <hr/>
@@ -49,35 +49,34 @@
 		        </nav>
 		    </div>
 		    <div class="main-content">
-		        <h1>기본 설정</h1>
+		        <h1>글 관리</h1>
 		        <div class="category-manager">
+				<form class="contentEdit mb-3">
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="customCheck" name="example1">
+						<label class="custom-control-label" for="customCheck"></label>
+					</div>
+					<select name="cars" class="custom-select custom-select-sm">
+						<option selected>변경</option>
+						<option>공개</option>
+						<option>비공개</option>
+						<option>삭제</option>
+					</select>
+				</form>
 		            <div class="category-list">
-						<form name="blogEditForm" method="post">
-							<table class="table table-bordered text-center">
-								<tr>
-									<td class="table-label">블로그 이름</td>
-									<td class="table-content">
-										<input type="text" value="${bVo.blogTitle}" name="blogTitle" id="blogTitle" class="form-control"/>
-									</td>
-								</tr>
-								<tr>
-									<td class="table-label">블로그 소개</td>
-									<td class="table-content">
-										<textarea rows="3" class="form-control font-light" name="blogIntro" id="blogIntro">${bVo.blogIntro}</textarea>
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2" class="table-content">
-										<input type="button" value="변경" onclick="blogEditCheck()" class="proBtn mr-2"/>
-									</td>
-								</tr>
-							</table>
-							<input type="hidden" name="mid" id="mid" value="${sMid}" />
-						</form>
-		            </div>
-		        </div>
-		    </div>
-		</div>
+		                <div class="list-group-item">
+		                    <strong>ㅁㄴㄹㅇㄴㅇㄹ</strong><c:if test="${cPVo.publicSetting == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if>
+		                    <div class="edit-btns">
+		                    	<input type="button" value="비공개로 변경" onclick="categoryPrivateEdit(${cPVo.caIdx})" class="proBtn-sm mr-1">
+		                    	<input type="button" value="공개로 변경" onclick="categoryPublicEdit(${cPVo.caIdx})" class="proBtn-sm mr-1">
+		                        <input type="button" value="수정" onclick="categoryEditModal(${cPVo.caIdx},'${cPVo.category}')" data-target="#myModal" class="proBtn-sm mr-1">
+		                        <input type="button" value="삭제" onclick="categoryDeleteModal(${cPVo.caIdx},'${cPVo.category}')" class="proBtn-sm mr-1">
+		                    </div>
+		                </div>
+					</div>
+	            </div>
+	        </div>
+	    </div>
 	</main>
 	<div class="footer"></div>
 	<script>
@@ -194,40 +193,18 @@
 	        }
 	    }
 	    
-	    // 블로그 변경
-	    function blogEditCheck() {
-			let blogTitle = blogEditForm.blogTitle.value.trim();
-			let blogIntro = blogEditForm.blogIntro.value.trim();
-			let mid = blogEditForm.mid.value;
-			
-			if(blogTitle == ""){
-				$("#myModal #modalTitle").text("블로그 이름");
-				$("#myModal #modalText").text("블로그 이름을 적어주세요!");
-			    $('#myModal').modal('show');
-			}
-			else {
-				$.ajax({
-					url : "${ctp}/BlogEditOk",
-					type : "post",
-					data : {blogTitle : blogTitle, blogIntro : blogIntro, mid : mid},
-					success : function(res) {
-						if(res != "0"){
-							$("#myModal #modalTitle").text("블로그 수정");
-							$("#myModal #modalText").text("블로그 정보를 수정했습니다!");
-						    $('#myModal').modal('show');
-					        $('#myModal').on('hide.bs.modal', function () {
-								location.reload();
-					        });
-						}
-					},
-					error : function() {
-						$("#myModal #modalTitle").text("오류");
-						$("#myModal #modalText").text("전송 오류!");
-					    $('#myModal').modal('show');
-					}
-				});
-			}
-		}
+	    
+	    // 수정 삭제 버튼 보이기/감추기
+	    $(".list-group-item").hover(
+    	    function() {
+    	        // 마우스를 요소 위로 올렸을 때 실행되는 함수
+    	        $(this).find(".edit-btns").show();
+    	    }, 
+    	    function() {
+    	        // 마우스를 요소에서 벗어났을 때 실행되는 함수
+    	        $(this).find(".edit-btns").hide();
+    	    }
+	    );
 
     </script>
    <!-- The Modal -->

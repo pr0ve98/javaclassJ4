@@ -16,13 +16,13 @@ import blog.BlogVO;
 import blog.CategoryVO;
 
 @SuppressWarnings("serial")
-@WebServlet("/ContentInput/*")
-public class ContentInputServlet extends HttpServlet {
+@WebServlet("/edit/*")
+public class ContentEdit extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BlogDAO bDao = new BlogDAO();
+		ContentDAO coDao = new ContentDAO();
 		RequestDispatcher dispatcher = null;
-		String viewPage = "/WEB-INF/content/contentInput.jsp";
 		
 		HttpSession session = request.getSession();
 		String sMid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
@@ -31,11 +31,6 @@ public class ContentInputServlet extends HttpServlet {
        String mid = pathInfo.substring(1); // 슬래시 빼고 뒤에 아이디만 추출
        
        // 경로 정보가 없거나 로그인한 유저가 블로그 주인과 다르면 자기 블로그로 이동(로그인 안 했으면 메인)
-       if(sMid == null) {
-           dispatcher = request.getRequestDispatcher("/");
-           dispatcher.forward(request, response);
-           return;
-       }
         if (pathInfo == null || pathInfo.equals("/") || !sMid.equals(mid)) {
             dispatcher = request.getRequestDispatcher(request.getContextPath()+"/blog/"+sMid);
             dispatcher.forward(request, response);
@@ -46,13 +41,19 @@ public class ContentInputServlet extends HttpServlet {
         ArrayList<CategoryVO> cPVos = bDao.getCategory(bVo.getBlogIdx(), 1); // 부모 카테고리만 가져오기
         ArrayList<CategoryVO> cCVos = bDao.getCategory(bVo.getBlogIdx(), 2); // 자식 카테고리만 가져오기
         
+        int coIdx = request.getParameter("coIdx")==null ? 0 : Integer.parseInt(request.getParameter("coIdx"));
         int categoryIdx = request.getParameter("categoryIdx")==null ? 0 : Integer.parseInt(request.getParameter("categoryIdx"));
-        request.setAttribute("categoryIdx", categoryIdx);
+        ContentVO contentVo = coDao.getContent(coIdx);
         
+        request.setAttribute("userMid", mid);
         request.setAttribute("bVo", bVo);
         request.setAttribute("cPVos", cPVos);
         request.setAttribute("cCVos", cCVos);
+        request.setAttribute("contentVo", contentVo);
+        request.setAttribute("coIdx", coIdx);
+        request.setAttribute("categoryIdx", categoryIdx);
         
+        String viewPage = "/WEB-INF/content/contentEdit.jsp";
         dispatcher = request.getRequestDispatcher(viewPage);
         dispatcher.forward(request, response);
         

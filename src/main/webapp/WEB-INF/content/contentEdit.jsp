@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>글작성</title>
+<title>${bVo.blogTitle} - 글 수정</title>
 <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico">
 <%@ include file="/include/bs4.jsp"%>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
@@ -96,8 +96,9 @@
 </style>
 <script>
 	'use strict';
+	
 	// 작성 버튼
-	function writeBtn() {
+	function editBtn() {
 	    let writeHeaderLayer = document.querySelector('.menu-right-bar .layer_write');
 	
 	    // 작성 버튼의 header_layer가 없는 경우 생성
@@ -111,36 +112,39 @@
 		        +'<td class="table-content">'
 		        +'<select name="category" id="category" class="custom-select">'
 		        +'<c:forEach var="cPVo" items="${cPVos}">'
-		        +'<option value="${cPVo.caIdx}">${cPVo.category}</option>'
+		        +'<option value="${cPVo.caIdx}" ${contentVo.categoryIdx == cPVo.caIdx ? "selected" : ""}>${cPVo.category}</option>'
 		        +'<c:forEach var="cCVo" items="${cCVos}">'
 		        +'<c:if test="${cCVo.parentCategoryIdx == cPVo.caIdx}">'
-		        +'<option value="${cCVo.caIdx}">&nbsp;-&nbsp;${cCVo.category}</option>'
+		        +'<option value="${cCVo.caIdx}" ${contentVo.categoryIdx == cCVo.caIdx ? "selected" : ""}>&nbsp;-&nbsp;${cCVo.category}</option>'
 		        +'</c:if></c:forEach></c:forEach>'
 		        +'</td></tr>'
 		        +'<tr><td class="table-label">주제</td>'
 		        +'<td class="table-content">'
 		        +'<select name="part" id="part" class="custom-select">'
-		        +'<option value="없음" selected>주제 선택 안 함</option>'
-		        +'<option>일상</option>'
-		        +'<option>취미</option>'
-		        +'<option>공연/전시</option>'
-		        +'<option>게임</option>'
-		        +'<option>패션/미용</option>'
-		        +'<option>비즈니스/경제</option>'
-		        +'<option>육아/결혼</option>'
-		        +'<option>문학/책</option>'
+		        +'<option value="없음" ${contentVo.part == "없음" ? "selected" : ""}>주제 선택 안 함</option>'
+		        +'<option ${contentVo.part == "일상" ? "selected" : ""}>일상</option>'
+		        +'<option ${contentVo.part == "취미" ? "selected" : ""}>취미</option>'
+		        +'<option ${contentVo.part == "영화/드라마" ? "selected" : ""}>영화/드라마</option>'
+		        +'<option ${contentVo.part == "게임" ? "selected" : ""}>게임</option>'
+		        +'<option ${contentVo.part == "패션/미용" ? "selected" : ""}>패션/미용</option>'
+		        +'<option ${contentVo.part == "비즈니스/경제" ? "selected" : ""}>비즈니스/경제</option>'
+		        +'<option ${contentVo.part == "육아/결혼" ? "selected" : ""}>육아/결혼</option>'
+		        +'<option ${contentVo.part == "문학/책" ? "selected" : ""}>문학/책</option>'
+		        +'<option ${contentVo.part == "반려동물" ? "selected" : ""}>반려동물</option>'
+		        +'<option ${contentVo.part == "여행" ? "selected" : ""}>여행</option>'
+		        +'<option ${contentVo.part == "상품리뷰" ? "select" : ""}>상품리뷰</option>'
 		        +'</td></tr>'
 		        +'<tr><td class="table-label">공개 설정</td>'
 		        +'<td class="table-content">'
-		        +'<input type="radio" name="publicSetting" id="publicSetting1" value="공개" checked>&nbsp;공개&nbsp; &nbsp;&nbsp; &nbsp;'
-		        +'<input type="radio" name="publicSetting" id="publicSetting2" value="비공개"/>&nbsp;비공개'
+		        +'<input type="radio" name="publicSetting" id="publicSetting1" value="공개" ${contentVo.coPublic == "공개" ? "checked" : ""}/>&nbsp;공개&nbsp; &nbsp;&nbsp; &nbsp;'
+		        +'<input type="radio" name="publicSetting" id="publicSetting2" value="비공개" ${contentVo.coPublic == "비공개" ? "checked" : ""}/>&nbsp;비공개'
 		        +'</td></tr>'
 		        +'<tr><td colspan="2" style="margin:0 auto;">'
-		        +'<input type="button" class="mt-2 proBtn" value="작성" onclick="writeContent()">'
+		        +'<input type="button" class="mt-2 proBtn" value="작성" onclick="editContent()">'
 		        +'</td></tr>'
 				+'</table>'
-				+'<input type="hidden" name="mid" id="mid" value="${sMid}" />'
 				+'<input type="hidden" name="hostIp" id="hostIp" value="${pageContext.request.remoteAddr}" />'
+				+'<input type="hidden" name="coIdx" id="coIdx" value="${coIdx}" />'
 				+'</form>'
 	        	+'</div>';
 	        document.querySelector('.menu-right-bar').appendChild(headerLayer);
@@ -165,16 +169,15 @@
 		<a class="navbar-brand" href="${ctp}/Main"><img
 			src="${ctp}/images/logo.png" alt="logo" style="width: 200px;"></a>
 		<div class="menu-right-bar">
-			<button class="grayBtn-sm" onclick="history.back()">취소</button>
-			<button class="orangeBtn-sm" onclick="writeBtn()">작성</button>
+			<button class="grayBtn-sm" onclick="location.href='${ctp}/content/${userMid}?coIdx=${coIdx}&categoryIdx=${categoryIdx}';">취소</button>
+			<button class="orangeBtn-sm" onclick="editBtn()">수정</button>
 		</div>
 	</div>
 	<main>
 		<div class="container">
 			<div id="editor-container">
 				<form id="postForm" method="post">
-					<input type="text" name="title" id="title" placeholder="제목을 입력하세요"
-						class="form-control mb-3" />
+					<input type="text" name="title" id="title" value="${contentVo.title}" class="form-control mb-3" />
 					<textarea id="summernote" name="content"></textarea>
 				</form>
 			</div>
@@ -213,11 +216,18 @@
 
 	<script>
 	let initialImages = [];
+	let imgs = '${contentVo.imgName}'.split("|");
+	for(let i=0; i<imgs.length; i++){
+		if(imgs[i].indexOf("http") == -1){
+			initialImages.push("${ctp}/images/content/"+imgs[i]);
+		}
+	}
 	let currentImages = [];
 
 	// 썸머노트 기본설정
 	$(document).ready(function() {
-	    var fontList = ['나눔바른고딕', '리디바탕', '서울남산체', '둘기마요고딕', '매일옥자체', '밑미폰트'];
+		$("#summernote").html('${contentVo.content}');
+	    let fontList = ['나눔바른고딕', '리디바탕', '서울남산체', '둘기마요고딕', '매일옥자체', '밑미폰트'];
 	    $('#summernote').summernote({
 	        lang: 'ko-KR',
 	        tabsize: 2,
@@ -228,7 +238,7 @@
 	            ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
 	            ['color', ['forecolor', 'color']],
 	            ['para', ['ul', 'ol', 'paragraph']],
-	            ['insert', ['picture', 'link', 'video']],
+	            ['insert', ['picture', 'video']],
 	            ['view', ['help']]
 	        ],
 	        fontNames: fontList,
@@ -246,11 +256,6 @@
 	                        uploadImage(files[i]);
 	                    }
 	                }
-	            },
-	            onChange: function(contents, $editable) {
-	                currentImages = getCurrentImages();
-	                detectDeletedImages(initialImages, currentImages);
-	                initialImages = currentImages;
 	            }
 	        }
 	    });
@@ -274,7 +279,6 @@
                 $('#myModal').modal('show');
                 return;
 			}
-			
 	        let data = new FormData();
 	        data.append("file", file);
 
@@ -286,15 +290,9 @@
 	            data: data,
 	            type: "POST",
 	            success: function(response) {
-	                let urls = response.split("///");
-	                urls.forEach(function(url) {
-	                    $('#summernote').summernote('insertImage', url, function($image) {
-	                        let imgHTML = '<div>'
-                                +'<img src="${url}" style="width: 300px;"/></div>';
-              				$('#summernote').summernote('pasteHTML', imgHTML);
-	                        initialImages.push(url);
-	                    });
-	                });
+                    $('#summernote').summernote('insertImage', response, function($image) {
+                        initialImages.push(response);
+                    });
 	            },
 	            error: function() {
 	                $("#myModal #modalTitle").text("전송 오류");
@@ -332,8 +330,8 @@
 	        });
 	    }
 
-	    // 글 작성
-	    function writeContent() {
+	    // 글 수정
+	    function editContent() {
 	        let mid = $('#mid').val();
 	        let title = $('#title').val().trim();
 	        let content = $('#summernote').summernote('code').trim();
@@ -341,6 +339,7 @@
 	        let part = $('#part').val();
 	        let hostIp = $('#hostIp').val();
 	        let publicSetting = $('input[name="publicSetting"]:checked').val();
+	        let coIdx = $('#coIdx').val();
 
 	        if (title == '') {
 	            $("#myModal #modalTitle").text("글 제목");
@@ -361,24 +360,29 @@
 	            });
 	            return false;
 	        }
-
+	        
 	        let query = {
-	            mid: mid,
 	            title: title,
 	            content: content,
 	            category: category,
 	            part: part,
 	            hostIp: hostIp,
-	            publicSetting: publicSetting
+	            publicSetting: publicSetting,
+	            coIdx: coIdx
 	        };
 
 	        $.ajax({
-	            url: "${ctp}/ContentInputOk",
+	            url: "${ctp}/ContentEditOk",
 	            type: "post",
 	            data: query,
 	            success: function(res) {
-	                if (res != "0") {
-	                    location.href = "${ctp}/blog/${sMid}";
+	            	let r = res.split("/");
+	            	let categoryIdx = parseInt(r[1]);
+	                if (r[0] != "0") {
+	                    currentImages = getCurrentImages();
+	                    detectDeletedImages(initialImages, currentImages);
+	                    initialImages = [...currentImages];
+	                    location.href = "${ctp}/content/${sMid}?coIdx=${coIdx}&categoryIdx="+categoryIdx;
 	                } else {
 	                    $("#myModal #modalTitle").text("작성 오류");
 	                    $("#myModal #modalText").text("게시글 등록 실패!");
@@ -393,15 +397,6 @@
 	        });
 	    }
 	    
-	    // 페이지 떠날 때 작성하지 않은 파일들 삭제
-		window.onbeforeunload = function() {
-		    if (initialImages.length > 0) {
-		        initialImages.forEach(function(src) {
-		            deleteImage(src);
-		        });
-		    }
-		};
-
   </script>
 </body>
 </html>

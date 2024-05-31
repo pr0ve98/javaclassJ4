@@ -13,6 +13,36 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 <%@ include file="/include/bs4.jsp"%>
 <%@ include file="/include/blogcss.jsp"%>
+<script>
+	'use strict';
+	
+	function categoryDelete(coIdx) {
+		$('#myModal').modal('hide');
+		$.ajax({
+			url : "${ctp}/CategoryDelete",
+			type : "get",
+			data : {coIdx : coIdx, mid : '${userMid}', categoryIdx : ${categoryIdx}, page : ${page}},
+			success : function(res) {
+				if(res == "0"){
+					$("#myModal #modalTitle").text("게시글 삭제");
+					$("#myModal #modalText").text("삭제 실패!");
+					$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+				    $('#myModal').modal('show');
+				}
+				else {
+					window.location.replace(res); // 뒤로가기 방지용
+				}
+			},
+			error : function() {
+				$("#myModal #modalTitle").text("오류");
+				$("#myModal #modalText").text("전송 오류!");
+				$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+			    $('#myModal').modal('show');
+				
+			}
+		});
+	}
+</script>
 </head>
 <body>
 <header>
@@ -29,39 +59,48 @@
 <main class="container">
 	<section class="posts">
 		 <div class="post-list">
-		 <div>전체 35개의 글 목록닫기</div>
             <table>
                <tr style="color:#D5D5D5;">
+                   <td></td>
                    <td class="title">글 제목</td>
                    <td class="viewCnt">조회수</td>
                    <td class="wDate">작성일</td>
                </tr>
+               <c:if test="${!empty preVo.title}">
                <tr>
-                   <td class="title">05.16 | 도너츠 사봤다</td>
-                   <td class="viewCnt">18</td>
-                   <td class="wDate">2024. 5. 16.</td>
+                   <td>이전글</td>
+                   <td class="title"><a href="${ctp}/content/${userMid}?coIdx=${preVo.coIdx}&categoryIdx=${categoryIdx}&page=${page}">${preVo.title}</a></td>
+                   <td class="viewCnt">${preVo.viewCnt}</td>
+                   <td class="wDate">
+                    <fmt:parseDate value="${preVo.wDate}" var="preWDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
+					<fmt:formatDate value="${preWDate}" pattern="yyyy. MM. dd" />
+                   </td>
                </tr>
+               </c:if>
+               <tr class="nowContent">
+                   <td>현재글</td>
+                   <td class="title">${contentVo.title}</td>
+                   <td class="viewCnt">${contentVo.viewCnt}</td>
+                   <td class="wDate">
+                  	<fmt:parseDate value="${contentVo.wDate}" var="nowWDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
+					<fmt:formatDate value="${nowWDate}" pattern="yyyy. MM. dd" />
+                   </td>
+               </tr>
+				<c:if test="${!empty nextVo.title}">
+               <tr>
+                   <td class="">다음글</td>
+                   <td class="title"><a href="${ctp}/content/${userMid}?coIdx=${nextVo.coIdx}&categoryIdx=${categoryIdx}&page=${page}">${nextVo.title}</a></td>
+                   <td class="viewCnt">${nextVo.viewCnt}</td>
+                   <td class="wDate">
+                   <fmt:parseDate value="${nextVo.wDate}" var="nextWDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
+					<fmt:formatDate value="${nextWDate}" pattern="yyyy. MM. dd" />
+                   </td>
+               </tr>
+               </c:if>
             </table>
-            <div class="page-menu">
-	            <button class="proBtn-sm">글관리 열기</button>
-		        <div class="pagination">
-			        <c:if test="${curBlock > 0}"><a href="${ctp}/blog/${userMid}?page=${(curBlock-1)*blockSize + 1}&pageSize=${pageSize}"><i class="fa-solid fa-angle-left fa-2xs"></i></a></c:if>
-			        <c:forEach var="i" begin="${(curBlock*blockSize)+1}" end="${(curBlock*blockSize) + blockSize}" varStatus="st">
-				        <c:if test="${i <= totPage && i == page}"><a href="${ctp}/blog/${userMid}?page=${i}&pageSize=${pageSize}" class="active">${i}</a></c:if>
-				        <c:if test="${i <= totPage && i != page}"><a href="${ctp}/blog/${userMid}?page=${i}&pageSize=${pageSize}">${i}</a></c:if>
-			        </c:forEach>
-			        <c:if test="${curBlock < lastBlock}"><a href="${ctp}/blog/${userMid}?page=${(curBlock+1)*blockSize+1}&pageSize=${pageSize}"><i class="fa-solid fa-angle-right fa-2xs"></i></a></c:if>
-		    	</div>
-	               <select class="proBtn-sm">
-	                   <option value="5">5줄 보기</option>
-	                   <option value="10">10줄 보기</option>
-	                   <option value="15">15줄 보기</option>
-	                   <option value="20">20줄 보기</option>
-	               </select>
-	        </div>
         </div>
         <div class="post-detail">
-            <h5>${contentVo.categoryName}</h5>
+            <h5><a href="${ctp}/blog/${userMid}?categoryIdx=${contentVo.categoryIdx}">${contentVo.categoryName}</a></h5>
             <h1 class="mb-5">${contentVo.title}</h1>
             <div class="post-data">
             	<div>
@@ -69,10 +108,24 @@
 	                <span class="author mr-2">${nickName}</span>
 	                <span class="date">
 	                	<fmt:parseDate value="${contentVo.wDate}" var="wDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
-						<fmt:formatDate value="${wDate}" pattern="yyyy.MM.dd HH:mm" />
+						<fmt:formatDate value="${wDate}" pattern="yyyy. MM. dd HH:mm" />
 	                </span>
                 </div>
-				<i class="fa-solid fa-bars fa-xl" style="color: #D5D5D5;"></i>
+                <div class="content-menu">
+	                <div class="proBtn-sm"><a href="${ctp}/blog/${userMid}?page=${page}&categoryIdx=${categoryIdx}">돌아가기</a></div>
+	                <c:if test="${userMid == sMid}">
+						<div class="dropdown ml-3"><i class="fa-solid fa-bars fa-xl" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="color: #D5D5D5; cursor:pointer;"></i>
+				 			<div class="dropdown-menu">
+				 			<a class="dropdown-item" href="${ctp}/edit/${userMid}?coIdx=${coIdx}&categoryIdx=${categoryIdx}">
+				 				<i class="fa-solid fa-pen fa-sm mr-2" style="color:gray"></i>수정
+				 			</a>
+				 			<a class="dropdown-item" data-toggle="modal" data-target="#myModal">
+				 				<font color="#FF5A5A"><i class="fa-solid fa-trash fa-sm mr-2"></i>삭제</font>
+				 			</a>
+				 			</div>
+				 		</div>
+			 		</c:if>
+		 		</div>
             </div>
             <hr/>
             <div class="content">${contentVo.content}</div>
@@ -93,16 +146,16 @@
         </div>
         <div class="categories">
             <ul>
-            	<li><a href="${ctp}/blog/${userMid}"><strong ${param.categoryIdx == null ? 'class="category-ac"' : ""}>전체보기</strong></a></li>
+            	<li><a href="${ctp}/blog/${userMid}"><strong ${categoryIdx == 0 ? 'class="category-ac"' : ""}>전체보기</strong></a></li>
             	<c:forEach var="cPVo" items="${cPVos}">
             		<c:if test="${userMid == sMid}">
 			            <li id="parent-${cPVo.caIdx}">
-			                <a href="${ctp}/blog/${userMid}?categoryIdx=${cPVo.caIdx}"><strong ${param.categoryIdx == cPVo.caIdx ? 'class="category-ac"' : ""}>${cPVo.category}</strong></a><c:if test="${cPVo.publicSetting == '비공개'}"><i class="fa-solid fa-lock fa-2xs ml-2" style="color: gray;"></i></c:if>
+			                <a href="${ctp}/blog/${userMid}?categoryIdx=${cPVo.caIdx}"><strong ${categoryIdx == cPVo.caIdx ? 'class="category-ac"' : ""}>${cPVo.category}</strong></a><c:if test="${cPVo.publicSetting == '비공개'}"><i class="fa-solid fa-lock fa-2xs ml-2" style="color: gray;"></i></c:if>
 			                <ul id="parent-${cPVo.caIdx}-children">
 			                    <c:forEach var="cCVo" items="${cCVos}">
 			                        <c:if test="${cCVo.parentCategoryIdx == cPVo.caIdx}">
 			                            <li class="ml-2" id="child-${cCVo.caIdx}" data-id="${cCVo.caIdx}">
-			                                <a href="${ctp}/blog/${userMid}?categoryIdx=${cCVo.caIdx}"><span  ${param.categoryIdx == cCVo.caIdx ? 'class="category-ac"' : ""}>- ${cCVo.category}</span></a><c:if test="${cCVo.publicSetting == '비공개'}"><i class="fa-solid fa-lock fa-2xs ml-2" style="color: gray;"></i></c:if>
+			                                <a href="${ctp}/blog/${userMid}?categoryIdx=${cCVo.caIdx}"><span  ${categoryIdx == cCVo.caIdx ? 'class="category-ac"' : ""}>- ${cCVo.category}</span></a><c:if test="${cCVo.publicSetting == '비공개'}"><i class="fa-solid fa-lock fa-2xs ml-2" style="color: gray;"></i></c:if>
 			                            </li>
 			                        </c:if>
 			                    </c:forEach>
@@ -112,13 +165,13 @@
             		<c:if test="${userMid != sMid}">
             			<c:if test="${cPVo.publicSetting == '공개'}">
 			            <li id="parent-${cPVo.caIdx}">
-			                <a href="${ctp}/blog/${userMid}?categoryIdx=${cPVo.caIdx}"><strong ${param.categoryIdx == cPVo.caIdx ? 'class="category-ac"' : ""}>${cPVo.category}</strong></a>
+			                <a href="${ctp}/blog/${userMid}?categoryIdx=${cPVo.caIdx}"><strong ${categoryIdx == cPVo.caIdx ? 'class="category-ac"' : ""}>${cPVo.category}</strong></a>
 			                <ul id="parent-${cPVo.caIdx}-children">
 			                    <c:forEach var="cCVo" items="${cCVos}">
             						<c:if test="${cCVo.publicSetting == '공개'}">
 				                        <c:if test="${cCVo.parentCategoryIdx == cPVo.caIdx}">
 				                            <li class="ml-2" id="child-${cCVo.caIdx}" data-id="${cCVo.caIdx}">
-				                                <a href="${ctp}/blog/${userMid}?categoryIdx=${cCVo.caIdx}"><span  ${param.categoryIdx == cCVo.caIdx ? 'class="category-ac"' : ""}>- ${cCVo.category}</span></a>
+				                                <a href="${ctp}/blog/${userMid}?categoryIdx=${cCVo.caIdx}"><span  ${categoryIdx == cCVo.caIdx ? 'class="category-ac"' : ""}>- ${cCVo.category}</span></a>
 				                            </li>
 				                        </c:if>
 			                		</c:if>
@@ -147,5 +200,30 @@
 <div class="home-button" onclick="location.href='${ctp}/Main';">
     <i class="fas fa-home"></i>
 </div>
+<!-- The Modal -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalTitle">게시글 삭제</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="modalText">정말로 삭제하시겠습니까?</div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer" id="modal-footer">
+        	<button type="button" class="btn btn-danger mr-2" onclick="categoryDelete(${contentVo.coIdx})">삭제</button>
+          	<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </body>
 </html>

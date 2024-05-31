@@ -800,4 +800,11 @@
 		color: red;
 		font-size: 13px;
 	}
+	.contentEdit {
+		display: flex;
+		align-items: center;
+	}
+	.custom-select {
+		width: auto;
+	}
 </style>

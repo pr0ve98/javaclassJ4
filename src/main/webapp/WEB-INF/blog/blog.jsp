@@ -48,10 +48,10 @@
         <div class="post">
             <div class="post-content">
             	<c:if test="${param.categoryIdx != null}">
-                <h2><b><a href="${ctp}/content/${userMid}?coIdx=${coVo.coIdx}&categoryIdx=${param.categoryIdx}">${coVo.title}</a></b></h2>
+                <h2><b><a href="${ctp}/content/${userMid}?coIdx=${coVo.coIdx}&categoryIdx=${param.categoryIdx}&page=${page}">${coVo.title}</a></b></h2>
                 </c:if>
             	<c:if test="${param.categoryIdx == null}">
-                <h2><b><a href="${ctp}/content/${userMid}?coIdx=${coVo.coIdx}">${coVo.title}</a></b></h2>
+                <h2><b><a href="${ctp}/content/${userMid}?coIdx=${coVo.coIdx}&page=${page}">${coVo.title}</a></b></h2>
                 </c:if>
                 <p>${coVo.ctPreview}</p>
                 <span>${coVo.categoryName} · 
@@ -98,7 +98,12 @@
             <c:if test="${userMid == sMid}">
             <hr/>
 	        <div class="actions">
+	        	<c:if test="${param.categoryIdx != null}">
+		        <div class="action-link" onclick="location.href='${ctp}/ContentInput/${sMid}?categoryIdx=${param.categoryIdx}';"><i class="fas fa-pencil-alt"></i> 글쓰기</div>
+		        </c:if>
+	        	<c:if test="${param.categoryIdx == null}">
 		        <div class="action-link" onclick="location.href='${ctp}/ContentInput/${sMid}';"><i class="fas fa-pencil-alt"></i> 글쓰기</div>
+		        </c:if>
 		        <div class="action-link" onclick="location.href='${ctp}/BlogEdit/${sMid}';"><i class="fas fa-cogs"></i> 블로그 관리</div>
 	    	</div>
 	    	</c:if>

@@ -111,10 +111,10 @@
 		        +'<td class="table-content">'
 		        +'<select name="category" id="category" class="custom-select">'
 		        +'<c:forEach var="cPVo" items="${cPVos}">'
-		        +'<option value="${cPVo.caIdx}">${cPVo.category}</option>'
+		        +'<option value="${cPVo.caIdx}" ${categoryIdx==cPVo.caIdx ? "selected" : ""}>${cPVo.category}</option>'
 		        +'<c:forEach var="cCVo" items="${cCVos}">'
 		        +'<c:if test="${cCVo.parentCategoryIdx == cPVo.caIdx}">'
-		        +'<option value="${cCVo.caIdx}">&nbsp;-&nbsp;${cCVo.category}</option>'
+		        +'<option value="${cCVo.caIdx}" ${categoryIdx==cCVo.caIdx ? "selected" : ""}>&nbsp;-&nbsp;${cCVo.category}</option>'
 		        +'</c:if></c:forEach></c:forEach>'
 		        +'</td></tr>'
 		        +'<tr><td class="table-label">주제</td>'
@@ -123,12 +123,15 @@
 		        +'<option value="없음" selected>주제 선택 안 함</option>'
 		        +'<option>일상</option>'
 		        +'<option>취미</option>'
-		        +'<option>공연/전시</option>'
+		        +'<option>영화/드라마</option>'
 		        +'<option>게임</option>'
 		        +'<option>패션/미용</option>'
 		        +'<option>비즈니스/경제</option>'
 		        +'<option>육아/결혼</option>'
 		        +'<option>문학/책</option>'
+		        +'<option>반려동물</option>'
+		        +'<option>여행</option>'
+		        +'<option>상품리뷰</option>'
 		        +'</td></tr>'
 		        +'<tr><td class="table-label">공개 설정</td>'
 		        +'<td class="table-content">'
@@ -391,10 +394,11 @@
 	            type: "post",
 	            data: query,
 	            success: function(res) {
-	                if (res != "0") {
+	            	let r = res.split("/");
+	                if (r[0] != "0") {
 	                	localStorage.setItem('formSubmitted', 'true'); // 제출 상태 저장
 	                	isWriteButtonClicked = true;
-	                    location.href = "${ctp}/blog/${sMid}";
+	                    location.href = "${ctp}/blog/${sMid}?categoryIdx="+r[1];
 	                } else {
 	                    $("#myModal #modalTitle").text("작성 오류");
 	                    $("#myModal #modalText").text("게시글 등록 실패!");

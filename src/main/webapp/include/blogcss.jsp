@@ -437,23 +437,16 @@
 		font-family: Pretendard-Medium;
 		color: #ff7200;
 	}
-	.page-menu {
-		display: flex;
-	    justify-content: space-between;
-	    align-items: center;
-	    margin-bottom: 100px;
-	}
 	.post-list table {
 	    width: 100%;
 	    border-collapse: collapse;
 	    font-size: 12px;
-	    margin-bottom: 20px;
+	    margin-bottom: 100px;
 	}
 	.post-list th, .post-list td {
 	    border-bottom: 1px solid #ddd;
 	    padding: 8px;
 	}
-	.title {text-align: left;}
 	.viewCnt {text-align: center;}
 	.wDate {text-align: right;}
 	.post-detail{
@@ -482,4 +475,15 @@
 	.content p {
 		margin: 0;
 	}
+	.dropdown-menu {
+	    top: 13px!important;
+	    left: -78px!important;
+	    min-width: 5rem;
+	    padding: 5px 0;
+	}
+	.nowContent {
+		font-family: 'Pretendard-Medium';
+		color: #ff7200;
+	}
+	.content-menu {display: flex;}
 </style>

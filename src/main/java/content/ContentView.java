@@ -31,6 +31,9 @@ public class ContentView extends HttpServlet {
 	private final Map<String, Map<String, LocalDateTime>> visitMap = new ConcurrentHashMap<>(); // 블로그별 방문자 IP와 마지막 방문 시간 저장하는 맵
 	private final Map<String, Integer> todayVisit = new ConcurrentHashMap<>(); // 블로그별 오늘 방문자수 저장하는 맵
 	
+	private final Map<Integer, Map<String, LocalDateTime>> ContentvisitMap = new ConcurrentHashMap<>(); // 게시글별 방문자 IP와 마지막 방문 시간 저장하는 맵
+	private final Map<Integer, Integer> viewCnt = new ConcurrentHashMap<>(); // 게시글별 조회수 저장하는 맵
+	
 	// 서블릿 최초 실행 시 스케줄러(자정이 지날 때 일일방문자 초기화) 추가하기
 	// init 메소드를 사용한 이유는 서버가 실행될 때 최초에 한번만 실행하기 위해서이다 불필요한 반복을 막는 용도
 	@Override
@@ -111,6 +114,25 @@ public class ContentView extends HttpServlet {
             return;
         }
         
+        // 게시글별 방문자 맵 가져오기
+        ContentvisitMap.putIfAbsent(coIdx, new ConcurrentHashMap<>());
+        Map<String, LocalDateTime> userContentVisitMap = ContentvisitMap.get(coIdx);
+        
+        viewCnt.putIfAbsent(coIdx, 0);
+        
+        userContentVisitMap.compute(hostIp, (key, lastVisit) -> {
+        	// 오늘 방문이 없거나, 방문한지 30분이 지났거나, 블로그주인이 방문한 게 아니면 조회수 증가
+        	if((lastVisit == null || ChronoUnit.MINUTES.between(lastVisit, now) >= 30) && !mid.equals(sMid)) {
+        		viewCnt.put(coIdx, viewCnt.get(coIdx) + 1);
+        		coDao.setViewCnt(coIdx);
+        		return now;
+        	}
+        	else {
+        		// 30분 내 재방문 경우 마지막 방문시간 유지
+        		return lastVisit;
+        	}
+        });
+        
         ArrayList<CategoryVO> cVos = bDao.getCategory(bVo.getBlogIdx(), 0); // 전체 카테고리 가져오기
         ArrayList<CategoryVO> cPVos = bDao.getCategory(bVo.getBlogIdx(), 1); // 부모 카테고리만 가져오기
         ArrayList<CategoryVO> cCVos = bDao.getCategory(bVo.getBlogIdx(), 2); // 자식 카테고리만 가져오기
@@ -131,8 +153,19 @@ public class ContentView extends HttpServlet {
     	int categoryIdx = request.getParameter("categoryIdx")==null ? 0 : Integer.parseInt(request.getParameter("categoryIdx"));
     	
     	Pagination.pageChange(request, page, pageSize, user, bVo.getBlogIdx(), categoryIdx);
-        
-        request.setAttribute("contentVo", contentVo);
+    	request.setAttribute("contentVo", contentVo);
+    	
+    	// 이전글 다음글 처리
+		ArrayList<CategoryVO> categoryIdxs = null;
+		CategoryVO CateVo = bDao.getCategoryIdx(categoryIdx);
+		if(CateVo.getParentCategoryIdx()==0) {
+			categoryIdxs = bDao.getCategoryChild(categoryIdx);
+		}
+		
+    	ContentVO preVo = coDao.getPreSearch(bVo.getBlogIdx(), coIdx, categoryIdx, categoryIdxs, user);
+    	ContentVO nextVo = coDao.getNextSearch(bVo.getBlogIdx(), coIdx, categoryIdx, categoryIdxs, user);
+        request.setAttribute("preVo", preVo);
+        request.setAttribute("nextVo", nextVo);
         	
         String userMid = uVo.getMid();
         String nickName = uVo.getNickName();
@@ -141,6 +174,8 @@ public class ContentView extends HttpServlet {
         request.setAttribute("userMid", userMid);
         request.setAttribute("nickName", nickName);
         request.setAttribute("userImg", userImg);
+        request.setAttribute("coIdx", coIdx);
+        request.setAttribute("categoryIdx", categoryIdx);
         
         request.setAttribute("bVo", bVo);
         request.setAttribute("cVos", cVos);

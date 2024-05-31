@@ -19,7 +19,7 @@
 		<div class="menu-right-bar">
 			<button class="orangeBtn-sm" onclick="location.href='${ctp}/ContentInput/${uVo.mid}';">글쓰기</button>
 			<i class="fa-solid fa-bell fa-xl mt-4" style="color: gray;" onclick="alarmBtn()"></i>
-			<div class="user-profile"><img src="${ctp}/images/user/user_basic.jpg" alt="유저프로필" onclick="profileBtn()"></div>
+			<div class="user-profile"><img src="${ctp}/images/user/${uVo.userImg}" alt="유저프로필" onclick="profileBtn()"></div>
 		</div>
 	</div>
 	<main>
@@ -36,7 +36,7 @@
 		                <hr/>
 		                <li class="parent-li active"><i class="fa-regular fa-image mr-2"></i>콘텐츠</li>
 		                <ul>
-		                    <li>글 관리</li>
+		                    <li onclick="location.href='${ctp}/ContentsEdit/${sMid}';">글 관리</li>
 		                    <li class="active" onclick="location.href='${ctp}/CategoryEdit/${sMid}';">카테고리 관리</li>
 		                </ul>
 		                <hr/>
