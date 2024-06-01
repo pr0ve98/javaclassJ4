@@ -133,7 +133,6 @@ public class ContentView extends HttpServlet {
         	}
         });
         
-        ArrayList<CategoryVO> cVos = bDao.getCategory(bVo.getBlogIdx(), 0); // 전체 카테고리 가져오기
         ArrayList<CategoryVO> cPVos = bDao.getCategory(bVo.getBlogIdx(), 1); // 부모 카테고리만 가져오기
         ArrayList<CategoryVO> cCVos = bDao.getCategory(bVo.getBlogIdx(), 2); // 자식 카테고리만 가져오기
         
@@ -147,12 +146,9 @@ public class ContentView extends HttpServlet {
         
         String user = mid.equals(sMid) ? "주인" : "일반";
         
-    	// 페이지네이션 처리
-    	int page = request.getParameter("page")==null ? 1 : Integer.parseInt(request.getParameter("page"));
-    	int pageSize = request.getParameter("pageSize")==null ? 10 : Integer.parseInt(request.getParameter("pageSize"));
+        int page = request.getParameter("page")==null ? 1 : Integer.parseInt(request.getParameter("page"));
     	int categoryIdx = request.getParameter("categoryIdx")==null ? 0 : Integer.parseInt(request.getParameter("categoryIdx"));
-    	
-    	Pagination.pageChange(request, page, pageSize, user, bVo.getBlogIdx(), categoryIdx);
+    	request.setAttribute("page", page);
     	request.setAttribute("contentVo", contentVo);
     	
     	// 이전글 다음글 처리
@@ -178,7 +174,6 @@ public class ContentView extends HttpServlet {
         request.setAttribute("categoryIdx", categoryIdx);
         
         request.setAttribute("bVo", bVo);
-        request.setAttribute("cVos", cVos);
         request.setAttribute("cPVos", cPVos);
         request.setAttribute("cCVos", cCVos);
         

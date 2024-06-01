@@ -19,9 +19,16 @@
 	function categoryDelete(coIdx) {
 		$('#myModal').modal('hide');
 		$.ajax({
-			url : "${ctp}/CategoryDelete",
+			url : "${ctp}/ContentDelete",
 			type : "get",
-			data : {coIdx : coIdx, mid : '${userMid}', categoryIdx : ${categoryIdx}, page : ${page}},
+			data : {
+				coIdx : coIdx,
+				mid : '${userMid}',
+				categoryIdx : ${categoryIdx},
+				page : ${page},
+				imgName : '${contentVo.imgName}',
+				sw : 0
+			},
 			success : function(res) {
 				if(res == "0"){
 					$("#myModal #modalTitle").text("게시글 삭제");
@@ -112,7 +119,7 @@
 	                </span>
                 </div>
                 <div class="content-menu">
-	                <div class="proBtn-sm"><a href="${ctp}/blog/${userMid}?page=${page}&categoryIdx=${categoryIdx}">돌아가기</a></div>
+	                <div class="proBtn-sm"><a href="javascript:history.back()">돌아가기</a></div>
 	                <c:if test="${userMid == sMid}">
 						<div class="dropdown ml-3"><i class="fa-solid fa-bars fa-xl" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="color: #D5D5D5; cursor:pointer;"></i>
 				 			<div class="dropdown-menu">
@@ -128,8 +135,33 @@
 		 		</div>
             </div>
             <hr/>
-            <div class="content">${contentVo.content}</div>
+            <div class="content mb-3">${contentVo.content}</div>
         </div>
+		<div class="mb-5"><span class="proBtn"><i class="fa-regular fa-comment-dots fa-sm" style="color: #6b6b6b;"></i> | 댓글 0</span></div>
+		<div class="reply-list">
+			<img src="${ctp}/images/user/${userImg}" alt="profile" class="mr-2">닉네임
+			<div>댓글 내용...</div>
+			<div>2024.5.21 12:54</div>
+		</div>
+		<div class="reply-list-re">
+			<div>┗</div>
+			<div>
+			<img src="${ctp}/images/user/${userImg}" alt="profile" class="mr-2">닉네임
+			<div>댓글 내용...</div>
+			<div>2024.5.21 12:54</div>
+			</div>
+		</div>
+		<form class="reply-write" name="replyWrite" method="post">
+			<div class="mb-2"><img src="${ctp}/images/user/${userImg}" alt="profile" class="mr-2">닉네임</div>
+			<textarea rows="3" class="form-control"></textarea>
+			<div class="reply-write-menu">
+				<div class="custom-control custom-checkbox">
+					<input type="checkbox" class="custom-control-input" id="replySC" name="replySC">
+					<label class="custom-control-label" for="replySC">비밀글로 작성</label>
+				</div>
+				<input type="button" value="작성" class="proBtn" />
+			</div>
+		</form>
 	</section>
     <aside>
         <div class="profile">

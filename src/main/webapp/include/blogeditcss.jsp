@@ -57,7 +57,7 @@
 	.font-semiBold {font-family: 'Pretendard-SemiBold';}
 	.font-bold {font-family: 'Pretendard-Bold';}
 	body {
-		font-family: 'Pretendard-Medium';
+		font-family: 'Pretendard-Light';
 		cursor: default;
 		background-color: #F6F6F6;
 	}
@@ -803,8 +803,38 @@
 	.contentEdit {
 		display: flex;
 		align-items: center;
+		justify-content: space-between;
 	}
 	.custom-select {
 		width: auto;
+	}
+	.pagination {
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	}
+	
+	.pagination a {
+	    color: black;
+	    float: left;
+	    padding: 8px 16px;
+	    text-decoration: none;
+	    transition: background-color .3s;
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    height: 32px;
+	    width: 32px;
+	    text-align: center;
+	    background-color: #fff;
+	}
+	
+	.pagination a.active {
+	    background-color: #ff7200;
+	    color: white;
+	}
+	
+	.pagination a:hover:not(.active) {
+	    background-color: #ddd;
 	}
 </style>

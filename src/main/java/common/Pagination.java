@@ -12,7 +12,7 @@ import content.ContentVO;
 public class Pagination {
 
 	public static void pageChange(HttpServletRequest request, int page, int pageSize, String user, int blogIdx,
-			int categoryIdx) {
+			int categoryIdx, String search) {
 		BlogDAO bDao = new BlogDAO();
 		ContentDAO cDao = new ContentDAO();
 		
@@ -22,7 +22,7 @@ public class Pagination {
 			categoryIdxs = bDao.getCategoryChild(categoryIdx);
 		}
 		
-		int totRecCnt = cDao.getContentCnt(blogIdx, user, categoryIdx, categoryIdxs);
+		int totRecCnt = cDao.getContentCnt(blogIdx, user, categoryIdx, categoryIdxs, search);
 		
 		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize)+1;
 		if(page > totPage) page = 1;
@@ -41,7 +41,7 @@ public class Pagination {
 		request.setAttribute("curBlock", curBlock);
 		request.setAttribute("lastBlock", lastBlock);
 		
-		ArrayList<ContentVO> coVos = cDao.getContentList(startIndexNo, pageSize, blogIdx, user, categoryIdx, categoryIdxs);
+		ArrayList<ContentVO> coVos = cDao.getContentList(startIndexNo, pageSize, blogIdx, user, categoryIdx, categoryIdxs, search);
 		request.setAttribute("coVos", coVos);
 		
 	}

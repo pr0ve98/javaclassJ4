@@ -20,8 +20,8 @@
             <div class="header-title" onclick="location.href='${ctp}/blog/${userMid}';">${bVo.blogTitle}</div>
         </div>
         <div class="header-right">
-            <input type="text" placeholder="Search...">
-            <button type="button"><i class="fas fa-search"></i></button>
+            <input type="text" name="search" id="search" value="${param.search}" placeholder="Search...">
+            <button type="button" onclick="contentSearch()"><i class="fas fa-search"></i></button>
         </div>
     </div>
 </header>
@@ -110,7 +110,7 @@
         </div>
         <div class="categories">
             <ul>
-            	<li><a href="${ctp}/blog/${userMid}"><strong ${param.categoryIdx == null ? 'class="category-ac"' : ""}>전체보기</strong></a></li>
+            	<li><a href="${ctp}/blog/${userMid}"><strong ${param.categoryIdx == 0 || param.categoryIdx == null ? 'class="category-ac"' : ""}>전체보기</strong></a></li>
             	<c:forEach var="cPVo" items="${cPVos}">
             		<c:if test="${userMid == sMid}">
 			            <li id="parent-${cPVo.caIdx}">
@@ -165,4 +165,25 @@
     <i class="fas fa-home"></i>
 </div>
 </body>
+<script>
+	'use strict';
+	
+	function contentSearch() {
+		let search = $("#search").val();
+		location.href = "${ctp}/blog/${userMid}?search="+search;
+	}
+	
+	// 엔터로도 검색
+	document.addEventListener('DOMContentLoaded', function() {
+	    let searchInput = document.getElementById('search');
+
+	    if (searchInput) {
+	        searchInput.addEventListener('keyup', function(e) {
+	            if (e.key === 'Enter') {
+	            	contentSearch();
+	            }
+	        });
+	    }
+	});
+</script>
 </html>

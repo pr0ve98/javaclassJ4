@@ -1,6 +1,7 @@
 package content;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,6 +13,8 @@ import javax.servlet.http.HttpSession;
 
 import blog.BlogDAO;
 import blog.BlogVO;
+import blog.CategoryVO;
+import common.Pagination;
 import user.UserDAO;
 import user.UserVO;
 
@@ -41,8 +44,21 @@ public class ContentsEdit extends HttpServlet {
         BlogVO bVo = bDao.getUserBlog(mid);
         UserVO uVo = uDao.getUserIdCheck(mid);
         
+        ArrayList<CategoryVO> cPVos = bDao.getCategory(bVo.getBlogIdx(), 1); // 부모 카테고리만 가져오기
+        ArrayList<CategoryVO> cCVos = bDao.getCategory(bVo.getBlogIdx(), 2); // 자식 카테고리만 가져오기
+        
+        // 페이지네이션 처리
+    	int page = request.getParameter("page")==null ? 1 : Integer.parseInt(request.getParameter("page"));
+    	int pageSize = request.getParameter("pageSize")==null ? 10 : Integer.parseInt(request.getParameter("pageSize"));
+    	int categoryIdx = request.getParameter("categoryIdx")==null ? 0 : Integer.parseInt(request.getParameter("categoryIdx"));
+    	String search = request.getParameter("search")==null ? "" : request.getParameter("search");
+    	
+    	Pagination.pageChange(request, page, pageSize, "주인", bVo.getBlogIdx(), categoryIdx, search);
+        
         request.setAttribute("bVo", bVo);
         request.setAttribute("uVo", uVo);
+        request.setAttribute("cPVos", cPVos);
+        request.setAttribute("cCVos", cCVos);
         
 		String viewPage = "/WEB-INF/blog/blogContentEdit.jsp";
 	    dispatcher = request.getRequestDispatcher(viewPage);

@@ -169,7 +169,7 @@
 		<a class="navbar-brand" href="${ctp}/Main"><img
 			src="${ctp}/images/logo.png" alt="logo" style="width: 200px;"></a>
 		<div class="menu-right-bar">
-			<button class="grayBtn-sm" onclick="location.href='${ctp}/content/${userMid}?coIdx=${coIdx}&categoryIdx=${categoryIdx}';">취소</button>
+			<button class="grayBtn-sm" onclick="history.back()">취소</button>
 			<button class="orangeBtn-sm" onclick="editBtn()">수정</button>
 		</div>
 	</div>

@@ -112,8 +112,9 @@ public class BlogServlet extends HttpServlet {
     	int page = request.getParameter("page")==null ? 1 : Integer.parseInt(request.getParameter("page"));
     	int pageSize = request.getParameter("pageSize")==null ? 10 : Integer.parseInt(request.getParameter("pageSize"));
     	int categoryIdx = request.getParameter("categoryIdx")==null ? 0 : Integer.parseInt(request.getParameter("categoryIdx"));
-    	
-    	Pagination.pageChange(request, page, pageSize, user, bVo.getBlogIdx(), categoryIdx);
+    	String search = request.getParameter("search")==null ? "" : request.getParameter("search");
+    			
+    	Pagination.pageChange(request, page, pageSize, user, bVo.getBlogIdx(), categoryIdx, search);
         	
         String userMid = uVo.getMid();
         String nickName = uVo.getNickName();
