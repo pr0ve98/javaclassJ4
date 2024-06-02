@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class UserImgBasicChangeCommand implements UserInterface {
 
@@ -23,6 +24,9 @@ public class UserImgBasicChangeCommand implements UserInterface {
 				file.delete();
 			}
 		}
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("sUserImg", "user_basic.jpg");
 		
 		int res = dao.setUserImgBasicChange(mid);
 		

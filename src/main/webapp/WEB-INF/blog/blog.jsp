@@ -48,10 +48,16 @@
         <div class="post">
             <div class="post-content">
             	<c:if test="${param.categoryIdx != null}">
-                <h2><b><a href="${ctp}/content/${userMid}?coIdx=${coVo.coIdx}&categoryIdx=${param.categoryIdx}&page=${page}">${coVo.title}</a></b></h2>
+                <h2><b>
+                	<a href="${ctp}/content/${userMid}?coIdx=${coVo.coIdx}&categoryIdx=${param.categoryIdx}&page=${page}">${coVo.title}</a>
+                	<c:if test="${coVo.replyCnt != 0}">[<font color="#ff7200">${coVo.replyCnt}</font>]</c:if>
+                </b></h2>
                 </c:if>
             	<c:if test="${param.categoryIdx == null}">
-                <h2><b><a href="${ctp}/content/${userMid}?coIdx=${coVo.coIdx}&page=${page}">${coVo.title}</a></b></h2>
+                <h2><b>
+                	<a href="${ctp}/content/${userMid}?coIdx=${coVo.coIdx}&page=${page}">${coVo.title}</a>
+                	<c:if test="${coVo.replyCnt != 0}">[<font color="#ff7200">${coVo.replyCnt}</font>]</c:if>
+                </b></h2>
                 </c:if>
                 <p>${coVo.ctPreview}</p>
                 <span>${coVo.categoryName} · 

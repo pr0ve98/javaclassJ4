@@ -6,6 +6,7 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -34,7 +35,11 @@ public class UserImgChangeCommand implements UserInterface {
 			}
 		}
 		
+		
 		int res = dao.setUserImgChange(img, mid);
+		
+		HttpSession session = request.getSession();
+		session.setAttribute("sUserImg", img);
 		
 		response.getWriter().write(res+"");
 

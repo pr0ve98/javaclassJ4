@@ -64,51 +64,21 @@
 	    if (!alarmHeaderLayer) {
 	        let headerLayer = document.createElement('div');
 	        headerLayer.className = 'header_layer layer_news';
-	        headerLayer.innerHTML = '<div class="notification-top">새소식</div><hr class="notification-hr"/>'
+	        headerLayer.innerHTML = '<div class="notification-top">새소식 <font color="#ff7200">${newReplyCnt}</font></div><hr class="notification-hr"/>'
 	                +'<div class="notification-list">'
-	                    +'<div class="notification" data-clicked="false">'
-	                        +'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
+	                +'<c:forEach var="vo" items="${vos}">'
+	                    +'<div class="notification" onclick="location.href=&quot;${ctp}/content/${sMid}?coIdx=${vo.rCoIdx}&rIdx=${vo.rIdx}&quot;">'
+	                        +'<img src="${ctp}/images/user/${vo.rUserImg}" alt="프로필 사진" class="profile-pic">'
 	                        +'<div class="notification-content">'
 	                            +'<div class="notification-header">'
-	                                +'<p class="user"><span class="user-name">김요운</span>님이 댓글을 남겼습니다.</p>'
+	                                +'<p class="user"><span class="user-name">${vo.rNickName}</span>님이 댓글을 남겼습니다.</p>'
 	                                +'<p class="date">2023.04.18</p>'
 	                            +'</div>'
-	                            +'<p class="comment">"나도....친구됐다...코붕이쿼카"</p>'
-	                            +'<p class="title">23.03.20</p>'
+	                            +'<p class="comment">"${vo.rContent}"</p>'
+	                            +'<p class="title">${vo.coTitle}</p>'
 	                        +'</div>'
 	                    +'</div>'
-	                    +'<div class="notification" data-clicked="false">'
-	                        +'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
-	                        +'<div class="notification-content">'
-	                            +'<div class="notification-header">'
-	                                +'<p class="user"><span class="user-name">김요운</span>님이 댓글을 남겼습니다.</p>'
-	                                +'<p class="date">2023.03.08</p>'
-	                            +'</div>'
-	                            +'<p class="comment">"일기좀 자주 써주세요"</p>'
-	                            +'<p class="title">23.03.06</p>'
-	                        +'</div>'
-	                    +'</div>'
-	                    +'<div class="notification" data-clicked="false">'
-	                        +'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
-	                        +'<div class="notification-content">'
-	                            +'<div class="notification-header">'
-	                                +'<p class="user"><span class="user-name">괴도 유빈</span>님이 댓글을 남겼습니다.</p>'
-	                                +'<p class="date">2023.02.26</p>'
-	                            +'</div>'
-	                            +'<p class="comment">"ㅋㅋㅋㅋㅋ"</p>'
-	                            +'<p class="title">23.02.26</p>'
-	                        +'</div>'
-	                    +'</div>'
-	                    +'<div class="notification" data-clicked="false">'
-	                        +'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
-	                        +'<div class="notification-content">'
-	                            +'<div class="notification-header">'
-	                                +'<p class="user"><span class="user-name">김요운</span>님이 댓글을 남겼습니다.</p>'
-	                                +'<p class="date">2023.02.22</p>'
-	                            +'</div>'
-	                            +' <p class="comment">"해줘 나랑도ㅠ"</p>'
-	                            +'<p class="title">덩킴 Dinkum</p>'
-	                        +'</div>'
+	                    +'</c:forEach>'
 	                    +'</div>'
 	                +'</div>';
 	        document.querySelector('.menu-right-bar').appendChild(headerLayer);
@@ -188,7 +158,8 @@
 		<div class="menu-right-bar">
 			<c:if test="${sNickName == null}"><button class="orangeBtn" onclick="location.href='Login.u';">가입하기</button></c:if>
 			<c:if test="${sNickName != null}">
-				<i class="fa-solid fa-bell fa-xl mt-4" style="color: gray;" onclick="alarmBtn()"></i>
+				<c:if test="${newReplyCnt != 0}"><span class="new">${newReplyCnt}</span></c:if>
+				<i class="fa-solid fa-bell fa-xl mt-4 alarmBtn" style="color: gray;" onclick="alarmBtn()"></i>
 				<div class="user-profile"><img src="${ctp}/images/user/${vo.userImg}" alt="유저프로필" onclick="profileBtn()"></div>
 			</c:if>
 		</div>

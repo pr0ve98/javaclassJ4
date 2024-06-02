@@ -173,7 +173,7 @@
 	    justify-content: space-between;
 	    width: 100%;
 	    max-width: 1200px;
-	    margin: 0 auto;
+	    margin: 0 auto 100px;
 	    padding-top: 55px;
 	}
 	.posts {
@@ -493,7 +493,7 @@
 		padding: 20px 50px;
 		border-bottom: 1px solid #e6e6e6;
 	}
-	.reply-list img, .reply-list-re img, .reply-write img {
+	.reply-list img, .reply-list-re img, .reply-list-rre img, .reply-write img {
 		width: 30px;
 	    height: 30px;
 	    border-radius: 50%;
@@ -507,9 +507,22 @@
 		background-color: #F6F6F6;
 		border-bottom: 1px solid #e6e6e6;
 	}
+	.reply-list-rre {
+		display: none;
+		gap: 10px;
+		padding: 20px 30px 20px 70px;
+		background-color: #F6F6F6;
+		border-bottom: 1px solid #e6e6e6;
+	}
 	.reply-write {
 		margin-top: 40px;
 		border: 1px solid #e6e6e6;
+		padding: 20px;
+	}
+	.reply-write-re {
+		width: 100%;
+		border: 1px solid #e6e6e6;
+		background-color: #fff;
 		padding: 20px;
 	}
 	.reply-write-menu {
@@ -517,5 +530,22 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+	}
+	.btn-gray {
+		background-color: #eee;
+		color: gray;
+		border: none;
+	}
+	.btn-gray:hover {
+		background-color: #ddd;
+		color: gray;
+	}
+	#error-name {
+		display: none;
+		color: red;
+		font-size: 13px;
+	}
+	#replys {
+		display: none;
 	}
 </style>

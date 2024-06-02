@@ -17,6 +17,7 @@ public class ContentVO {
 	private String categoryName;
 	private int hour_diff;
 	private int min_diff;
+	private int replyCnt;
 	
 	public int getCoIdx() {
 		return coIdx;
@@ -108,13 +109,20 @@ public class ContentVO {
 	public void setMin_diff(int min_diff) {
 		this.min_diff = min_diff;
 	}
+	public int getReplyCnt() {
+		return replyCnt;
+	}
+	public void setReplyCnt(int replyCnt) {
+		this.replyCnt = replyCnt;
+	}
 	@Override
 	public String toString() {
 		return "ContentVO [coIdx=" + coIdx + ", coBlogIdx=" + coBlogIdx + ", categoryIdx=" + categoryIdx + ", title="
 				+ title + ", part=" + part + ", wDate=" + wDate + ", viewCnt=" + viewCnt + ", content=" + content
 				+ ", ctPreview=" + ctPreview + ", cHostIp=" + cHostIp + ", coPublic=" + coPublic + ", imgName="
 				+ imgName + ", categoryName=" + categoryName + ", hour_diff=" + hour_diff + ", min_diff=" + min_diff
-				+ "]";
+				+ ", replyCnt=" + replyCnt + "]";
 	}
+
 
 }

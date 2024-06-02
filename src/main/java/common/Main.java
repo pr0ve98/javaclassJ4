@@ -1,6 +1,7 @@
 package common;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import blog.BlogDAO;
+import blog.BlogVO;
+import content.ReplyDAO;
+import content.ReplyVO;
 import user.UserDAO;
 import user.UserVO;
 
@@ -27,6 +32,16 @@ public class Main extends HttpServlet {
 			UserVO vo = dao.getUserIdCheck(mid);
 			request.setAttribute("vo", vo);
 		}
+		
+		BlogDAO bDao = new BlogDAO();
+		BlogVO bVo = bDao.getUserBlog(mid);
+		
+		ReplyDAO rDao = new ReplyDAO();
+		ArrayList<ReplyVO> vos = rDao.getNotReadReplys(bVo.getBlogIdx());
+		int newReplyCnt = rDao.getNotReadReplysCnt(bVo.getBlogIdx());
+		
+		request.setAttribute("vos", vos);
+		request.setAttribute("newReplyCnt", newReplyCnt);
 		
 		String viewPage = "/WEB-INF/main/main.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);

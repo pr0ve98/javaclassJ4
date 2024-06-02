@@ -16,7 +16,19 @@
 <script>
 	'use strict';
 	
-	function categoryDelete(coIdx) {
+    $(document).ready(function() {
+        let sw2 = localStorage.getItem('replyViewState');
+        if (sw2 == 1) {
+            $("#replys").show();
+        }
+        else {
+            $("#replys").hide();
+        }
+        
+    });
+	
+    
+	function contentDelete(coIdx) {
 		$('#myModal').modal('hide');
 		$.ajax({
 			url : "${ctp}/ContentDelete",
@@ -49,7 +61,223 @@
 			}
 		});
 	}
+	
+	function replyWriteCheck() {
+		let rContent = $("#rContent").val();
+		let mid = replyWrite.mid.value;
+		let nickName = replyWrite.nickName.value;
+		let hostIp = replyWrite.hostIp.value;
+		let coIdx = replyWrite.coIdx.value;
+		let userMid = replyWrite.userMid.value;
+		let replyCheckBox = document.querySelector('input[id="replySC"]');
+        let replySC = replyCheckBox.checked ? replyCheckBox.value : '공개';
+		
+		if(rContent == null || rContent == ""){
+			$("#myModal #modalTitle").text("댓글 오류");
+			$("#myModal #modalText").text("댓글 내용을 작성해주세요!");
+			$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+		    $('#myModal').modal('show');
+		    return;
+		}
+		
+		let query = {
+			mid : mid,
+			nickName : nickName,
+			hostIp : hostIp,
+			coIdx : coIdx,
+			replySC : replySC,
+			rContent : rContent,
+			userMid : userMid,
+			sw : 0
+		}
+		
+		$.ajax({
+			url : "${ctp}/ReplyInput",
+			type : "post",
+			data : query,
+			success : function(res) {
+				if(res != "0") location.reload();
+			},
+			error : function() {
+				$("#myModal #modalTitle").text("오류");
+				$("#myModal #modalText").text("전송 오류!");
+				$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+			    $('#myModal').modal('show');
+			}
+		});
+	}
+	
+	function replyWriteCheck2(prIdx) {
+		let rContent = $("#rContent"+prIdx).val();
+		let mid = $("#mid"+prIdx).val();
+		let nickName = $("#nickName"+prIdx).val();
+		let hostIp = $("#hostIp"+prIdx).val();
+		let coIdx = $("#coIdx"+prIdx).val();
+		let userMid = $("#userMid"+prIdx).val();
+		let replyCheckBox = document.querySelector('input[id="replySC'+prIdx+'"]');
+        let replySC = replyCheckBox.checked ? replyCheckBox.value : '공개';
+		
+		if(rContent == null || rContent == ""){
+			$("#myModal #modalTitle").text("댓글 오류");
+			$("#myModal #modalText").text("댓글 내용을 작성해주세요!");
+			$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+		    $('#myModal').modal('show');
+		    return;
+		}
+		
+		let query = {
+			mid : mid,
+			nickName : nickName,
+			hostIp : hostIp,
+			coIdx : coIdx,
+			replySC : replySC,
+			rContent : rContent,
+			parentReplyIdx : prIdx,
+			userMid : userMid,
+			sw : 1
+		}
+		
+		$.ajax({
+			url : "${ctp}/ReplyInput",
+			type : "post",
+			data : query,
+			success : function(res) {
+				if(res != "0") location.reload();
+			},
+			error : function() {
+				$("#myModal #modalTitle").text("오류");
+				$("#myModal #modalText").text("전송 오류!");
+				$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+			    $('#myModal').modal('show');
+			}
+		});
+	}
+	
+	let sw = 0;
+	function rreplyShow(rIdx) {
+		if(sw == 0){
+			$("#rre"+rIdx).show();
+			sw = 1;
+		}
+		else {
+			sw = 0;
+			$("#rre"+rIdx).hide();
+		}
+	}
+	
+	function replyEditModal(content, rPublic, rIdx) {
+		$("#modalContent").text(content);
+		let fh = '<button type="button" class="proBtn mr-2" onclick="replyEdit('+rIdx+')">수정</button>'
+          	+'<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>';
+        $("#myModal2 #modal-footer2").html(fh);
+        
+        let th = '<form name="replyEditForm" method="post">'
+        		+'<textarea rows="3" class="form-control" name="modalContent" id="modalContent">'+content+'</textarea>'
+        		+'<div id="error-name">공백으로 수정할 수 없습니다!</div>'
+        		+'<div class="custom-control custom-checkbox">';
+        		
+	    if(rPublic == '비공개') th += '<input type="checkbox" class="custom-control-input" id="replyEditSC" name="replyEditSC" value="비공개" checked>';
+	    else th += '<input type="checkbox" class="custom-control-input" id="replyEditSC" name="replyEditSC" value="비공개">';
+		
+	    th += '<label class="custom-control-label" for="replyEditSC">비밀글로 작성</label>'
+			+'</div></form>';
+        $("#myModal2 #modalText2").html(th);
+        
+        $('#myModal2').modal('show');
+	}
+	
+	function replyEdit(rIdx) {
+		let content = $("#modalContent").val();
+		let replyEditCheckBox = document.querySelector('input[id="replyEditSC"]');
+        let replyEditSC = replyEditCheckBox.checked ? replyEditCheckBox.value : '공개';
+        
+		if(content == "" || content == null){
+			$("#error-name").show();
+			return;
+		}
+		
+		$('#myModal2').modal('hide');
+		
+		$.ajax({
+			url : "${ctp}/ReplyEdit",
+			type : "post",
+			data : {content : content, rIdx : rIdx, replyEditSC : replyEditSC},
+			success : function(res) {
+				if(res != "0"){
+					location.reload();
+				}
+			},
+			error : function() {
+				$("#myModal #modalTitle").text("오류");
+				$("#myModal #modalText").text("전송 오류!");
+				$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+			    $('#myModal').modal('show');
+			}
+		});
+	}
+	
+    function replyView() {
+        let sw2 = localStorage.getItem('replyViewState');
+        if (sw2 == 0 || sw2 === null) {
+            $("#replys").show();
+            localStorage.setItem('replyViewState', 1);
+        } else {
+            $("#replys").hide();
+            localStorage.setItem('replyViewState', 0);
+        }
+    }
+    
+	function replyDeleteModal(rIdx) {
+        $("#myModal #title").text("댓글 삭제");
+        $("#myModal #modalText").html("정말 삭제하시겠습니까?<br><font color='red'>상위 댓글을 삭제하면 대댓글도 삭제됩니다</font>");
+		let fh = '<button type="button" class="btn btn-danger mr-2" onclick="replyDelete('+rIdx+')">삭제</button>'
+          	+'<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>';
+        $("#myModal #modal-footer").html(fh);
+        $('#myModal').modal('show');
+	}
+	
+	function replyDelete(rIdx) {
+		$.ajax({
+			url : "${ctp}/ReplyDelete",
+			type : "post",
+			data : {rIdx : rIdx},
+			success : function(res) {
+				if(res != "0"){
+					location.reload();
+				}
+			},
+			error : function() {
+				$("#myModal #modalTitle").text("오류");
+				$("#myModal #modalText").text("전송 오류!");
+				$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+			    $('#myModal').modal('show');
+			}
+		});
+	}
+	
+	function contentSearch() {
+		let search = $("#search").val();
+		location.href = "${ctp}/blog/${userMid}?search="+search;
+	}
+	
+	// 엔터로도 검색
+	document.addEventListener('DOMContentLoaded', function() {
+	    let searchInput = document.getElementById('search');
+
+	    if (searchInput) {
+	        searchInput.addEventListener('keyup', function(e) {
+	            if (e.key === 'Enter') {
+	            	contentSearch();
+	            }
+	        });
+	    }
+	});
 </script>
+<style>
+	.reply-active {
+		background-color: yellow;
+	}
+</style>
 </head>
 <body>
 <header>
@@ -58,8 +286,8 @@
             <div class="header-title" onclick="location.href='${ctp}/blog/${userMid}';">${bVo.blogTitle}</div>
         </div>
         <div class="header-right">
-            <input type="text" placeholder="Search...">
-            <button type="button"><i class="fas fa-search"></i></button>
+            <input type="text" name="search" id="search" value="${param.search}" placeholder="Search...">
+            <button type="button" onclick="contentSearch()"><i class="fas fa-search"></i></button>
         </div>
     </div>
 </header>
@@ -137,33 +365,114 @@
             <hr/>
             <div class="content mb-3">${contentVo.content}</div>
         </div>
-		<div class="mb-5"><span class="proBtn"><i class="fa-regular fa-comment-dots fa-sm" style="color: #6b6b6b;"></i> | 댓글 0</span></div>
-		<div class="reply-list">
-			<img src="${ctp}/images/user/${userImg}" alt="profile" class="mr-2">닉네임
-			<div>댓글 내용...</div>
-			<div>2024.5.21 12:54</div>
-		</div>
-		<div class="reply-list-re">
-			<div>┗</div>
+		<div class="mb-5"><span class="proBtn" onclick="replyView()"><i class="fa-regular fa-comment-dots fa-sm" style="color: #6b6b6b;"></i> | 댓글 ${contentVo.replyCnt}</span></div>
+		<div id="replys">
+		<c:forEach var="rPVo" items="${rPVos}">
+		<c:if test="${rPVo.rPublic == '공개' || (rPVo.rPublic == '비공개' && (rPVo.rMid == sMid || sMid == userMid))}">
+		<div class="reply-list" id="reply${rPVo.rIdx}">
+			<c:if test="${rPVo.rUserImg != null}"><img src="${ctp}/images/user/${rPVo.rUserImg}" alt="profile" class="mr-2"></c:if>
+			<c:if test="${rPVo.rUserImg == null}"><img src="${ctp}/images/user/user_basic.jpg" alt="profile" class="mr-2"></c:if>
+			${rPVo.rNickName}<c:if test="${rPVo.rPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if>
+			<div>${rPVo.rContent}</div>
+			<div class="date" style="font-size:14px;">
+               	<fmt:parseDate value="${rPVo.rDate}" var="rPDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
+				<fmt:formatDate value="${rPDate}" pattern="yyyy. MM. dd HH:mm" />
+			</div>
 			<div>
-			<img src="${ctp}/images/user/${userImg}" alt="profile" class="mr-2">닉네임
-			<div>댓글 내용...</div>
-			<div>2024.5.21 12:54</div>
+				<span class="proBtn-sm mt-2" onclick="rreplyShow(${rPVo.rIdx})">답글</span>
+				<c:if test="${rPVo.rMid == sMid}"><span class="proBtn-sm mt-2" onclick="replyEditModal('${rPVo.rContent}', '${rPVo.rPublic}', ${rPVo.rIdx})">수정</span></c:if>
+				<c:if test="${rPVo.rMid == sMid || sMid == userMid}"><span class="proBtn-sm mt-2" onclick="replyDeleteModal('${rPVo.rIdx}')">삭제</span></c:if>
 			</div>
 		</div>
-		<form class="reply-write" name="replyWrite" method="post">
-			<div class="mb-2"><img src="${ctp}/images/user/${userImg}" alt="profile" class="mr-2">닉네임</div>
-			<textarea rows="3" class="form-control"></textarea>
-			<div class="reply-write-menu">
-				<div class="custom-control custom-checkbox">
-					<input type="checkbox" class="custom-control-input" id="replySC" name="replySC">
-					<label class="custom-control-label" for="replySC">비밀글로 작성</label>
-				</div>
-				<input type="button" value="작성" class="proBtn" />
+		</c:if>
+		<c:if test="${rPVo.rPublic == '비공개' && (rPVo.rMid != sMid && sMid != userMid)}">
+		<div class="reply-list">
+			<div>비공개 댓글입니다.</div>
+			<div class="date" style="font-size:14px;">
+               	<fmt:parseDate value="${rPVo.rDate}" var="rPDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
+				<fmt:formatDate value="${rPDate}" pattern="yyyy. MM. dd HH:mm" />
 			</div>
-		</form>
+		</div>
+		</c:if>
+			<c:forEach var="rCVo" items="${rCVos}">
+				<c:if test="${rPVo.rIdx == rCVo.parentReplyIdx}">
+					<c:if test="${rCVo.rPublic == '공개' || (rCVo.rPublic == '비공개' && (rCVo.rMid == sMid || sMid == userMid))}">
+						<div class="reply-list-re" id="reply${rCVo.rIdx}">
+							<div>┗</div>
+							<div>
+							<c:if test="${rCVo.rUserImg != null}"><img src="${ctp}/images/user/${rCVo.rUserImg}" alt="profile" class="mr-2"></c:if>
+							<c:if test="${rCVo.rUserImg == null}"><img src="${ctp}/images/user/user_basic.jpg" alt="profile" class="mr-2"></c:if>
+							${rCVo.rNickName}<c:if test="${rCVo.rPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if>
+							<div>${rCVo.rContent}</div>
+							<div class="date" style="font-size:14px;">
+								<fmt:parseDate value="${rCVo.rDate}" var="rCDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
+								<fmt:formatDate value="${rCDate}" pattern="yyyy. MM. dd HH:mm" />
+							</div>
+							<div>
+								<span class="proBtn-sm mt-2" onclick="rreplyShow(${rPVo.rIdx})">답글</span>
+								<c:if test="${rCVo.rMid == sMid}"><span class="proBtn-sm mt-2" onclick="replyEditModal('${rCVo.rContent}', '${rCVo.rPublic}', ${rCVo.rIdx})">수정</span></c:if>
+								<c:if test="${rCVo.rMid == sMid || sMid == userMid}"><span class="proBtn-sm mt-2">삭제</span></c:if>
+							</div>
+							</div>
+						</div>
+					</c:if>
+					<c:if test="${rCVo.rPublic == '비공개' && (rCVo.rMid != sMid && sMid != userMid)}">
+						<div class="reply-list-re">
+							<div>┗</div>
+							<div>
+								<div>비공개 댓글입니다.</div>
+								<div class="date" style="font-size:14px;">
+									<fmt:parseDate value="${rCVo.rDate}" var="rCDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
+									<fmt:formatDate value="${rCDate}" pattern="yyyy. MM. dd HH:mm" />
+								</div>
+							</div>
+						</div>
+					</c:if>
+				</c:if>
+			</c:forEach>
+			<div class="reply-list-rre" id="rre${rPVo.rIdx}">
+				<form class="reply-write-re" name="replyWrite${rPVo.rIdx}" method="post">
+					<div class="mb-2"><img src="${ctp}/images/user/${sUserImg == null ? 'user_basic.jpg' : sUserImg}" alt="profile" class="mr-2">${sNickName == null ? '익명' : sNickName}</div>
+					<textarea rows="3" name="rContent${rPVo.rIdx}" id="rContent${rPVo.rIdx}" class="form-control" placeholder="작성할 댓글 내용을 입력하세요"></textarea>
+					<div class="reply-write-menu">
+						<div class="custom-control custom-checkbox">
+							<input type="checkbox" class="custom-control-input" id="replySC${rPVo.rIdx}" name="replySC${rPVo.rIdx}" value="비공개" ${rPVo.rPublic == '비공개' ? 'checked' : ''}>
+							<label class="custom-control-label" for="replySC${rPVo.rIdx}">비밀글로 작성</label>
+						</div>
+						<input type="button" value="작성" class="proBtn" onclick="replyWriteCheck2(${rPVo.rIdx})" />
+						<input type="hidden" name="hostIp${rPVo.rIdx}" id="hostIp${rPVo.rIdx}" value="${pageContext.request.remoteAddr}" />
+						<input type="hidden" name="mid${rPVo.rIdx}" id="mid${rPVo.rIdx}" value="${sMid == null ? 'noname' : sMid}" />
+						<input type="hidden" name="nickName${rPVo.rIdx}" id="nickName${rPVo.rIdx}" value="${sNickName == null ? '익명' : sNickName}" />
+						<input type="hidden" name="coIdx${rPVo.rIdx}" id="coIdx${rPVo.rIdx}" value="${coIdx}" />
+						<input type="hidden" name="userMid${rPVo.rIdx}" id="userMid${rPVo.rIdx}" value="${userMid}" />
+					</div>
+				</form>
+			</div>
+		</c:forEach>
+		<c:if test="${sMid == null}">
+			<div class="reply-write">로그인 후 댓글을 작성해주세요.</div>
+		</c:if>
+		<c:if test="${sMid != null}">
+			<form class="reply-write" name="replyWrite" method="post">
+				<div class="mb-2"><img src="${ctp}/images/user/${sUserImg == null ? 'user_basic.jpg' : sUserImg}" alt="profile" class="mr-2">${sNickName == null ? '익명' : sNickName}</div>
+				<textarea rows="3" name="rContent" id="rContent" class="form-control" placeholder="작성할 댓글 내용을 입력하세요"></textarea>
+				<div class="reply-write-menu">
+					<div class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" id="replySC" name="replySC" value="비공개">
+						<label class="custom-control-label" for="replySC">비밀글로 작성</label>
+					</div>
+					<input type="button" value="작성" class="proBtn" onclick="replyWriteCheck()" />
+					<input type="hidden" name="hostIp" id="hostIp" value="${pageContext.request.remoteAddr}" />
+					<input type="hidden" name="mid" id="mid" value="${sMid == null ? 'noname' : sMid}" />
+					<input type="hidden" name="nickName" id="nickName" value="${sNickName == null ? '익명' : sNickName}" />
+					<input type="hidden" name="coIdx" id="coIdx" value="${coIdx}" />
+					<input type="hidden" name="userMid" id="userMid" value="${userMid}" />
+				</div>
+			</form>
+		</c:if>
+		</div>
 	</section>
-    <aside>
+    <aside id="rrrr">
         <div class="profile">
             <img src="${ctp}/images/user/${userImg}" alt="profile">
             <div class="nickName">${nickName}</div>
@@ -250,7 +559,33 @@
         
         <!-- Modal footer -->
         <div class="modal-footer" id="modal-footer">
-        	<button type="button" class="btn btn-danger mr-2" onclick="categoryDelete(${contentVo.coIdx})">삭제</button>
+        	<button type="button" class="btn btn-danger mr-2" onclick="contentDelete(${contentVo.coIdx})">삭제</button>
+          	<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+<!-- 댓글 수정 모달 -->
+  <div class="modal fade" id="myModal2">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalTitle2">댓글 수정</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="modalText2">
+          </div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer" id="modal-footer2">
+        	<button type="button" class="proBtn mr-2" onclick="">수정</button>
           	<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>
         </div>
         

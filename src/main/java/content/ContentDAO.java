@@ -309,6 +309,10 @@ public class ContentDAO {
 				CategoryVO cVo = bDao.getCategoryIdx(vo.getCategoryIdx());
 				vo.setCategoryName(cVo.getCategory());
 				
+				ReplyDAO rDao = new ReplyDAO();
+				int replyCnt = rDao.getReplyCount(vo.getCoIdx());
+				vo.setReplyCnt(replyCnt);
+				
 				vo.setHour_diff(rs.getInt("hour_diff"));
 				vo.setMin_diff(rs.getInt("min_diff"));
 				
@@ -536,6 +540,10 @@ public class ContentDAO {
 				BlogDAO bDao = new BlogDAO();
 				CategoryVO cVo = bDao.getCategoryIdx(vo.getCategoryIdx());
 				vo.setCategoryName(cVo.getCategory());
+				
+				ReplyDAO rDao = new ReplyDAO();
+				int replyCnt = rDao.getReplyCount(vo.getCoIdx());
+				vo.setReplyCnt(replyCnt);
 				
 				vo.setHour_diff(rs.getInt("hour_diff"));
 				vo.setMin_diff(rs.getInt("min_diff"));

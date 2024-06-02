@@ -63,6 +63,7 @@ public class UserLoginOkCommand implements UserInterface {
 		session.setAttribute("sMid", mid);
 		session.setAttribute("sNickName", vo.getNickName());
 		session.setAttribute("sBlogTitle", bVo.getBlogTitle());
+		session.setAttribute("sUserImg", vo.getUserImg());
 		
 		request.setAttribute("title", "로그인 성공");
 		request.setAttribute("message", "<span style='color:#ff7200'>"+vo.getNickName()+"</span>님 에이치로그에 어서오세요!");

@@ -42,7 +42,7 @@
 		                <hr/>
 		                <li class="parent-li"><i class="fa-regular fa-comment mr-2" style="color: #424242;"></i>댓글·방명록</li>
 		                <ul>
-		                    <li>댓글 관리</li>
+		                    <li onclick="location.href='${ctp}/ReplysEdit/${sMid}';">댓글 관리</li>
 		                    <li>방명록 관리</li>
 		                </ul>
 		            </ul>

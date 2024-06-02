@@ -555,4 +555,21 @@
 		cursor: pointer;
 		color: #747474;
 	}
+	.alarmBtn {
+		position: relative;
+	}
+	.new {
+		width: 20px;
+		height: 20px;
+		position: absolute;
+		top: 35px;
+		right: 143px;
+		background-color: #ff7200;
+		color: #fff;
+		z-index: 99;
+		padding: 1px;
+		border-radius: 50%;
+		font-size: 12px;
+		text-align: center;
+	}
 </style>
