@@ -18,7 +18,7 @@ public class ContentImageUpload extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String realPath = request.getServletContext().getRealPath("/images/content");
-        int maxSize = 1024 * 1024 * 10; // 10MB
+        int maxSize = 1024 * 1024 * 15; // 15MB
         String encoding = "UTF-8";
 
         MultipartRequest multipartRequest = new MultipartRequest(request, realPath, maxSize, encoding, new DefaultFileRenamePolicy());

@@ -127,9 +127,9 @@
 		        +'<option ${contentVo.part == "영화/드라마" ? "selected" : ""}>영화/드라마</option>'
 		        +'<option ${contentVo.part == "게임" ? "selected" : ""}>게임</option>'
 		        +'<option ${contentVo.part == "패션/미용" ? "selected" : ""}>패션/미용</option>'
-		        +'<option ${contentVo.part == "비즈니스/경제" ? "selected" : ""}>비즈니스/경제</option>'
+		        +'<option ${contentVo.part == "맛집" ? "selected" : ""}>맛집</option>'
 		        +'<option ${contentVo.part == "육아/결혼" ? "selected" : ""}>육아/결혼</option>'
-		        +'<option ${contentVo.part == "문학/책" ? "selected" : ""}>문학/책</option>'
+		        +'<option ${contentVo.part == "스타/연예인" ? "selected" : ""}>스타/연예인</option>'
 		        +'<option ${contentVo.part == "반려동물" ? "selected" : ""}>반려동물</option>'
 		        +'<option ${contentVo.part == "여행" ? "selected" : ""}>여행</option>'
 		        +'<option ${contentVo.part == "상품리뷰" ? "select" : ""}>상품리뷰</option>'
@@ -238,7 +238,7 @@
 	            ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
 	            ['color', ['forecolor', 'color']],
 	            ['para', ['ul', 'ol', 'paragraph']],
-	            ['insert', ['picture', 'video']],
+	            ['insert', ['picture', 'link', 'video']],
 	            ['view', ['help']]
 	        ],
 	        fontNames: fontList,
@@ -264,7 +264,7 @@
 		// 이미지 업로드
 	    function uploadImage(file) {
 			let fileSize = file.size;
-			let maxSize = 1024 * 1024 * 10;
+			let maxSize = 1024 * 1024 * 15;
 			
 			const imgType = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
 			if(imgType.indexOf(file.type) == -1){
@@ -275,7 +275,7 @@
 			}
 			if(fileSize > maxSize) {
                 $("#myModal #modalTitle").text("파일 오류");
-                $("#myModal #modalText").text("파일의 최대 크기는 10MB입니다!");
+                $("#myModal #modalText").text("파일의 최대 크기는 15MB입니다!");
                 $('#myModal').modal('show');
                 return;
 			}

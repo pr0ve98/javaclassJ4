@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
+<% pageContext.setAttribute("newLine", "\n"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -209,7 +210,7 @@
 	                                +'<p class="user"><span class="user-name">${vo.rNickName}</span>님이 댓글을 남겼습니다.</p>'
 	                                +'<p class="date">${fn:substring(vo.rDate, 0, 10)}</p>'
 	                            +'</div>'
-	                            +'<p class="comment">"${vo.rContent}"</p>'
+	                            +'<p class="comment">"${fn:replace(vo.rContent, newLine, "<br/>")}"</p>'
 	                            +'<p class="title">${vo.coTitle}</p>'
 	                        +'</div>'
 	                    +'</div>'

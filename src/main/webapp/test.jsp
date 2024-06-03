@@ -9,6 +9,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<p><img style="width: 569px;" src="https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F468%2F2023%2F11%2F22%2F0001004870_001_20231122171302639.jpeg&amp;type=sc960_832"></p><p><img style="" src="/javaclassJ4/images/content/yq5pBH0676DtFkl49mHxn94RvZbYiko.jpg"><br></p>
+<p><img style="width: 569px;" src="https://blogfiles.pstatic.net/MjAyNDA1MThfNDkg/MDAxNzE1OTY2NTkwNzQy.DTKgi_1hWZuOiXqvJJ5jC3EioG0zpSirbgRH_phrM2wg.J4Uy2jmQFsFFYhoOItESJDd5pYm3DweSRJqC5erwJW8g.GIF/IMG_7837.GIF"><br></p>
 </body>
 </html>

@@ -40,32 +40,30 @@ public class ReplyDAO {
 	}
 
 	// 댓글 등록
-	public int setReplyInput(int blogIdx, int coIdx, String mid, String nickName, String content,
+	public int setReplyInput(int blogIdx, int coIdx, String mid, String content,
 			String hostIp, String rPublic, int prIdx, int sw) {
 		int res = 0;
 		try {
 			if(sw == 0) {
-				sql = "insert into hbReply values(default, ?, ?, ?, ?, ?, default, ?, null, ?, default)";
+				sql = "insert into hbReply values(default, ?, ?, ?, ?, default, ?, null, ?, default)";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, blogIdx);
 				pstmt.setInt(2, coIdx);
 				pstmt.setString(3, mid);
-				pstmt.setString(4, nickName);
-				pstmt.setString(5, content);
-				pstmt.setString(6, hostIp);
-				pstmt.setString(7, rPublic);
+				pstmt.setString(4, content);
+				pstmt.setString(5, hostIp);
+				pstmt.setString(6, rPublic);
 			}
 			else {
-				sql = "insert into hbReply values(default, ?, ?, ?, ?, ?, default, ?, ?, ?, default)";
+				sql = "insert into hbReply values(default, ?, ?, ?, ?, default, ?, ?, ?, default)";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, blogIdx);
 				pstmt.setInt(2, coIdx);
 				pstmt.setString(3, mid);
-				pstmt.setString(4, nickName);
-				pstmt.setString(5, content);
-				pstmt.setString(6, hostIp);
-				pstmt.setInt(7, prIdx);
-				pstmt.setString(8, rPublic);
+				pstmt.setString(4, content);
+				pstmt.setString(5, hostIp);
+				pstmt.setInt(6, prIdx);
+				pstmt.setString(7, rPublic);
 			}
 			res = pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -91,7 +89,6 @@ public class ReplyDAO {
 				vo.setrBlogIdx(rs.getInt("rBlogIdx"));
 				vo.setrCoIdx(rs.getInt("rCoIdx"));
 				vo.setrMid(rs.getString("rMid"));
-				vo.setrNickName(rs.getString("rNickName"));
 				vo.setrContent(rs.getString("rContent"));
 				vo.setrDate(rs.getString("rDate"));
 				vo.setrHostIp(rs.getString("rHostIp"));
@@ -102,6 +99,7 @@ public class ReplyDAO {
 				UserDAO uDao = new UserDAO();
 				UserVO uVo = uDao.getUserIdCheck(vo.getrMid());
 				vo.setrUserImg(uVo.getUserImg());
+				vo.setrNickName(uVo.getNickName());
 				
 				vos.add(vo);
 			}
@@ -220,7 +218,6 @@ public class ReplyDAO {
 				vo.setrBlogIdx(rs.getInt("rBlogIdx"));
 				vo.setrCoIdx(rs.getInt("rCoIdx"));
 				vo.setrMid(rs.getString("rMid"));
-				vo.setrNickName(rs.getString("rNickName"));
 				vo.setrContent(rs.getString("rContent"));
 				vo.setrDate(rs.getString("rDate"));
 				vo.setrHostIp(rs.getString("rHostIp"));
@@ -231,6 +228,7 @@ public class ReplyDAO {
 				UserDAO uDao = new UserDAO();
 				UserVO uVo = uDao.getUserIdCheck(vo.getrMid());
 				vo.setrUserImg(uVo.getUserImg());
+				vo.setrNickName(uVo.getNickName());
 				
 				ContentDAO cDao = new ContentDAO();
 				ContentVO cVo = cDao.getContent(vo.getrCoIdx());
@@ -277,12 +275,13 @@ public class ReplyDAO {
 	}
 
 	// 읽지않은 댓글들 가져오기
-	public ArrayList<ReplyVO> getNotReadReplys(int blogIdx) {
+	public ArrayList<ReplyVO> getNotReadReplys(int blogIdx, String mid) {
 		ArrayList<ReplyVO> vos = new ArrayList<ReplyVO>();
 		try {
-			sql = "select * from hbReply where rBlogIdx=? and readCheck='읽지않음' order by rIdx desc";
+			sql = "select * from hbReply where rBlogIdx=? and readCheck='읽지않음' and rMid != ? order by rIdx desc";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, blogIdx);
+			pstmt.setString(2, mid);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				vo = new ReplyVO();
@@ -290,7 +289,6 @@ public class ReplyDAO {
 				vo.setrBlogIdx(rs.getInt("rBlogIdx"));
 				vo.setrCoIdx(rs.getInt("rCoIdx"));
 				vo.setrMid(rs.getString("rMid"));
-				vo.setrNickName(rs.getString("rNickName"));
 				vo.setrContent(rs.getString("rContent"));
 				vo.setrDate(rs.getString("rDate"));
 				vo.setrHostIp(rs.getString("rHostIp"));
@@ -300,6 +298,7 @@ public class ReplyDAO {
 				
 				UserDAO uDao = new UserDAO();
 				UserVO uVo = uDao.getUserIdCheck(vo.getrMid());
+				vo.setrNickName(uVo.getNickName());
 				vo.setrUserImg(uVo.getUserImg());
 				
 				ContentDAO cDao = new ContentDAO();
@@ -317,12 +316,13 @@ public class ReplyDAO {
 	}
 
 	// 읽지않은 댓글 수
-	public int getNotReadReplysCnt(int blogIdx) {
+	public int getNotReadReplysCnt(int blogIdx, String mid) {
 		int newReplyCnt = 0;
 		try {
-			sql = "select count(*) as newReplyCnt from hbReply where rBlogIdx=? and readCheck='읽지않음'";
+			sql = "select count(*) as newReplyCnt from hbReply where rBlogIdx=? and readCheck='읽지않음' and rMid != ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, blogIdx);
+			pstmt.setString(2, mid);
 			rs = pstmt.executeQuery();
 			rs.next();
 			newReplyCnt = rs.getInt("newReplyCnt");
@@ -348,7 +348,6 @@ public class ReplyDAO {
 				vo.setrBlogIdx(rs.getInt("rBlogIdx"));
 				vo.setrCoIdx(rs.getInt("rCoIdx"));
 				vo.setrMid(rs.getString("rMid"));
-				vo.setrNickName(rs.getString("rNickName"));
 				vo.setrContent(rs.getString("rContent"));
 				vo.setrDate(rs.getString("rDate"));
 				vo.setrHostIp(rs.getString("rHostIp"));
@@ -359,6 +358,7 @@ public class ReplyDAO {
 				UserDAO uDao = new UserDAO();
 				UserVO uVo = uDao.getUserIdCheck(vo.getrMid());
 				vo.setrUserImg(uVo.getUserImg());
+				vo.setrNickName(uVo.getNickName());
 				
 				ContentDAO cDao = new ContentDAO();
 				ContentVO cVo = cDao.getContent(vo.getrCoIdx());

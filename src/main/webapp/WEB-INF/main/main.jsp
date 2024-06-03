@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
+<% pageContext.setAttribute("newLine", "\n"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -79,7 +80,7 @@
 	                                +'<p class="user"><span class="user-name">${vo.rNickName}</span>님이 댓글을 남겼습니다.</p>'
 	                                +'<p class="date">${fn:substring(vo.rDate, 0, 10)}</p>'
 	                            +'</div>'
-	                            +'<p class="comment">"${vo.rContent}"</p>'
+	                            +'<p class="comment">"${fn:replace(vo.rContent, newLine, "<br/>")}"</p>'
 	                            +'<p class="title">${vo.coTitle}</p>'
 	                        +'</div>'
 	                    +'</div>'
@@ -129,7 +130,7 @@
 	        +'        <span class="b-title">운영중인 블로그</span>'
 	        +'    </div>'
 	        +'    <div class="user_blog">'
-	        +'        <span class="user_blog-title" onclick="location.href=&quot;${ctp}/blog/${sMid}&quot;">${sBlogTitle}</span>'
+	        +'        <span class="user_blog-title" onclick="location.href=&quot;${ctp}/blog/${sMid}&quot;">${blogTitle}</span>'
 	        +'            <div class="user-blog-btn">'
 	        +'        <span class="user_write-icon"><i class="fa-solid fa-pen-to-square fa-sm" style="color: #A6A6A6;" onclick="location.href=&quot;${ctp}/ContentInput/${sMid}&quot;"></i></span>'
 	        +'        <span class="user_settings-icon"><i class="fa-solid fa-gear fa-sm" style="color: #A6A6A6;" onclick="location.href=&quot;BlogEdit/${sMid}&quot;"></i></span>'

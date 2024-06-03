@@ -76,7 +76,7 @@ public class ContentDAO {
 					if(user.equals("주인")) {
 						if(categoryIdx == 0) {
 							sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-									+ "from hbContent where coBlogIdx=? order by coIdx desc limit ?,?";
+									+ "from hbContent where coBlogIdx=? order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setInt(2, startIndexNo);
@@ -84,7 +84,7 @@ public class ContentDAO {
 						}
 						else {
 							sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-									+ "from hbContent where coBlogIdx=? and categoryIdx=? order by coIdx desc limit ?,?";
+									+ "from hbContent where coBlogIdx=? and categoryIdx=? order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setInt(2, categoryIdx);
@@ -95,7 +95,7 @@ public class ContentDAO {
 					else {
 						if(categoryIdx == 0) {
 							sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-									+ "from hbContent where coPublic='공개' and coBlogIdx=? order by coIdx desc limit ?,?";
+									+ "from hbContent where coPublic='공개' and coBlogIdx=? order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setInt(2, startIndexNo);
@@ -103,7 +103,7 @@ public class ContentDAO {
 						}
 						else {
 							sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-									+ "from hbContent where coPublic='공개' and coBlogIdx=? and categoryIdx=? order by coIdx desc limit ?,?";
+									+ "from hbContent where coPublic='공개' and coBlogIdx=? and categoryIdx=? order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setInt(2, categoryIdx);
@@ -116,7 +116,7 @@ public class ContentDAO {
 					if(user.equals("주인")) {
 						if(categoryIdx == 0) {
 							sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-									+ "from hbContent where coBlogIdx=? order by coIdx desc limit ?,?";
+									+ "from hbContent where coBlogIdx=? order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setInt(2, startIndexNo);
@@ -129,7 +129,7 @@ public class ContentDAO {
 								sql += "?,";
 							}
 							sql = sql.substring(0, sql.lastIndexOf(","));
-							sql += ") order by coIdx desc limit ?,?";
+							sql += ") order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setInt(2, categoryIdx);
@@ -145,7 +145,7 @@ public class ContentDAO {
 					else {
 						if(categoryIdx == 0) {
 							sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-									+ "from hbContent where coPublic='공개' and coBlogIdx=? order by coIdx desc limit ?,?";
+									+ "from hbContent where coPublic='공개' and coBlogIdx=? order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setInt(2, startIndexNo);
@@ -158,7 +158,7 @@ public class ContentDAO {
 								sql += "?,";
 							}
 							sql = sql.substring(0, sql.lastIndexOf(","));
-							sql += ") order by coIdx desc limit ?,?";
+							sql += ") order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setInt(2, categoryIdx);
@@ -178,7 +178,7 @@ public class ContentDAO {
 					if(user.equals("주인")) {
 						if(categoryIdx == 0) {
 							sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-									+ "from hbContent where coBlogIdx=? and (title like ? or content like ?) order by coIdx desc limit ?,?";
+									+ "from hbContent where coBlogIdx=? and (title like ? or content like ?) order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setString(2, "%"+search+"%");
@@ -188,7 +188,7 @@ public class ContentDAO {
 						}
 						else {
 							sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-									+ "from hbContent where coBlogIdx=? and categoryIdx=? and (title like ? or content like ?) order by coIdx desc limit ?,?";
+									+ "from hbContent where coBlogIdx=? and categoryIdx=? and (title like ? or content like ?) order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setInt(2, categoryIdx);
@@ -201,7 +201,7 @@ public class ContentDAO {
 					else {
 						if(categoryIdx == 0) {
 							sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-									+ "from hbContent where coPublic='공개' and coBlogIdx=? and (title like ? or content like ?) order by coIdx desc limit ?,?";
+									+ "from hbContent where coPublic='공개' and coBlogIdx=? and (title like ? or content like ?) order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setString(2, "%"+search+"%");
@@ -211,7 +211,7 @@ public class ContentDAO {
 						}
 						else {
 							sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-									+ "from hbContent where coPublic='공개' and coBlogIdx=? and categoryIdx=? and (title like ? or content like ?) order by coIdx desc limit ?,?";
+									+ "from hbContent where coPublic='공개' and coBlogIdx=? and categoryIdx=? and (title like ? or content like ?) order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setInt(2, categoryIdx);
@@ -226,7 +226,7 @@ public class ContentDAO {
 					if(user.equals("주인")) {
 						if(categoryIdx == 0) {
 							sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-									+ "from hbContent where coBlogIdx=? and (title like ? or content like ?) order by coIdx desc limit ?,?";
+									+ "from hbContent where coBlogIdx=? and (title like ? or content like ?) order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setString(2, "%"+search+"%");
@@ -241,7 +241,7 @@ public class ContentDAO {
 								sql += "?,";
 							}
 							sql = sql.substring(0, sql.lastIndexOf(","));
-							sql += ") and (title like ? or content like ?) order by coIdx desc limit ?,?";
+							sql += ") and (title like ? or content like ?) order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setInt(2, categoryIdx);
@@ -259,7 +259,7 @@ public class ContentDAO {
 					else {
 						if(categoryIdx == 0) {
 							sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-									+ "from hbContent where coPublic='공개' and coBlogIdx=? and (title like ? or content like ?) order by coIdx desc limit ?,?";
+									+ "from hbContent where coPublic='공개' and coBlogIdx=? and (title like ? or content like ?) order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setString(2, "%"+search+"%");
@@ -274,7 +274,7 @@ public class ContentDAO {
 								sql += "?,";
 							}
 							sql = sql.substring(0, sql.lastIndexOf(","));
-							sql += ") and (title like ? or content like ?) order by coIdx desc limit ?,?";
+							sql += ") and (title like ? or content like ?) order by wDate desc limit ?,?";
 							pstmt = conn.prepareStatement(sql);
 							pstmt.setInt(1, blogIdx);
 							pstmt.setInt(2, categoryIdx);
@@ -855,7 +855,7 @@ public class ContentDAO {
 		try {
 			sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
 					+ "from hbContent where coBlogIdx in ("+mySubBlog+") AND wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
-							+ "order by coIdx desc limit ?,?";
+							+ "order by wDate desc limit ?,?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, startIndexNo);
 			pstmt.setInt(2, pageSize);

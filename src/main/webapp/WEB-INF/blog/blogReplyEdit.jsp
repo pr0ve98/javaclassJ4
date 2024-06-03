@@ -4,6 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
+<% pageContext.setAttribute("newLine", "\n"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -130,7 +131,7 @@
 							<div class="contentView">
 								<fmt:parseDate value="${vo.rDate}" var="rDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
 								<div style="color:#999999; font-size:14px;"><span style="color:#ff7200">${vo.rNickName}</span> · ${vo.rHostIp} · <fmt:formatDate value="${rDate}" pattern="yyyy. MM. dd HH:mm" /><c:if test="${vo.rPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if></div>
-			                    <c:if test="${vo.parentReplyIdx != 0}"><span style="color:#B2EBF4">[답글]&nbsp;</span></c:if><strong>${vo.rContent}</strong><c:if test="${vo.readCheck == '읽지않음'}"><i class="fa-solid fa-n fa-sm ml-2" style="color: #ff7200;"></i></c:if>
+			                    <c:if test="${vo.parentReplyIdx != 0}"><span style="color:#B2EBF4">[답글]&nbsp;</span></c:if><strong onclick="location.href=&quot;${ctp}/content/ohw1234?coIdx=${vo.rCoIdx}&rIdx=${vo.rIdx}&quot;">${vo.rContent}</strong><c:if test="${vo.readCheck == '읽지않음'}"><i class="fa-solid fa-n fa-sm ml-2" style="color: #ff7200;"></i></c:if>
 								<div style="color:#999999; font-size:14px;">
 									${vo.coTitle}
 								</div>
@@ -189,7 +190,7 @@
 	                                +'<p class="user"><span class="user-name">${nVo.rNickName}</span>님이 댓글을 남겼습니다.</p>'
 	                                +'<p class="date">${fn:substring(nVo.rDate, 0, 10)}</p>'
 	                            +'</div>'
-	                            +'<p class="comment">"${nVo.rContent}"</p>'
+	                            +'<p class="comment">"${fn:replace(nVo.rContent, newLine, "<br/>")}"</p>'
 	                            +'<p class="title">${nVo.coTitle}</p>'
 	                        +'</div>'
 	                    +'</div>'

@@ -37,10 +37,11 @@ public class Main extends HttpServlet {
 		
 		BlogDAO bDao = new BlogDAO();
 		BlogVO bVo = bDao.getUserBlog(mid);
+		request.setAttribute("blogTitle", bVo.getBlogTitle());
 		
 		ReplyDAO rDao = new ReplyDAO();
-		ArrayList<ReplyVO> vos = rDao.getNotReadReplys(bVo.getBlogIdx());
-		int newReplyCnt = rDao.getNotReadReplysCnt(bVo.getBlogIdx());
+		ArrayList<ReplyVO> vos = rDao.getNotReadReplys(bVo.getBlogIdx(), mid);
+		int newReplyCnt = rDao.getNotReadReplysCnt(bVo.getBlogIdx(), mid);
 		
 		request.setAttribute("vos", vos);
 		request.setAttribute("newReplyCnt", newReplyCnt);

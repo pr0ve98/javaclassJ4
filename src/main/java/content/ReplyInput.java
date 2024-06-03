@@ -17,7 +17,6 @@ public class ReplyInput extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mid = request.getParameter("mid")==null ? "noname" : request.getParameter("mid");
-		String nickName = request.getParameter("nickName")==null ? "익명" : request.getParameter("nickName");
 		String hostIp = request.getParameter("hostIp")==null ? "" : request.getParameter("hostIp");
 		String rPublic = request.getParameter("replySC")==null ? "공개" : request.getParameter("replySC");
 		String content = request.getParameter("rContent")==null ? "" : request.getParameter("rContent");
@@ -32,8 +31,8 @@ public class ReplyInput extends HttpServlet {
 		int blogIdx = vo.getBlogIdx();
 		
 		int res = 0;
-		if(sw == 0) res = dao.setReplyInput(blogIdx, coIdx, mid, nickName, content, hostIp, rPublic, 0, sw);
-		else res = dao.setReplyInput(blogIdx, coIdx, mid, nickName, content, hostIp, rPublic, parentReplyIdx, sw);
+		if(sw == 0) res = dao.setReplyInput(blogIdx, coIdx, mid, content, hostIp, rPublic, 0, sw);
+		else res = dao.setReplyInput(blogIdx, coIdx, mid, content, hostIp, rPublic, parentReplyIdx, sw);
 		
 		response.getWriter().write(res+"");
 	}

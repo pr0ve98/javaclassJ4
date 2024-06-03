@@ -50,7 +50,7 @@ public class MainContent extends HttpServlet {
 				  for(BlogVO ranBlog : randomBlogVos) {
 					  responseData += "<div class='sub-blog'>"
 							  +"<img src='"+request.getContextPath()+"/images/user/"+ranBlog.getUserImg()+"' width='100px'/>"
-							  +"<div class='blog-title'>"+ranBlog.getBlogTitle()+"</div>"
+							  +"<div class='blog-title' style='cursor:pointer;' onclick='location.href=\""+request.getContextPath()+"/blog/"+ranBlog.getBlogMid()+"\";'>"+ranBlog.getBlogTitle()+"</div>"
 							  +"<div>"+ranBlog.getNickName()+"</div>"
 							  +"<div class='blog-ment'>"+ranBlog.getBlogIntro()+"</div></div>";
 				  }
@@ -149,9 +149,9 @@ public class MainContent extends HttpServlet {
 			  		+ "					<div><a href=\"#\" class=\"mr-4\">영화·드라마</a></div>\r\n"
 			  		+ "					<div><a href=\"#\" class=\"mr-4\">게임</a></div>\r\n"
 			  		+ "					<div><a href=\"#\" class=\"mr-4\">패션·미용</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\">비즈니스·경제</a></div>\r\n"
+			  		+ "					<div><a href=\"#\" class=\"mr-4\">맛집</a></div>\r\n"
 			  		+ "					<div><a href=\"#\" class=\"mr-4\">육아·결혼</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\">문학·책</a></div>\r\n"
+			  		+ "					<div><a href=\"#\" class=\"mr-4\">스타·연예인</a></div>\r\n"
 			  		+ "					<div><a href=\"#\" class=\"mr-4\">반려동물</a></div>\r\n"
 			  		+ "					<div><a href=\"#\" class=\"mr-4\">여행</a></div>\r\n"
 			  		+ "					<div><a href=\"#\" class=\"mr-4\">상품리뷰</a></div>\r\n"
@@ -203,9 +203,9 @@ public class MainContent extends HttpServlet {
 					  		+ "					<div><a href=\"#\" class=\"mr-4\">영화·드라마</a></div>\r\n"
 					  		+ "					<div><a href=\"#\" class=\"mr-4\">게임</a></div>\r\n"
 					  		+ "					<div><a href=\"#\" class=\"mr-4\">패션·미용</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\">비즈니스·경제</a></div>\r\n"
+					  		+ "					<div><a href=\"#\" class=\"mr-4\">맛집</a></div>\r\n"
 					  		+ "					<div><a href=\"#\" class=\"mr-4\">육아·결혼</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\">문학·책</a></div>\r\n"
+					  		+ "					<div><a href=\"#\" class=\"mr-4\">스타·연예인</a></div>\r\n"
 					  		+ "					<div><a href=\"#\" class=\"mr-4\">반려동물</a></div>\r\n"
 					  		+ "					<div><a href=\"#\" class=\"mr-4\">여행</a></div>\r\n"
 					  		+ "					<div><a href=\"#\" class=\"mr-4\">상품리뷰</a></div>\r\n"

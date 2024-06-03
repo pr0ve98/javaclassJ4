@@ -807,7 +807,7 @@
 		justify-content: space-between;
 	}
 	.custom-select {
-		width: auto;
+		width: 100px;
 	}
 	.pagination {
 	    display: flex;

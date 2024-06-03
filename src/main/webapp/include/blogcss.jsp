@@ -184,6 +184,14 @@
 	    display: flex;
 	    padding: 20px;
 	    position: relative;
+	    gap: 40px;
+	}
+	.post p {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 4;
+		-webkit-box-orient: vertical;
 	}
 	.post-content {
 	    flex: 3;

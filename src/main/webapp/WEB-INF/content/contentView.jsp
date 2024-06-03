@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
+<% pageContext.setAttribute("newLine", "\n"); %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -450,8 +451,8 @@
 		<div class="reply-list" id="reply${rPVo.rIdx}">
 			<c:if test="${rPVo.rUserImg != null}"><img src="${ctp}/images/user/${rPVo.rUserImg}" alt="profile" class="mr-2"></c:if>
 			<c:if test="${rPVo.rUserImg == null}"><img src="${ctp}/images/user/user_basic.jpg" alt="profile" class="mr-2"></c:if>
-			${rPVo.rNickName}<c:if test="${rPVo.rPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if>
-			<div>${rPVo.rContent}</div>
+			<span style="cursor:pointer;" onclick="location.href='${ctp}/blog/${rPVo.rMid}';">${rPVo.rNickName}</span><c:if test="${rPVo.rPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if>
+			<div>${fn:replace(rPVo.rContent, newLine, "<br/>")}</div>
 			<div class="date" style="font-size:14px;">
                	<fmt:parseDate value="${rPVo.rDate}" var="rPDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
 				<fmt:formatDate value="${rPDate}" pattern="yyyy. MM. dd HH:mm" />
@@ -480,8 +481,8 @@
 							<div>
 							<c:if test="${rCVo.rUserImg != null}"><img src="${ctp}/images/user/${rCVo.rUserImg}" alt="profile" class="mr-2"></c:if>
 							<c:if test="${rCVo.rUserImg == null}"><img src="${ctp}/images/user/user_basic.jpg" alt="profile" class="mr-2"></c:if>
-							${rCVo.rNickName}<c:if test="${rCVo.rPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if>
-							<div>${rCVo.rContent}</div>
+							<span style="cursor:pointer;" onclick="location.href='${ctp}/blog/${rCVo.rMid}';">${rCVo.rNickName}</span><c:if test="${rCVo.rPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if>
+							<div>${fn:replace(rCVo.rContent, newLine, "<br/>")}</div>
 							<div class="date" style="font-size:14px;">
 								<fmt:parseDate value="${rCVo.rDate}" var="rCDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
 								<fmt:formatDate value="${rCDate}" pattern="yyyy. MM. dd HH:mm" />

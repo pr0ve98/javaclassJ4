@@ -126,9 +126,9 @@
 		        +'<option>영화/드라마</option>'
 		        +'<option>게임</option>'
 		        +'<option>패션/미용</option>'
-		        +'<option>비즈니스/경제</option>'
+		        +'<option>맛집</option>'
 		        +'<option>육아/결혼</option>'
-		        +'<option>문학/책</option>'
+		        +'<option>스타/연예인</option>'
 		        +'<option>반려동물</option>'
 		        +'<option>여행</option>'
 		        +'<option>상품리뷰</option>'
@@ -251,7 +251,7 @@
 	            ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
 	            ['color', ['forecolor', 'color']],
 	            ['para', ['ul', 'ol', 'paragraph']],
-	            ['insert', ['picture', 'video']],
+	            ['insert', ['picture', 'link', 'video']],
 	            ['view', ['help']]
 	        ],
 	        fontNames: fontList,
@@ -282,7 +282,7 @@
 		// 이미지 업로드
 	    function uploadImage(file) {
 			let fileSize = file.size;
-			let maxSize = 1024 * 1024 * 10;
+			let maxSize = 1024 * 1024 * 15;
 			
 			const imgType = ['image/jpg', 'image/jpeg', 'image/png', 'image/gif'];
 			if(imgType.indexOf(file.type) == -1){
@@ -293,7 +293,7 @@
 			}
 			if(fileSize > maxSize) {
                 $("#myModal #modalTitle").text("파일 오류");
-                $("#myModal #modalText").text("파일의 최대 크기는 10MB입니다!");
+                $("#myModal #modalText").text("파일의 최대 크기는 15MB입니다!");
                 $('#myModal').modal('show');
                 return;
 			}

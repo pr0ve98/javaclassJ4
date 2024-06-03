@@ -61,8 +61,8 @@ public class ContentsEdit extends HttpServlet {
         request.setAttribute("cCVos", cCVos);
         
 		ReplyDAO rDao = new ReplyDAO();
-		ArrayList<ReplyVO> vos = rDao.getNotReadReplys(bVo.getBlogIdx());
-		int newReplyCnt = rDao.getNotReadReplysCnt(bVo.getBlogIdx());
+		ArrayList<ReplyVO> vos = rDao.getNotReadReplys(bVo.getBlogIdx(), sMid);
+		int newReplyCnt = rDao.getNotReadReplysCnt(bVo.getBlogIdx(), sMid);
 		
 		request.setAttribute("vos", vos);
 		request.setAttribute("newReplyCnt", newReplyCnt);
