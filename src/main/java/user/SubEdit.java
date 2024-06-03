@@ -1,14 +1,7 @@
-package blog;
+package user;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,21 +11,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import blog.BlogDAO;
+import blog.BlogVO;
 import content.ReplyDAO;
 import content.ReplyVO;
-import user.UserDAO;
-import user.UserVO;
 
 @SuppressWarnings("serial")
-@WebServlet("/BlogEdit/*")
-public class BlogEditServlet extends HttpServlet {
+@WebServlet("/SubEdit/*")
+public class SubEdit extends HttpServlet {
+
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BlogDAO bDao = new BlogDAO();
 		UserDAO uDao = new UserDAO();
 		RequestDispatcher dispatcher = null;
-		String viewPage = "/WEB-INF/blog/blogEdit.jsp";
-		
 		HttpSession session = request.getSession();
 		String sMid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
 		
@@ -45,21 +37,50 @@ public class BlogEditServlet extends HttpServlet {
             dispatcher.forward(request, response);
             return;
         }
-        
+		
         BlogVO bVo = bDao.getUserBlog(mid);
         UserVO uVo = uDao.getUserIdCheck(mid);
-        
         request.setAttribute("bVo", bVo);
         request.setAttribute("uVo", uVo);
         
+        // 페이지네이션 처리
+    	int page = request.getParameter("page")==null ? 1 : Integer.parseInt(request.getParameter("page"));
+    	int pageSize = request.getParameter("pageSize")==null ? 10 : Integer.parseInt(request.getParameter("pageSize"));
+    	
+    	int totRecCnt = uDao.getSubCnt(mid);
+    	
+		int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize)+1;
+		if(page > totPage) page = 1;
+		int startIndexNo = (page - 1) * pageSize;
+		int curScrStartNo = totRecCnt - startIndexNo;
+		int blockSize = 10;
+		int curBlock = (page - 1) / blockSize;
+		int lastBlock = (totPage - 1) / blockSize;
+		
+		request.setAttribute("page", page);
+		request.setAttribute("pageSize", pageSize);
+		request.setAttribute("totRecCnt", totRecCnt);
+		request.setAttribute("totPage", totPage);
+		request.setAttribute("curScrStartNo", curScrStartNo);
+		request.setAttribute("blockSize", blockSize);
+		request.setAttribute("curBlock", curBlock);
+		request.setAttribute("lastBlock", lastBlock);
+        
+		ArrayList<SubVO> vos = uDao.getSubAllList(startIndexNo, pageSize, mid); // 전체 구독한 블로그
+		request.setAttribute("vos", vos);
+		
 		ReplyDAO rDao = new ReplyDAO();
-		ArrayList<ReplyVO> vos = rDao.getNotReadReplys(bVo.getBlogIdx());
+		ArrayList<ReplyVO> nVos = rDao.getNotReadReplys(bVo.getBlogIdx());
 		int newReplyCnt = rDao.getNotReadReplysCnt(bVo.getBlogIdx());
 		
-		request.setAttribute("vos", vos);
+		request.setAttribute("nVos", nVos);
 		request.setAttribute("newReplyCnt", newReplyCnt);
         
-        dispatcher = request.getRequestDispatcher(viewPage);
-        dispatcher.forward(request, response);
+		String viewPage = "/WEB-INF/blog/blogSubEdit.jsp";
+	    dispatcher = request.getRequestDispatcher(viewPage);
+	    dispatcher.forward(request, response);
+		
 	}
+
 }
+

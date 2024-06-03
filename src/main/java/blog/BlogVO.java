@@ -7,6 +7,9 @@ public class BlogVO {
 	private String blogIntro;
 	private int totalVisit;
 	private int todayVisit;
+	
+	private String userImg;
+	private String nickName;
 
 	public int getBlogIdx() {
 		return blogIdx;
@@ -56,12 +59,27 @@ public class BlogVO {
 		this.todayVisit = todayVisit;
 	}
 
+	public String getUserImg() {
+		return userImg;
+	}
+
+	public void setUserImg(String userImg) {
+		this.userImg = userImg;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+
 	@Override
 	public String toString() {
 		return "BlogVO [blogIdx=" + blogIdx + ", blogMid=" + blogMid + ", blogTitle=" + blogTitle + ", blogIntro="
-				+ blogIntro + ", totalVisit=" + totalVisit + ", todayVisit=" + todayVisit + "]";
+				+ blogIntro + ", totalVisit=" + totalVisit + ", todayVisit=" + todayVisit + ", userImg=" + userImg
+				+ ", nickName=" + nickName + "]";
 	}
-	
-	
 	
 }

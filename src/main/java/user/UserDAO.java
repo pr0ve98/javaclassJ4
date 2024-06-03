@@ -5,7 +5,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import blog.BlogDAO;
+import blog.BlogVO;
 import common.GetConn;
 
 public class UserDAO {
@@ -259,4 +262,151 @@ public class UserDAO {
 		}
 		return res;
 	}
+
+	// 블로그 구독
+	public int setUserSubInput(String sMid, int blogIdx) {
+		int res = 0;
+		try {
+			sql = "insert into hbSub values(default, ?, ?)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, blogIdx);
+			pstmt.setString(2, sMid);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
+	// 블로그 구독 확인
+	public SubVO getBlogsub(String sMid, int blogIdx) {
+		SubVO vo = new SubVO();
+		try {
+			sql = "select * from hbSub where sBlogIdx=? and subMid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, blogIdx);
+			pstmt.setString(2, sMid);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				vo.setsIdx(rs.getInt("sIdx"));
+				vo.setsBlogIdx(rs.getInt("sBlogIdx"));
+				vo.setSubMid(rs.getString("subMid"));
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vo;
+	}
+
+	// 구독 해제
+	public int setUserSubDelete(String sMid, int blogIdx) {
+		int res = 0;
+		try {
+			sql = "delete from hbSub where sBlogIdx=? and subMid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, blogIdx);
+			pstmt.setString(2, sMid);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
+	// 유저가 구독한 블로그들
+	public ArrayList<SubVO> getMySubBlog(String sMid) {
+		ArrayList<SubVO> vos = new ArrayList<SubVO>();
+		try {
+			sql = "select * from hbSub where subMid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, sMid);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				SubVO vo = new SubVO();
+				vo.setsIdx(rs.getInt("sIdx"));
+				vo.setsBlogIdx(rs.getInt("sBlogIdx"));
+				vo.setSubMid(rs.getString("subMid"));
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+
+	// 유저가 구독한 블로그들 관리페이지에서 총 블로그 수
+	public int getSubCnt(String mid) {
+		int totRecCnt = 0;
+		try {
+			sql = "select count(*) as allSubCnt from hbSub where subMid=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			rs = pstmt.executeQuery();
+			rs.next();
+			totRecCnt = rs.getInt("allSubCnt");
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return totRecCnt;
+	}
+
+	public ArrayList<SubVO> getSubAllList(int startIndexNo, int pageSize, String mid) {
+		ArrayList<SubVO> vos = new ArrayList<SubVO>();
+		try {
+			sql = "select * from hbSub where subMid=? limit ?,?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, mid);
+			pstmt.setInt(2, startIndexNo);
+			pstmt.setInt(3, pageSize);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				SubVO vo = new SubVO();
+				vo.setsIdx(rs.getInt("sIdx"));
+				vo.setsBlogIdx(rs.getInt("sBlogIdx"));
+				vo.setSubMid(rs.getString("subMid"));
+				
+				BlogDAO bDao = new BlogDAO();
+				BlogVO bVo = bDao.getBlogIdx(vo.getsBlogIdx());
+				vo.setsBlogTitle(bVo.getBlogTitle());
+				vo.setsBlogIntro(bVo.getBlogIntro());
+				
+				UserDAO uDao = new UserDAO();
+				UserVO uVo = uDao.getUserIdCheck(bVo.getBlogMid());
+				vo.setsNickName(uVo.getNickName());
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+
+	// 구독 전부 취소
+	public int setSubsDelete(String checkedsIdx) {
+		int res = 0;
+		try {
+			sql = "delete from hbSub where sIdx in ("+checkedsIdx+")";
+			pstmt = conn.prepareStatement(sql);
+			res = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return res;
+	}
+
 }

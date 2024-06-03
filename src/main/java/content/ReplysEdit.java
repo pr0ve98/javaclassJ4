@@ -74,6 +74,13 @@ public class ReplysEdit extends HttpServlet {
 		ArrayList<ReplyVO> vos = rDao.getReplyAllList(startIndexNo, pageSize, blogIdx, search, part); // 전체댓글
 		
 		request.setAttribute("vos", vos);
+		
+		ArrayList<ReplyVO> nVos = rDao.getNotReadReplys(bVo.getBlogIdx());
+		int newReplyCnt = rDao.getNotReadReplysCnt(bVo.getBlogIdx());
+		
+		request.setAttribute("nVos", nVos);
+		request.setAttribute("newReplyCnt", newReplyCnt);
+        
         
 		String viewPage = "/WEB-INF/blog/blogReplyEdit.jsp";
 	    dispatcher = request.getRequestDispatcher(viewPage);

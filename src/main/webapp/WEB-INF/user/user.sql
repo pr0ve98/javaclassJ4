@@ -19,3 +19,12 @@ create table hbUser (
 desc hbUser;
 
 drop table hbUser;
+
+create table hbSub (
+	sIdx int not null auto_increment,
+	sBlogIdx int not null,
+	subMid varchar(20) not null,
+	primary key (sIdx),
+	foreign key(sBlogIdx) references hbBlog(blogIdx) on delete cascade,
+	foreign key(subMid) references hbUser(mid)
+);

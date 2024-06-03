@@ -7,8 +7,11 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import blog.BlogDAO;
+import blog.BlogVO;
 import blog.CategoryVO;
 import common.GetConn;
+import user.UserDAO;
+import user.UserVO;
 
 public class ContentDAO {
 	private Connection conn = GetConn.getConn();
@@ -844,6 +847,78 @@ public class ContentDAO {
 			pstmtClose();
 		}
 		return res;
+	}
+
+	// 구독한 블로그들 일주일 내 게시글 다 가져오기
+	public ArrayList<ContentVO> getSubContents(int startIndexNo, int pageSize, String mySubBlog, String sMid) {
+		ArrayList<ContentVO> vos = new ArrayList<ContentVO>();
+		try {
+			sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+					+ "from hbContent where coBlogIdx in ("+mySubBlog+") AND wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+							+ "order by coIdx desc limit ?,?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, startIndexNo);
+			pstmt.setInt(2, pageSize);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				ContentVO vo = new ContentVO();
+				vo.setCoIdx(rs.getInt("coIdx"));
+				vo.setCoBlogIdx(rs.getInt("coBlogIdx"));
+				vo.setCategoryIdx(rs.getInt("categoryIdx"));
+				vo.setTitle(rs.getString("title"));
+				vo.setPart(rs.getString("part"));
+				vo.setwDate(rs.getString("wDate"));
+				vo.setViewCnt(rs.getInt("viewCnt"));
+				vo.setContent(rs.getString("content"));
+				vo.setCtPreview(rs.getString("ctPreview"));
+				vo.setcHostIp(rs.getString("cHostIp"));
+				vo.setCoPublic(rs.getString("coPublic"));
+				vo.setImgName(rs.getString("imgName"));
+				
+				BlogDAO bDao = new BlogDAO();
+				CategoryVO cVo = bDao.getCategoryIdx(vo.getCategoryIdx());
+				vo.setCategoryName(cVo.getCategory());
+				
+				BlogVO bVo = bDao.getBlogIdx(vo.getCoBlogIdx());
+				
+				UserDAO uDao = new UserDAO();
+				UserVO uVo = uDao.getUserIdCheck(bVo.getBlogMid());
+				vo.setUserMid(uVo.getMid());
+				vo.setUserImg(uVo.getUserImg());
+				vo.setNickName(uVo.getNickName());
+				
+				ReplyDAO rDao = new ReplyDAO();
+				int replyCnt = rDao.getReplyCount(vo.getCoIdx());
+				vo.setReplyCnt(replyCnt);
+				
+				vo.setHour_diff(rs.getInt("hour_diff"));
+				vo.setMin_diff(rs.getInt("min_diff"));
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+
+	// 구독한 블로그들의 총 게시글 수
+	public int getSubContentCnt(String mySubBlog, String sMid) {
+		int totRecCnt = 0;
+		try {
+			sql = "select count(*) as subContentCnt from hbContent where coBlogIdx in ("+mySubBlog+") and coPublic='공개' AND wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			rs.next();
+			totRecCnt = rs.getInt("subContentCnt");
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			pstmtClose();
+		}
+		return totRecCnt;
 	}
 
 

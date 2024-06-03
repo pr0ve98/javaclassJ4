@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
 <!DOCTYPE html>
 <html>
@@ -36,10 +37,13 @@
 	
 	// 구독/인기/최신 블로그글 부분 로드
 	function loadContent(nav, category) {
+		let page = ${page}
+		let pageSize = ${pageSize}
+		
 			$.ajax({
 			url: "MainContent",
 			method: "GET",
-			data: { nav: nav, category: category },
+			data: { nav: nav, category: category, page:page, pageSize:pageSize},
 			success: function(res) {
 			  $("#main-blog").html(res);
 			},
@@ -64,15 +68,16 @@
 	    if (!alarmHeaderLayer) {
 	        let headerLayer = document.createElement('div');
 	        headerLayer.className = 'header_layer layer_news';
-	        headerLayer.innerHTML = '<div class="notification-top">새소식 <font color="#ff7200">${newReplyCnt}</font></div><hr class="notification-hr"/>'
+	        headerLayer.innerHTML = '<div class="notification-top">새소식 &nbsp;<font color="#ff7200">${newReplyCnt}</font></div><hr class="notification-hr"/>'
 	                +'<div class="notification-list">'
+	                +'<c:if test="${fn:length(vos) == 0}"><div class="text-center" style="margin-top:170px;">새 소식이 없습니다.</div></c:if>'
 	                +'<c:forEach var="vo" items="${vos}">'
 	                    +'<div class="notification" onclick="location.href=&quot;${ctp}/content/${sMid}?coIdx=${vo.rCoIdx}&rIdx=${vo.rIdx}&quot;">'
 	                        +'<img src="${ctp}/images/user/${vo.rUserImg}" alt="프로필 사진" class="profile-pic">'
 	                        +'<div class="notification-content">'
 	                            +'<div class="notification-header">'
 	                                +'<p class="user"><span class="user-name">${vo.rNickName}</span>님이 댓글을 남겼습니다.</p>'
-	                                +'<p class="date">2023.04.18</p>'
+	                                +'<p class="date">${fn:substring(vo.rDate, 0, 10)}</p>'
 	                            +'</div>'
 	                            +'<p class="comment">"${vo.rContent}"</p>'
 	                            +'<p class="title">${vo.coTitle}</p>'
@@ -150,6 +155,62 @@
 	        document.removeEventListener('click', handleClickOutsideProfile);
 	    }
 	}
+	
+	function subOk(sMid, blogIdx) {
+		$.ajax({
+			url : "${ctp}/Subscribe/"+sMid,
+			type : "post",
+			data : {blogIdx : blogIdx},
+			success : function(res) {
+				if(res != "0"){
+					$("#myModal #modalTitle").text("블로그 구독");
+					$("#myModal #modalText").text("구독에 성공했어요!");
+				    $('#myModal').modal('show');
+				    $('#myModal').on('hide.bs.modal', function () {
+			            location.reload();
+			        });
+				}
+				else {
+					$("#myModal #modalTitle").text("블로그 구독");
+					$("#myModal #modalText").text("구독에 실패했어요...");
+				    $('#myModal').modal('show');
+				}
+			},
+			error : function() {
+				$("#myModal #modalTitle").text("오류");
+				$("#myModal #modalText").text("전송 오류!");
+			    $('#myModal').modal('show');
+			}
+		});
+	}
+	
+	function subDelete(sMid, blogIdx) {
+		$.ajax({
+			url : "${ctp}/SubscribeDelete/"+sMid,
+			type : "post",
+			data : {blogIdx : blogIdx},
+			success : function(res) {
+				if(res != "0"){
+					$("#myModal #modalTitle").text("블로그 구독");
+					$("#myModal #modalText").text("구독 해제에 성공했어요!");
+				    $('#myModal').modal('show');
+				    $('#myModal').on('hide.bs.modal', function () {
+			            location.reload();
+			        });
+				}
+				else {
+					$("#myModal #modalTitle").text("블로그 구독");
+					$("#myModal #modalText").text("구독 해제에 실패했어요...");
+				    $('#myModal').modal('show');
+				}
+			},
+			error : function() {
+				$("#myModal #modalTitle").text("오류");
+				$("#myModal #modalText").text("전송 오류!");
+			    $('#myModal').modal('show');
+			}
+		});
+	}
 </script>
 </head>
 <body class="body-layout">
@@ -176,10 +237,34 @@
 		<div class="container-fluid">
 			<div class="content-list">
 				<hr/>
-				<div id="main-blog" class="main-blog"></div>
+				<div id="main-blog" class="main-blog">
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="footer">footer</div>
+	<!-- 모달 -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalTitle"></h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="modalText"></div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer" id="modal-footer">
+          	<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </body>
 </html>

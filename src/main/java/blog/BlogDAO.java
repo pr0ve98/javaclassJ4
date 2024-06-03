@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import common.GetConn;
+import user.UserDAO;
+import user.UserVO;
 
 public class BlogDAO {
 	private Connection conn = GetConn.getConn();
@@ -336,5 +338,58 @@ public class BlogDAO {
 		}
 		return res;
 	}
-	
+
+	// 랜덤으로 블로그 6개 가져오기
+	public ArrayList<BlogVO> getRandomBlog(int myblogIdx) {
+		ArrayList<BlogVO> vos = new ArrayList<BlogVO>();
+		try {
+			sql = "select * from hbBlog WHERE blogIdx != ?  order by RAND() limit 6";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, myblogIdx);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				BlogVO vo = new BlogVO();
+				vo.setBlogIdx(rs.getInt("blogIdx"));
+				vo.setBlogMid(rs.getString("blogMid"));
+				vo.setBlogTitle(rs.getString("blogTitle"));
+				vo.setBlogIntro(rs.getString("blogIntro"));
+				vo.setTotalVisit(rs.getInt("totalVisit"));
+				
+				UserDAO uDao = new UserDAO();
+				UserVO uVo = uDao.getUserIdCheck(vo.getBlogMid());
+				vo.setUserImg(uVo.getUserImg());
+				vo.setNickName(uVo.getNickName());
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+
+	public BlogVO getBlogIdx(int BlogIdx) {
+		BlogVO vo = new BlogVO();
+		try {
+			sql = "select * from hbBlog where blogIdx=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, BlogIdx);
+			rs = pstmt.executeQuery();
+			if(rs.next()) {
+				vo.setBlogIdx(rs.getInt("blogIdx"));
+				vo.setBlogMid(rs.getString("blogMid"));
+				vo.setBlogTitle(rs.getString("blogTitle"));
+				vo.setBlogIntro(rs.getString("blogIntro"));
+				vo.setTotalVisit(rs.getInt("totalVisit"));
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vo;
+	}
+
 }

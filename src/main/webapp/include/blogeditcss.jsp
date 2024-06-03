@@ -712,7 +712,8 @@
 	
 	
 	.notification-top {
-		padding: 10px;
+		padding: 10px 10px 10px 20px;
+		font-family: 'Pretendard-Medium';
 	}
 	.notification-hr {
 	    margin: 0;
@@ -836,5 +837,22 @@
 	
 	.pagination a:hover:not(.active) {
 	    background-color: #ddd;
+	}
+	.alarmBtn {
+		position: relative;
+	}
+	.new-edit {
+		width: 20px;
+		height: 20px;
+		position: absolute;
+		top: 25px;
+		right: 143px;
+		background-color: #ff7200;
+		color: #fff;
+		z-index: 99;
+		padding: 1px;
+		border-radius: 50%;
+		font-size: 12px;
+		text-align: center;
 	}
 </style>

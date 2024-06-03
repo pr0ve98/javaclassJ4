@@ -26,6 +26,8 @@ public class Main extends HttpServlet {
 		HttpSession session = request.getSession();
 		String mid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
 		String nickName = session.getAttribute("sNickName")==null ? "" : (String)session.getAttribute("sNickName");
+		int page = request.getParameter("page")==null ? 1 : Integer.parseInt(request.getParameter("page"));
+	     int pageSize = request.getParameter("pageSize")==null ? 10 : Integer.parseInt(request.getParameter("pageSize"));
 		
 		if(!mid.equals("")) {
 			UserDAO dao = new UserDAO();
@@ -42,6 +44,8 @@ public class Main extends HttpServlet {
 		
 		request.setAttribute("vos", vos);
 		request.setAttribute("newReplyCnt", newReplyCnt);
+		request.setAttribute("page", page);
+		request.setAttribute("pageSize", pageSize);
 		
 		String viewPage = "/WEB-INF/main/main.jsp";
 		RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);

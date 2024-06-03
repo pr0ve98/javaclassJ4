@@ -17,6 +17,22 @@
 	'use strict';
 	
     $(document).ready(function() {
+    	const replyCheck = ${rIdx};
+
+        if(replyCheck && replyCheck !== 'null'){
+            const targetElement = $('#reply' + replyCheck);
+
+            // 요소가 렌더링된 후에 스크롤 위치 설정
+            setTimeout(function() {
+                if (targetElement.length) {
+                    // 요소로 스크롤
+                    $('html, body').scrollTop(targetElement.offset().top);
+                    // reply-active 클래스 추가
+                    targetElement.addClass('reply-active');
+                }
+            }, 500); // 500ms 지연
+        }
+    	
         let sw2 = localStorage.getItem('replyViewState');
         if (sw2 == 1) {
             $("#replys").show();
@@ -272,10 +288,72 @@
 	        });
 	    }
 	});
+	
+	function subOk() {
+		$.ajax({
+			url : "${ctp}/Subscribe/${sMid}",
+			type : "post",
+			data : {blogIdx : ${bVo.blogIdx}},
+			success : function(res) {
+				if(res != "0"){
+					$("#myModal #modalTitle").text("블로그 구독");
+					$("#myModal #modalText").text("구독에 성공했어요!");
+					$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+				    $('#myModal').modal('show');
+				    $('#myModal').on('hide.bs.modal', function () {
+			            location.reload();
+			        });
+				}
+				else {
+					$("#myModal #modalTitle").text("블로그 구독");
+					$("#myModal #modalText").text("구독에 실패했어요...");
+					$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+				    $('#myModal').modal('show');
+				}
+			},
+			error : function() {
+				$("#myModal #modalTitle").text("오류");
+				$("#myModal #modalText").text("전송 오류!");
+				$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+			    $('#myModal').modal('show');
+			}
+		});
+	}
+	
+	function subDelete() {
+		$.ajax({
+			url : "${ctp}/SubscribeDelete/${sMid}",
+			type : "post",
+			data : {blogIdx : ${bVo.blogIdx}},
+			success : function(res) {
+				if(res != "0"){
+					$("#myModal #modalTitle").text("블로그 구독");
+					$("#myModal #modalText").text("구독 해제에 성공했어요!");
+					$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+				    $('#myModal').modal('show');
+				    $('#myModal').on('hide.bs.modal', function () {
+			            location.reload();
+			        });
+				}
+				else {
+					$("#myModal #modalTitle").text("블로그 구독");
+					$("#myModal #modalText").text("구독 해제에 실패했어요...");
+					$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+				    $('#myModal').modal('show');
+				}
+			},
+			error : function() {
+				$("#myModal #modalTitle").text("오류");
+				$("#myModal #modalText").text("전송 오류!");
+				$("#myModal #modal-footer").html('<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>');
+			    $('#myModal').modal('show');
+			}
+		});
+	}
 </script>
 <style>
 	.reply-active {
-		background-color: yellow;
+		background-color: rgba(255, 255, 0, 0.2);
 	}
 </style>
 </head>
@@ -472,7 +550,7 @@
 		</c:if>
 		</div>
 	</section>
-    <aside id="rrrr">
+    <aside>
         <div class="profile">
             <img src="${ctp}/images/user/${userImg}" alt="profile">
             <div class="nickName">${nickName}</div>
@@ -482,6 +560,17 @@
 	        <div class="actions">
 		        <div class="action-link" onclick="location.href='${ctp}/ContentInput/${sMid}';"><i class="fas fa-pencil-alt"></i> 글쓰기</div>
 		        <div class="action-link" onclick="location.href='${ctp}/BlogEdit/${sMid}';"><i class="fas fa-cogs"></i> 블로그 관리</div>
+	    	</div>
+	    	</c:if>
+	    	<c:if test="${userMid != sMid}">
+	    	<hr/>
+	    	<div class="actions">
+	    		<c:if test="${sVo.subMid == sMid && sVo.subMid != null}">
+	    			<div class="action-link active" onclick="subDelete()"><i class="fa-solid fa-check"></i> 구독해제</div>
+	    		</c:if>
+	    		<c:if test="${sVo.subMid != sMid || sVo.subMid == null}">
+	    			<div class="action-link" onclick="subOk()"><i class="fa-solid fa-check"></i> 구독하기</div>
+	    		</c:if>
 	    	</div>
 	    	</c:if>
         </div>

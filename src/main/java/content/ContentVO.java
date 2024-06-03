@@ -18,6 +18,9 @@ public class ContentVO {
 	private int hour_diff;
 	private int min_diff;
 	private int replyCnt;
+	private String nickName;
+	private String userImg;
+	private String userMid;
 	
 	public int getCoIdx() {
 		return coIdx;
@@ -115,14 +118,34 @@ public class ContentVO {
 	public void setReplyCnt(int replyCnt) {
 		this.replyCnt = replyCnt;
 	}
+	public String getNickName() {
+		return nickName;
+	}
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
+	public String getUserImg() {
+		return userImg;
+	}
+	public void setUserImg(String userImg) {
+		this.userImg = userImg;
+	}
+	public String getUserMid() {
+		return userMid;
+	}
+	public void setUserMid(String userMid) {
+		this.userMid = userMid;
+	}
 	@Override
 	public String toString() {
 		return "ContentVO [coIdx=" + coIdx + ", coBlogIdx=" + coBlogIdx + ", categoryIdx=" + categoryIdx + ", title="
 				+ title + ", part=" + part + ", wDate=" + wDate + ", viewCnt=" + viewCnt + ", content=" + content
 				+ ", ctPreview=" + ctPreview + ", cHostIp=" + cHostIp + ", coPublic=" + coPublic + ", imgName="
 				+ imgName + ", categoryName=" + categoryName + ", hour_diff=" + hour_diff + ", min_diff=" + min_diff
-				+ ", replyCnt=" + replyCnt + "]";
+				+ ", replyCnt=" + replyCnt + ", nickName=" + nickName + ", userImg=" + userImg + ", userMid=" + userMid
+				+ "]";
 	}
 
+	
 
 }

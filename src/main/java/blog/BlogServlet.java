@@ -1,7 +1,6 @@
 package blog;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -15,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import common.Pagination;
 import common.VisitManager;
-import content.ContentDAO;
+import user.SubVO;
 import user.UserDAO;
 import user.UserVO;
 
@@ -40,7 +39,6 @@ public class BlogServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		BlogDAO bDao = new BlogDAO();
 		UserDAO uDao = new UserDAO();
-		ContentDAO coDao = new ContentDAO();
 		RequestDispatcher dispatcher = null;
 		HttpSession session = request.getSession();
 		
@@ -56,7 +54,6 @@ public class BlogServlet extends HttpServlet {
         String sMid = session.getAttribute("sMid")==null ? "" : (String)session.getAttribute("sMid");
         String mid = pathInfo.substring(1); // 슬래시 빼고 뒤에 아이디만 추출
         String hostIp = request.getRemoteAddr();
-        LocalDateTime now = LocalDateTime.now();
         
         // 블로그별 방문자 맵 가져오기
         visitManager.recordVisit(mid, hostIp, sMid);
@@ -86,6 +83,10 @@ public class BlogServlet extends HttpServlet {
     	String search = request.getParameter("search")==null ? "" : request.getParameter("search");
     			
     	Pagination.pageChange(request, page, pageSize, user, bVo.getBlogIdx(), categoryIdx, search);
+    	
+    	// 방문자가 이 블로그를 구독했는지
+    	SubVO sVo = uDao.getBlogsub(sMid, bVo.getBlogIdx());
+    	request.setAttribute("sVo", sVo);
         	
         String userMid = uVo.getMid();
         String nickName = uVo.getNickName();

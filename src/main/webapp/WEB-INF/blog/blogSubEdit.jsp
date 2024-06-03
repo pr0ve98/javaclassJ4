@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${bVo.blogTitle} - 댓글 관리</title>
+<title>${bVo.blogTitle} - 구독 관리</title>
 <link rel="icon" type="image/x-icon" href="${ctp}/images/favicon.ico">
 <%@ include file="/include/bs4.jsp"%>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
@@ -23,15 +23,6 @@
 		border-top: 1px solid rgba(0, 0, 0, .125);
 		border-bottom: 1px solid rgba(0, 0, 0, .125);
 	}
-	.header-right input[type="text"] {
-		width: 50%;
-	    padding-right: 30px;
-	    border: 1px solid #ced4da;
-	    border-radius: .25rem;
-	    outline: none;
-	    font-size: 16px;
-	    margin-right: 15px;
-	}
 	.header-right button {
 	    background: none;
 	    border: none;
@@ -40,10 +31,6 @@
 	    color: #D5D5D5;
 	    position: relative;
 	    right: 10px;
-	}
-	.header-right input[type="text"]::placeholder {
-		padding-left: 5px;
-	    color: #D5D5D5;
 	}
 	.header-left, .header-right {
 		align-items: center;
@@ -84,14 +71,14 @@
 		                <hr/>
 		                <li class="parent-li active"><i class="fa-regular fa-comment mr-2"></i>댓글·구독</li>
 		                <ul>
-		                    <li class="active" onclick="location.href='${ctp}/ReplysEdit/${sMid}';">댓글 관리</li>
-		                    <li  onclick="location.href='${ctp}/SubEdit/${sMid}';">구독 관리</li>
+		                    <li onclick="location.href='${ctp}/ReplysEdit/${sMid}';">댓글 관리</li>
+		                    <li class="active" onclick="location.href='${ctp}/SubEdit/${sMid}';">구독 관리</li>
 		                </ul>
 		            </ul>
 		        </nav>
 		    </div>
 		    <div class="main-content">
-		        <h1>글 관리</h1>
+		        <h1>구독 관리</h1>
 		        <div class="category-manager mb-3">
 					<div class="contentEdit mb-3">
 						<div class="header-left">
@@ -99,44 +86,34 @@
 								<input type="checkbox" class="custom-control-input" id="allCheck" name="example1" onclick="checkboxAllCheck()">
 								<label class="custom-control-label" for="allCheck"></label>
 							</div>
-							<select name="change" class="custom-select custom-select-sm" onchange="ReplyChange()">
+							<select name="change" class="custom-select custom-select-sm" onchange="SubChange()">
 								<option value="0" selected>변경</option>
-								<option>읽음</option>
-								<option>삭제</option>
+								<option>취소</option>
 							</select>
 						</div>
 						<div class="header-right">
-				            <select name="replyView" class="custom-select custom-select-sm mr-2">
-								<option ${param.part == null || param.part == '작성자' ? 'selected' : ''}>작성자</option>
-								<option ${param.part == '내용' ? 'selected' : ''}>내용</option>
-							</select>
-				            <input type="text" name="search" id="search" value="${param.search}" placeholder="Search..." />
-				            <button type="button" onclick="replySearch()"><i class="fas fa-search"></i></button>
-							<div class="proBtn-sm" onclick="location.href='${ctp}/ReplysEdit/${uVo.mid}'">처음으로</div>
+							<div class="proBtn-sm" onclick="location.href='${ctp}/SubEdit/${uVo.mid}'">처음으로</div>
 				        </div>
 					</div>
 		            <div class="category-list">
 		            	<c:if test="${fn:length(vos) == 0}">
 		            	<div class="pt-5 pb-5">
-		            		<div class="text-center">등록된 댓글이 없습니다.</div>
+		            		<div class="text-center">구독한 블로그가 없습니다.</div>
 						</div>		            	
 		            	</c:if>
 		            	<c:forEach var="vo" items="${vos}" varStatus="st">
 		                <div class="list-group-item pt-3 pb-3">
 							<div class="custom-control custom-checkbox">
-								<input type="checkbox" class="custom-control-input" id="ReplyCheck${st.index}" name="ReplyCheck" value="${vo.rIdx}">
-								<label class="custom-control-label" for="ReplyCheck${st.index}"></label>
+								<input type="checkbox" class="custom-control-input" id="SubCheck${st.index}" name="SubCheck" value="${vo.sIdx}">
+								<label class="custom-control-label" for="SubCheck${st.index}"></label>
 							</div>
 							<div class="contentView">
-								<fmt:parseDate value="${vo.rDate}" var="rDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
-								<div style="color:#999999; font-size:14px;"><span style="color:#ff7200">${vo.rNickName}</span> · ${vo.rHostIp} · <fmt:formatDate value="${rDate}" pattern="yyyy. MM. dd HH:mm" /><c:if test="${vo.rPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if></div>
-			                    <c:if test="${vo.parentReplyIdx != 0}"><span style="color:#B2EBF4">[답글]&nbsp;</span></c:if><strong>${vo.rContent}</strong><c:if test="${vo.readCheck == '읽지않음'}"><i class="fa-solid fa-n fa-sm ml-2" style="color: #ff7200;"></i></c:if>
-								<div style="color:#999999; font-size:14px;">
-									${vo.coTitle}
-								</div>
+			                    <strong>${vo.sBlogTitle}</strong>
+								<div style="color:#999999;">${vo.sBlogIntro}</div>
+								<div style="color:#ff7200; font-size:14px;">${vo.sNickName}</div>
 							</div>
 		                    <div class="edit-btns">
-		                        <input type="button" value="삭제" onclick="replyDeleteModal(${vo.rIdx})" class="proBtn-sm mr-1">
+		                        <input type="button" value="취소" onclick="SubDeleteModal(${vo.sIdx})" class="proBtn-sm mr-1">
 		                    </div>
 		                </div>
 		                </c:forEach>
@@ -144,12 +121,12 @@
 	            </div>
 			    <!-- 페이지네이션 시작 -->
 		        <div class="pagination">
-			        <c:if test="${curBlock > 0}"><a href="${ctp}/ContentsEdit/${uVo.mid}?page=${(curBlock-1)*blockSize + 1}"><i class="fa-solid fa-angle-left fa-2xs"></i></a></c:if>
+			        <c:if test="${curBlock > 0}"><a href="${ctp}/SubEdit/${uVo.mid}?page=${(curBlock-1)*blockSize + 1}"><i class="fa-solid fa-angle-left fa-2xs"></i></a></c:if>
 			        <c:forEach var="i" begin="${(curBlock*blockSize)+1}" end="${(curBlock*blockSize) + blockSize}" varStatus="st">
-				        <c:if test="${i <= totPage && i == page}"><a href="${ctp}/ContentsEdit/${uVo.mid}?page=${i}" class="active">${i}</a></c:if>
-				        <c:if test="${i <= totPage && i != page}"><a href="${ctp}/ContentsEdit/${uVo.mid}?page=${i}">${i}</a></c:if>
+				        <c:if test="${i <= totPage && i == page}"><a href="${ctp}/SubEdit/${uVo.mid}?page=${i}" class="active">${i}</a></c:if>
+				        <c:if test="${i <= totPage && i != page}"><a href="${ctp}/SubEdit/${uVo.mid}?page=${i}">${i}</a></c:if>
 			        </c:forEach>
-			        <c:if test="${curBlock < lastBlock}"><a href="${ctp}/ContentsEdit/${uVo.mid}?page=${(curBlock+1)*blockSize+1}"><i class="fa-solid fa-angle-right fa-2xs"></i></a></c:if>
+			        <c:if test="${curBlock < lastBlock}"><a href="${ctp}/SubEdit/${uVo.mid}?page=${(curBlock+1)*blockSize+1}"><i class="fa-solid fa-angle-right fa-2xs"></i></a></c:if>
 		    	</div>
 		    	<!-- 페이지네이션 끝 -->
 	        </div>
@@ -284,54 +261,49 @@
 			if(sw == 0){
 				$("#allCheck").prop("checked", true);
 				for(let i=0; i<${fn:length(vos)}; i++){
-					$("#ReplyCheck"+i).prop("checked", true);
+					$("#SubCheck"+i).prop("checked", true);
 				}
 				sw = 1;
 			}
 			else {
 				$("#allCheck").prop("checked", false);
 				for(let i=0; i<${fn:length(vos)}; i++){
-					$("#ReplyCheck"+i).prop("checked", false);
+					$("#SubCheck"+i).prop("checked", false);
 				}
 				sw = 0;
 			}
 		}
 		
-		let deleteSw = 0;
-		function replyDelete() {
-			deleteSw = 1;
-			$('#myModal2').modal('hide');
-			ReplyChange();
-		}
-		
-		function ReplyChange() {
-			let changeSelected = document.querySelector('select[name="change"]');
-			let selected = changeSelected.value;
-			let checkedBoxes = document.querySelectorAll('input[name="ReplyCheck"]:checked');
-			let checkedrIdx = "";
+		function SubChange() {
+			let checkedBoxes = document.querySelectorAll('input[name="SubCheck"]:checked');
+			let checkedsIdx = "";
 			
 			if(checkedBoxes.length == 0) return;
 			
 			for(let i=0; i<checkedBoxes.length; i++){
-				checkedrIdx += checkedBoxes[i].value+",";
+				checkedsIdx += checkedBoxes[i].value+",";
 			}
 			
-			if(selected == '삭제'){
-			    $('#myModal2').modal('show');
-			    if(deleteSw == 0) return;
-			}
-			
+			$("#myModal2 #modalTitle").text("구독 취소"); 
+			$("#myModal2 #modalText").text("정말로 취소하시겠습니까?");
+			let footerHtml = '<button type="button" class="btn btn-danger mr-2" onclick="subChangeOk()">삭제</button>'
+							+'<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>';
+			$("#myModal2 #modal-footer").html(footerHtml);
+		    $('#myModal2').modal('show');
+		    $('#myModal2').modal('show');
+		    if(deleteSw == 0) return;
+			    
 			$.ajax({
-				url : "${ctp}/ReplyChange",
+				url : "${ctp}/SubChange",
 				type : "post",
-				data : {selected : selected, checkedrIdx : checkedrIdx},
+				data : {checkedsIdx : checkedsIdx},
 				success : function(res) {
 					if(res != "0"){
 						location.reload();
 					}
 					else {
-						$("#myModal #modalTitle").text("댓글 수정");
-						$("#myModal #modalText").text("댓글 수정 실패!");
+						$("#myModal #modalTitle").text("구독 취소");
+						$("#myModal #modalText").text("구독 취소 실패!");
 					    $('#myModal').modal('show');
 				        $('#myModal').on('hide.bs.modal', function () {
 					    	location.reload();
@@ -346,28 +318,34 @@
 			});
 		}
 		
-		function replyDeleteModal(rIdx) {
-			$("#myModal #modalTitle").text("댓글 삭제"); 
-			$("#myModal #modalText").text("정말로 삭제하시겠습니까?");
-			let footerHtml = '<button type="button" class="btn btn-danger mr-2" onclick="replyDelete('+rIdx+')">삭제</button>'
-							+'<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>';
-			$("#myModal #modal-footer").html(footerHtml);
-		    $('#myModal').modal('show');
+		let deleteSw = 0;
+		function subChangeOk() {
+			deleteSw = 1;
+			SubChange();
 		}
 		
-		function replyDelete(rIdx) {
+		function SubDeleteModal(sBlogIdx) {
+			$("#myModal2 #modalTitle").text("구독 취소"); 
+			$("#myModal2 #modalText").text("정말로 취소하시겠습니까?");
+			let footerHtml = '<button type="button" class="btn btn-danger mr-2" onclick="SubDelete('+sBlogIdx+')">삭제</button>'
+							+'<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>';
+			$("#myModal2 #modal-footer").html(footerHtml);
+		    $('#myModal2').modal('show');
+		}
+		
+		function SubDelete(sBlogIdx) {
 			$('#myModal').modal('hide');
 			$.ajax({
-				url : "${ctp}/ReplyDelete",
+				url : "${ctp}/SubscribeDelete/${sMid}",
 				type : "post",
-				data : {rIdx : rIdx},
+				data : {blogIdx : sBlogIdx},
 				success : function(res) {
 					if(res != "0"){
 						location.reload();
 					}
 					else {
-						$("#myModal #modalTitle").text("댓글 삭제");
-						$("#myModal #modalText").text("댓글 삭제 실패!");
+						$("#myModal #modalTitle").text("구독 취소");
+						$("#myModal #modalText").text("구독 취소 실패!");
 					    $('#myModal').modal('show');
 					}
 				},
@@ -380,28 +358,8 @@
 			});
 		}
 		
-		function replySearch() {
-			let viewSelected = document.querySelector('select[name="replyView"]');
-			let selected = viewSelected.value;
-			let search = $("#search").val();
-			location.href = "${ctp}/ReplysEdit/${uVo.mid}?search="+search+"&part="+selected;
-		}
-		
-		// 엔터로도 검색
-		document.addEventListener('DOMContentLoaded', function() {
-		    let searchInput = document.getElementById('search');
-
-		    if (searchInput) {
-		        searchInput.addEventListener('keyup', function(e) {
-		            if (e.key === 'Enter') {
-		            	replySearch();
-		            }
-		        });
-		    }
-		});
 
     </script>
-   <!-- The Modal -->
   <div class="modal fade" id="myModal">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -419,7 +377,7 @@
         
         <!-- Modal footer -->
         <div class="modal-footer" id="modal-footer">
-          <button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>
+          	<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>
         </div>
         
       </div>
@@ -433,18 +391,18 @@
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title" id="modalTitle">댓글 삭제</h4>
+          <h4 class="modal-title" id="modalTitle">구독 취소</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         
         <!-- Modal body -->
         <div class="modal-body">
-          <div id="modalText">정말로 삭제하시겠습니까?</div>
+          <div id="modalText">정말로 취소하시겠습니까?</div>
         </div>
         
         <!-- Modal footer -->
         <div class="modal-footer" id="modal-footer">
-        	<button type="button" class="btn btn-danger mr-2" onclick="replyDelete()">삭제</button>
+        	<button type="button" class="btn btn-danger mr-2" onclick="SubDelete()">구독취소</button>
           	<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>
         </div>
         

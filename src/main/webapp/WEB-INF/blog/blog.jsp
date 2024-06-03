@@ -113,6 +113,17 @@
 		        <div class="action-link" onclick="location.href='${ctp}/BlogEdit/${sMid}';"><i class="fas fa-cogs"></i> 블로그 관리</div>
 	    	</div>
 	    	</c:if>
+	    	<c:if test="${userMid != sMid && sMid != null}">
+	    	<hr/>
+	    	<div class="actions">
+	    		<c:if test="${sVo.subMid == sMid && sVo.subMid != null}">
+	    			<div class="action-link active" onclick="subDelete()"><i class="fa-solid fa-check"></i> 구독해제</div>
+	    		</c:if>
+	    		<c:if test="${sVo.subMid != sMid || sVo.subMid == null}">
+	    			<div class="action-link" onclick="subOk()"><i class="fa-solid fa-check"></i> 구독하기</div>
+	    		</c:if>
+	    	</div>
+	    	</c:if>
         </div>
         <div class="categories">
             <ul>
@@ -170,6 +181,30 @@
 <div class="home-button" onclick="location.href='${ctp}/Main';">
     <i class="fas fa-home"></i>
 </div>
+<!-- 모달 -->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="modalTitle"></h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <div id="modalText"></div>
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer" id="modal-footer">
+          	<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </body>
 <script>
 	'use strict';
@@ -191,5 +226,61 @@
 	        });
 	    }
 	});
+	
+	function subOk() {
+		$.ajax({
+			url : "${ctp}/Subscribe/${sMid}",
+			type : "post",
+			data : {blogIdx : ${bVo.blogIdx}},
+			success : function(res) {
+				if(res != "0"){
+					$("#myModal #modalTitle").text("블로그 구독");
+					$("#myModal #modalText").text("구독에 성공했어요!");
+				    $('#myModal').modal('show');
+				    $('#myModal').on('hide.bs.modal', function () {
+			            location.reload();
+			        });
+				}
+				else {
+					$("#myModal #modalTitle").text("블로그 구독");
+					$("#myModal #modalText").text("구독에 실패했어요...");
+				    $('#myModal').modal('show');
+				}
+			},
+			error : function() {
+				$("#myModal #modalTitle").text("오류");
+				$("#myModal #modalText").text("전송 오류!");
+			    $('#myModal').modal('show');
+			}
+		});
+	}
+	
+	function subDelete() {
+		$.ajax({
+			url : "${ctp}/SubscribeDelete/${sMid}",
+			type : "post",
+			data : {blogIdx : ${bVo.blogIdx}},
+			success : function(res) {
+				if(res != "0"){
+					$("#myModal #modalTitle").text("블로그 구독");
+					$("#myModal #modalText").text("구독 해제에 성공했어요!");
+				    $('#myModal').modal('show');
+				    $('#myModal').on('hide.bs.modal', function () {
+			            location.reload();
+			        });
+				}
+				else {
+					$("#myModal #modalTitle").text("블로그 구독");
+					$("#myModal #modalText").text("구독 해제에 실패했어요...");
+				    $('#myModal').modal('show');
+				}
+			},
+			error : function() {
+				$("#myModal #modalTitle").text("오류");
+				$("#myModal #modalText").text("전송 오류!");
+			    $('#myModal').modal('show');
+			}
+		});
+	}
 </script>
 </html>

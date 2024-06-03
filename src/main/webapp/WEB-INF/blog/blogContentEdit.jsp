@@ -59,6 +59,7 @@
 		<a class="navbar-brand" href="${ctp}/Main"><img src="${ctp}/images/logo.png" alt="logo" style="width: 200px;"></a>
 		<div class="menu-right-bar">
 			<button class="orangeBtn-sm" onclick="location.href='${ctp}/ContentInput/${uVo.mid}';">글쓰기</button>
+			<c:if test="${newReplyCnt != 0}"><span class="new-edit">${newReplyCnt}</span></c:if>
 			<i class="fa-solid fa-bell fa-xl mt-4" style="color: gray;" onclick="alarmBtn()"></i>
 			<div class="user-profile"><img src="${ctp}/images/user/${uVo.userImg}" alt="유저프로필" onclick="profileBtn()"></div>
 		</div>
@@ -81,10 +82,10 @@
 		                    <li onclick="location.href='${ctp}/CategoryEdit/${sMid}';">카테고리 관리</li>
 		                </ul>
 		                <hr/>
-		                <li class="parent-li"><i class="fa-regular fa-comment mr-2" style="color: #424242;"></i>댓글·방명록</li>
+		                <li class="parent-li"><i class="fa-regular fa-comment mr-2" style="color: #424242;"></i>댓글·구독</li>
 		                <ul>
 		                    <li onclick="location.href='${ctp}/ReplysEdit/${sMid}';">댓글 관리</li>
-		                    <li>방명록 관리</li>
+		                    <li  onclick="location.href='${ctp}/SubEdit/${sMid}';">구독 관리</li>
 		                </ul>
 		            </ul>
 		        </nav>
@@ -150,7 +151,7 @@
 									<span style="color:#ff7200">${coVo.categoryName}</span> · 
 									<fmt:parseDate value="${coVo.wDate}" var="wDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
 									<fmt:formatDate value="${wDate}" pattern="yyyy. MM. dd HH:mm" />
-									&nbsp;&nbsp;댓글 0
+									&nbsp;&nbsp;댓글 ${coVo.replyCnt}
 								</div>
 							</div>
 		                    <div class="edit-btns">
@@ -197,30 +198,24 @@
 	        if (!alarmHeaderLayer) {
 	            let headerLayer = document.createElement('div');
 	            headerLayer.className = 'header_layer layer_news';
-	            headerLayer.innerHTML = '<div class="notification-top">새소식</div><hr class="notification-hr"/>'
-	                    +'<div class="notification-list">'
-	                        +'<div class="notification" data-clicked="false">'
-	                            +'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
-	                            +'<div class="notification-content">'
-	                                +'<div class="notification-header">'
-	                                    +'<p class="user"><span class="user-name">김요운</span>님이 댓글을 남겼습니다.</p>'
-	                                    +'<p class="date">2023.04.18</p>'
-	                                +'</div>'
-	                                +'<p class="comment">"나도....친구됐다...코붕이쿼카"</p>'
-	                                +'<p class="title">23.03.20</p>'
+	            headerLayer.innerHTML = '<div class="notification-top">새소식 &nbsp;<font color="#ff7200">${newReplyCnt}</font></div><hr class="notification-hr"/>'
+	                +'<div class="notification-list">'
+	                +'<c:if test="${fn:length(vos) == 0}"><div class="text-center" style="margin-top:170px;">새 소식이 없습니다.</div></c:if>'
+	                +'<c:forEach var="vo" items="${vos}">'
+	                    +'<div class="notification" onclick="location.href=&quot;${ctp}/content/${sMid}?coIdx=${vo.rCoIdx}&rIdx=${vo.rIdx}&quot;">'
+	                        +'<img src="${ctp}/images/user/${vo.rUserImg}" alt="프로필 사진" class="profile-pic">'
+	                        +'<div class="notification-content">'
+	                            +'<div class="notification-header">'
+	                                +'<p class="user"><span class="user-name">${vo.rNickName}</span>님이 댓글을 남겼습니다.</p>'
+	                                +'<p class="date">${fn:substring(vo.rDate, 0, 10)}</p>'
 	                            +'</div>'
+	                            +'<p class="comment">"${vo.rContent}"</p>'
+	                            +'<p class="title">${vo.coTitle}</p>'
 	                        +'</div>'
-	                        +'<div class="notification" data-clicked="false">'
-	                            +'<img src="images/user_basic.jpg" alt="프로필 사진" class="profile-pic">'
-	                            +'<div class="notification-content">'
-	                                +'<div class="notification-header">'
-	                                    +'<p class="user"><span class="user-name">김요운</span>님이 댓글을 남겼습니다.</p>'
-	                                    +'<p class="date">2023.03.08</p>'
-	                                +'</div>'
-	                                +'<p class="comment">"일기좀 자주 써주세요"</p>'
-	                                +'<p class="title">23.03.06</p>'
-	                            +'</div>'
-	                        +'</div>';
+	                    +'</div>'
+	                    +'</c:forEach>'
+	                    +'</div>'
+	                +'</div>';
 	            document.querySelector('.menu-right-bar').appendChild(headerLayer);
 	            document.addEventListener('click', handleClickOutsideAlarm);
 	        } else {

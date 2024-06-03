@@ -20,6 +20,7 @@ import blog.BlogDAO;
 import blog.BlogVO;
 import blog.CategoryVO;
 import common.VisitManager;
+import user.SubVO;
 import user.UserDAO;
 import user.UserVO;
 
@@ -159,6 +160,11 @@ public class ContentView extends HttpServlet {
 		int rIdx = request.getParameter("rIdx")==null ? 0 : Integer.parseInt(request.getParameter("rIdx"));
 		ReplyDAO dao = new ReplyDAO();
 		dao.setReplyUpdateRead(rIdx);
+		request.setAttribute("rIdx", rIdx);
+		
+    	// 방문자가 이 블로그를 구독했는지
+    	SubVO sVo = uDao.getBlogsub(sMid, bVo.getBlogIdx());
+    	request.setAttribute("sVo", sVo);
 		
 		String viewPage = "/WEB-INF/content/contentView.jsp";
         dispatcher = request.getRequestDispatcher(viewPage);

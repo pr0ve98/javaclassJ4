@@ -221,6 +221,29 @@
 		background-color: #eee;
 		height: 48px;
 	}
+	.grayBtn-sm{
+		font-family: 'Pretendard-Light';
+		display: inline-block;
+		outline: none;
+		cursor: pointer;
+		font-size: 13px;
+		line-height: 1;
+		border-radius: 500px;
+		transition-property: background-color,border-color,color,box-shadow,filter;
+		transition-duration: .3s;
+		border: 1px solid transparent;
+		letter-spacing: 2px;
+		min-width: 120px;
+		text-transform: uppercase;
+		white-space: normal;
+		font-weight: 600;
+		text-align: center;
+		padding: 14px 14px 18px;
+		color: gray;
+		background-color: #eee;
+		height: 42px;
+		margin-top: 5px;
+	}
 	i{cursor: pointer;}
 	.orangeBtn:hover, .orangeBtn-sm:hover{
 	    background-color: #afeeee;
@@ -274,6 +297,13 @@
 	.content-box .blog-user-info{
 		color: gray;
 		font-size: 13pt;
+	}
+	.blog-user-info img {
+		width: 30px;
+	    height: 30px;
+	    border-radius: 50%;
+	    object-fit: cover;
+	    border: 1px solid gray;
 	}
 	.content-box .blog-date {
 		color: #D5D5D5;
@@ -342,6 +372,7 @@
 	    top: 99px;
 	    right: 128px;
 	    width: 400px;
+	    font-family: 'Pretendard-Light';
 	}
 	.layer_profile {
 		top: 99px;
@@ -380,6 +411,7 @@
 		height: 100px;
 		border-radius: 50%;
 		margin-bottom: 20px;
+		object-fit:cover;
 	}
 	.blog-title {
 		font-family: 'Pretendard-Bold';
@@ -458,7 +490,8 @@
 	
 	
 	.notification-top {
-		padding: 10px;
+		padding: 10px 10px 10px 20px;
+		font-family: 'Pretendard-Medium';
 	}
 	.notification-hr {
 	    margin: 0;
@@ -572,4 +605,45 @@
 		font-size: 12px;
 		text-align: center;
 	}
+	.pagination {
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    margin: 20px 0;
+	}
+	
+	.pagination a {
+	    width: 35px;
+	    height: 35px;
+	    margin: 0 5px;
+	    padding: 5px;
+	    border: 1px solid #ddd;
+	    border-radius: 50%;
+	    color: #333;
+	    text-decoration: none;
+	    text-align: center;
+	    font-size: 12px;
+	    align-content: center;
+	    font-family: 'Pretendard-Light';
+	}
+	
+	.pagination a:hover {
+	    background: #f0f0f0;
+	}
+	
+	.pagination a.active {
+	    background: #333;
+	    color: #fff;
+	    border-color: #333;
+	    font-family: 'Pretendard-Medium';
+	}
+	.newContentNot {
+		height: 400px;
+		display: flex;
+		align-items:center;
+		justify-content:center;
+		margin: 0 auto;
+		font-family: 'Pretendard-Light';
+	}
+	
 </style>

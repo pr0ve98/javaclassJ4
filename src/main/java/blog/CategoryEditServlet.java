@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import content.ReplyDAO;
+import content.ReplyVO;
 import user.UserDAO;
 import user.UserVO;
 
@@ -53,6 +55,13 @@ public class CategoryEditServlet extends HttpServlet {
         request.setAttribute("uVo", uVo);
         request.setAttribute("cPVos", cPVos);
         request.setAttribute("cCVos", cCVos);
+        
+		ReplyDAO rDao = new ReplyDAO();
+		ArrayList<ReplyVO> vos = rDao.getNotReadReplys(bVo.getBlogIdx());
+		int newReplyCnt = rDao.getNotReadReplysCnt(bVo.getBlogIdx());
+		
+		request.setAttribute("vos", vos);
+		request.setAttribute("newReplyCnt", newReplyCnt);
         
         dispatcher = request.getRequestDispatcher(viewPage);
         dispatcher.forward(request, response);

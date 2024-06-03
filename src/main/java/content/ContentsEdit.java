@@ -60,6 +60,13 @@ public class ContentsEdit extends HttpServlet {
         request.setAttribute("cPVos", cPVos);
         request.setAttribute("cCVos", cCVos);
         
+		ReplyDAO rDao = new ReplyDAO();
+		ArrayList<ReplyVO> vos = rDao.getNotReadReplys(bVo.getBlogIdx());
+		int newReplyCnt = rDao.getNotReadReplysCnt(bVo.getBlogIdx());
+		
+		request.setAttribute("vos", vos);
+		request.setAttribute("newReplyCnt", newReplyCnt);
+        
 		String viewPage = "/WEB-INF/blog/blogContentEdit.jsp";
 	    dispatcher = request.getRequestDispatcher(viewPage);
 	    dispatcher.forward(request, response);
