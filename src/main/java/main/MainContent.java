@@ -41,6 +41,9 @@ public class MainContent extends HttpServlet {
 		  UserDAO uDao = new UserDAO();
 		  ArrayList<SubVO> mySubBlogVos = uDao.getMySubBlog(sMid);
 		  
+		  ContentDAO cDao = new ContentDAO();
+
+		  
 		  if (nav.equals("sub")) {
 			  if(sMid.equals("")) {
 				  responseData = "<div class=\"sub-main\">"
@@ -78,9 +81,6 @@ public class MainContent extends HttpServlet {
 				  
 				  
 				// 페이지네이션
-		    	
-		    	
-		    	ContentDAO cDao = new ContentDAO();
 		    	int totRecCnt = cDao.getSubContentCnt(mySubBlog, sMid);
 				int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize)+1;
 				if(page > totPage) page = 1;
@@ -142,112 +142,339 @@ public class MainContent extends HttpServlet {
 			  }
 
 		  } else if (nav.equals("pop")) {
-			  responseData = "				<div class=\"menu2\">\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4 active-color\" onclick=\"loadContent('pop', 'all');\">전체</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\" onclick=\"loadContent('pop', 'life');\">일상</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\">취미</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\">영화·드라마</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\">게임</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\">패션·미용</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\">맛집</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\">육아·결혼</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\">스타·연예인</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\">반려동물</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\">여행</a></div>\r\n"
-			  		+ "					<div><a href=\"#\" class=\"mr-4\">상품리뷰</a></div>\r\n"
-			  		+ "				</div>\r\n"
-			  		+ "				<hr/>\r\n"
-			  		+ "				<div class=\"content-bt\">\r\n"
-			  		+ "					<div class=\"content-box\">\r\n"
-			  		+ "						<div class=\"imgBox\"><img class=\"img-box\" src=\""+request.getContextPath()+"/images/test1.jpg\"></div>\r\n"
-			  		+ "						<div class=\"text-box text-left\">\r\n"
-			  		+ "							<h3><a href=\"#\">햄스터 짤 모음집</a></h3>\r\n"
-			  		+ "							<div class=\"blog-user-info\">햄러버 <span class=\"blog-date\">| 12시간 전</span></div>\r\n"
-			  		+ "							<div class=\"content-text\">햄스터 짤들을 모아뒀어요 그냥 아무거나 넣을 말을 쓰고 있습니다 안녕하세요? 햄스터는 정말 귀여워요.\r\n"
-			  		+ "							반갑습니다? 햄스터를 아세요? 햄스터란? 설치목 비단털쥐과 비단털쥐아과에 속한 포유류이다. 한국에서는 1990년대에 들어서부터 반려동물로 널리 사육되기 시작했다.\r\n"
-			  		+ "							화석상의 기록으로는 유럽과 북아프리카의 중신세 중기인 1640만 년~1120만 년 전으로 지층에서 발견된 것이 최초이다.\r\n"
-			  		+ "							햄스터는 이미 1839년 G.R.워터하우스에 의해 과학적으로 분류되었으나, 성공적으로 사육 및 번식이 시작된 것은 현재 기준으로 94년 정도밖에 지나지 않았다. 1930년 시리아의 알레포 지역에서 채집된 암컷 1마리와 새끼 12마리가 최초이며, 이 때 이 13마리가 현재 사육되는 골든햄스터의 시초가 되었다.\r\n"
-			  		+ "							</div>\r\n"
-			  		+ "						</div>\r\n"
-			  		+ "					</div>\r\n"
-			  		+ "					<hr class=\"content-box-line\"/>\r\n"
-			  		+ "					<div class=\"content-box\">\r\n"
-			  		+ "						<div class=\"imgBox\"><img class=\"img-box\" src=\""+request.getContextPath()+"/images/test2.jpg\"></div>\r\n"
-			  		+ "						<div class=\"text-box text-left\">\r\n"
-			  		+ "							<h3><a href=\"#\">정사각형 이미지가 아닐 경우</a></h3>\r\n"
-			  		+ "							<div class=\"blog-user-info\">누군가 <span class=\"blog-date\">| 2024. 05. 10</span></div>\r\n"
-			  		+ "							<div class=\"content-text\">\r\n"
-			  		+ "							유저가 정사각형 이미지를 넣지 않았을 경우도 있기에 정사각형 이미지가 아니라면 이미지를 확대해서 정사각형 이미지로 바꿔줍니다.\r\n"
-			  		+ "							그리고 내용을 써보자면 아무거나 써도 됩니다. 근데 블로그라는 것을 보여줘야 하니 내용을 그래도 조금은 넣어야겠죠. 근데 너무 귀찮으니 블로그를 짧게 쓰는 사람도 있을 것이니까\r\n"
-			  		+ "							그냥 이만큼만 써보겠습니다. 그럼 이만!\r\n"
-			  		+ "							</div>\r\n"
-			  		+ "						</div>\r\n"
-			  		+ "					</div>\r\n"
-			  		+ "					<hr class=\"content-box-line\"/>\r\n"
-			  		+ "					<div class=\"content-box\">\r\n"
-			  		+ "						<div class=\"imgBox\"><img class=\"img-box\" src=\""+request.getContextPath()+"/images/test3.gif\"></div>\r\n"
-			  		+ "						<div class=\"text-box text-left\">\r\n"
-			  		+ "							<h3><a href=\"#\">카리나 짱 예쁘다</a></h3>\r\n"
-			  		+ "							<div class=\"blog-user-info\">유찌민 <span class=\"blog-date\">| 2024. 05. 03</span></div>\r\n"
-			  		+ "							<div class=\"content-text\">\r\n"
-			  		+ "							에스파 외계인 컨셉으로 컴백 많관부~\r\n"
-			  		+ "							</div>\r\n"
-			  		+ "						</div>\r\n"
-			  		+ "					</div>\r\n"
-			  		+ "				</div>";
-			  if (category.equals("life")) {
-				  responseData = "				<div class=\"menu2\">\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\" onclick=\"loadContent('pop', 'all');\">전체</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4 active-color\" onclick=\"loadContent('pop', 'life');\">일상</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\">취미</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\">영화·드라마</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\">게임</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\">패션·미용</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\">맛집</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\">육아·결혼</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\">스타·연예인</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\">반려동물</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\">여행</a></div>\r\n"
-					  		+ "					<div><a href=\"#\" class=\"mr-4\">상품리뷰</a></div>\r\n"
-						  + "				</div>\r\n"
-						  + "				<hr/>\r\n"
-						  + "				<div class=\"content-bt\">\r\n"
-						  + "					<div class=\"content-box\">\r\n"
-						  + "						<div class=\"imgBox\"><img class=\"img-box\" src=\""+request.getContextPath()+"/images/test4.jpg\"></div>\r\n"
-						  + "						<div class=\"text-box text-left\">\r\n"
-						  + "							<h3><a href=\"#\">안녕 친구들</a></h3>\r\n"
-						  + "							<h6><b>안녕</b> | 22시간 전</h6>\r\n"
-						  + "							<div class=\"content-text\">"
-						  + "							안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! 안녕! "
-						  + "							</div>\r\n"
-						  + "						</div>\r\n"
-						  + "					</div>\r\n"
-						  + "					<hr class=\"content-box-line\"/>\r\n"
-						  + "					<div class=\"content-box\">\r\n"
-						  + "						<div class=\"imgBox\"><img class=\"img-box\" src=\""+request.getContextPath()+"/images/test5.jpg\"></div>\r\n"
-						  + "						<div class=\"text-box text-left\">\r\n"
-						  + "							<h3><a href=\"#\">돈까스는 역시 경양식</a></h3>\r\n"
-						  + "							<h6><b>돈까스맨</b> | 2시간 전</h6>\r\n"
-						  + "							<div class=\"content-text\">\r\n"
-						  + "							돈까스......... 돈까스........ 경양식 돈까스.......... 어쩌구 저쩌구.............."
-						  + "							</div>\r\n"
-						  + "						</div>\r\n"
-						  + "					</div>\r\n"
-						  + "					<hr class=\"content-box-line\"/>\r\n"
-						  + "					<div class=\"content-box\">\r\n"
-						  + "						<div class=\"imgBox\"><img class=\"img-box\" src=\""+request.getContextPath()+"/images/test6.jpg\"></div>\r\n"
-						  + "						<div class=\"text-box text-left\">\r\n"
-						  + "							<h3><a href=\"#\">민희진 국힙 원탑</a></h3>\r\n"
-						  + "							<h6><b>김모씨</b> | 2024. 05. 11</h6>\r\n"
-						  + "							<div class=\"content-text\">\r\n"
-						  + "							하이브는 단월드인가?\r\n"
-						  + "							</div>\r\n"
-						  + "						</div>\r\n"
-						  + "					</div>\r\n"
-						  + "				</div>";
-		        }
+			  if(category.equals("") || category.equals("all")) {
+				  responseData = "<div class='menu2'>"
+					  		+ "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('pop', 'all');\">전체</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'life');\">일상</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'hobby');\">취미</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'movie');\">영화·드라마</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'game');\">게임</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'beauty');\">패션·미용</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'food');\">맛집</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'star');\">스타·연예인</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'animal');\">반려동물</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'travel');\">여행</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'review');\">상품리뷰</a></div></div><hr/>"
+					  		+ "<div class='content-bt'>";
+			  }
+			  else if(category.equals("life")) {
+				  responseData = "<div class='menu2'>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'all');\">전체</a></div>"
+					  		+ "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('pop', 'life');\">일상</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'hobby');\">취미</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'movie');\">영화·드라마</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'game');\">게임</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'beauty');\">패션·미용</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'food');\">맛집</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'star');\">스타·연예인</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'animal');\">반려동물</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'travel');\">여행</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'review');\">상품리뷰</a></div></div><hr/>"
+					  		+ "<div class='content-bt'>";
+			  }
+			  else if(category.equals("hobby")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('pop', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("movie")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('pop', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("game")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('pop', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("beauty")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('pop', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("food")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('pop', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("star")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('pop', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("animal")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('pop', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("travel")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('pop', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('pop', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('pop', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  responseData += roadContent(request, category);
 		  } else if (nav.equals("rec")) {
-			  responseData = "<h2>여기는 최신글</h2><p>최신 글들이 올라와요</p>";
+			  if(category.equals("") || category.equals("all")) {
+				  responseData = "<div class='menu2'>"
+					  		+ "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('rec', 'all');\">전체</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'life');\">일상</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'hobby');\">취미</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'movie');\">영화·드라마</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'game');\">게임</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'beauty');\">패션·미용</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'food');\">맛집</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'star');\">스타·연예인</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'animal');\">반려동물</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'travel');\">여행</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'review');\">상품리뷰</a></div></div><hr/>"
+					  		+ "<div class='content-bt'>";
+			  }
+			  else if(category.equals("life")) {
+				  responseData = "<div class='menu2'>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'all');\">전체</a></div>"
+					  		+ "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('rec', 'life');\">일상</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'hobby');\">취미</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'movie');\">영화·드라마</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'game');\">게임</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'beauty');\">패션·미용</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'food');\">맛집</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'star');\">스타·연예인</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'animal');\">반려동물</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'travel');\">여행</a></div>"
+					  		+ "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'review');\">상품리뷰</a></div></div><hr/>"
+					  		+ "<div class='content-bt'>";
+			  }
+			  else if(category.equals("hobby")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('rec', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("movie")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('rec', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("game")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('rec', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("beauty")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('rec', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("food")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('rec', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("star")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('rec', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("animal")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('rec', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else if(category.equals("travel")) {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('rec', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  else {
+				  responseData = "<div class='menu2'>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'all');\">전체</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'life');\">일상</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'hobby');\">취미</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'movie');\">영화·드라마</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'game');\">게임</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'beauty');\">패션·미용</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'food');\">맛집</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'star');\">스타·연예인</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'animal');\">반려동물</a></div>"
+						  + "<div><a href='#' class='mr-4' onclick=\"loadContent('rec', 'travel');\">여행</a></div>"
+						  + "<div><a href='#' class='mr-4 active-color' onclick=\"loadContent('rec', 'review');\">상품리뷰</a></div></div><hr/>"
+						  + "<div class='content-bt'>";
+			  }
+			  responseData += roadRecContent(request, category);
 		  }
 		  
 		  response.setContentType("text/html");
@@ -255,4 +482,64 @@ public class MainContent extends HttpServlet {
 		  out.println(responseData);
 		  out.close();
 	}
+	  
+	 public String roadContent(HttpServletRequest request, String category) {
+		 ContentDAO cDao = new ContentDAO();
+		 String responseData = "";
+		 ArrayList<ContentVO> popVos = cDao.getPopContentList(category);
+		  		for(ContentVO popvo : popVos) {
+					  String[] contentImgs = popvo.getImgName().split("\\|");
+					  responseData += "<div class='content-box'>";
+					  if(contentImgs[0].equals("")) {
+						  responseData += "<div class='imgBox'><img class='img-box' src='"+request.getContextPath()+"/images/content/no_image.jpg'></div>";
+					  }
+					  else if(contentImgs[0].indexOf("http") == -1) {
+						  responseData += "<div class='imgBox'><img class='img-box' src='"+request.getContextPath()+"/images/content/"+contentImgs[0]+"'></div>";
+					  }
+					  else {
+						  responseData += "<div class='imgBox'><img class='img-box' src='"+contentImgs[0]+"'></div>";
+					  }
+					  responseData += "<div class='text-box text-left'>"
+						  		+ "<h3><a href='"+request.getContextPath()+"/content/"+popvo.getUserMid()+"?coIdx="+popvo.getCoIdx()+"'>"+popvo.getTitle()+"</a></h3>"
+						  		+ "<div class='blog-user-info'><img class='mr-2' src='"+request.getContextPath()+"/images/user/"+popvo.getUserImg()+"'>"+popvo.getNickName()+" <span class='blog-date'>| ";
+					  if(popvo.getHour_diff() > 24) responseData += popvo.getwDate().substring(0, 10);
+					  else if(popvo.getHour_diff() <= 24 && popvo.getMin_diff() >= 60) responseData += popvo.getHour_diff()+"시간 전";
+					  else responseData += popvo.getMin_diff()+"분 전";
+					  responseData += "</span></div>"
+							  		+ "<div class='content-text mt-2'>"+popvo.getCtPreview()+"</div>"
+							  		+ "</div></div><hr class='content-box-line'/>";
+		  		}
+		  		responseData += "</div>";
+		  		return responseData;
+	 }
+	 
+	 public String roadRecContent(HttpServletRequest request, String category) {
+		 ContentDAO cDao = new ContentDAO();
+		 String responseData = "";
+		 ArrayList<ContentVO> recVos = cDao.getRecContentList(category);
+		 for(ContentVO recvo : recVos) {
+			 String[] contentImgs = recvo.getImgName().split("\\|");
+			 responseData += "<div class='content-box'>";
+			 if(contentImgs[0].equals("")) {
+				 responseData += "<div class='imgBox'><img class='img-box' src='"+request.getContextPath()+"/images/content/no_image.jpg'></div>";
+			 }
+			 else if(contentImgs[0].indexOf("http") == -1) {
+				 responseData += "<div class='imgBox'><img class='img-box' src='"+request.getContextPath()+"/images/content/"+contentImgs[0]+"'></div>";
+			 }
+			 else {
+				 responseData += "<div class='imgBox'><img class='img-box' src='"+contentImgs[0]+"'></div>";
+			 }
+			 responseData += "<div class='text-box text-left'>"
+					 + "<h3><a href='"+request.getContextPath()+"/content/"+recvo.getUserMid()+"?coIdx="+recvo.getCoIdx()+"'>"+recvo.getTitle()+"</a></h3>"
+					 + "<div class='blog-user-info'><img class='mr-2' src='"+request.getContextPath()+"/images/user/"+recvo.getUserImg()+"'>"+recvo.getNickName()+" <span class='blog-date'>| ";
+			 if(recvo.getHour_diff() > 24) responseData += recvo.getwDate().substring(0, 10);
+			 else if(recvo.getHour_diff() <= 24 && recvo.getMin_diff() >= 60) responseData += recvo.getHour_diff()+"시간 전";
+			 else responseData += recvo.getMin_diff()+"분 전";
+			 responseData += "</span></div>"
+					 + "<div class='content-text mt-2'>"+recvo.getCtPreview()+"</div>"
+					 + "</div></div><hr class='content-box-line'/>";
+		 }
+		 responseData += "</div>";
+		 return responseData;
+	 }
 }

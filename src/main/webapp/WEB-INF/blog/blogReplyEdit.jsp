@@ -131,7 +131,7 @@
 							<div class="contentView">
 								<fmt:parseDate value="${vo.rDate}" var="rDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
 								<div style="color:#999999; font-size:14px;"><span style="color:#ff7200">${vo.rNickName}</span> · ${vo.rHostIp} · <fmt:formatDate value="${rDate}" pattern="yyyy. MM. dd HH:mm" /><c:if test="${vo.rPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if></div>
-			                    <c:if test="${vo.parentReplyIdx != 0}"><span style="color:#B2EBF4">[답글]&nbsp;</span></c:if><strong onclick="location.href=&quot;${ctp}/content/ohw1234?coIdx=${vo.rCoIdx}&rIdx=${vo.rIdx}&quot;">${vo.rContent}</strong><c:if test="${vo.readCheck == '읽지않음'}"><i class="fa-solid fa-n fa-sm ml-2" style="color: #ff7200;"></i></c:if>
+			                    <c:if test="${vo.parentReplyIdx != 0}"><span style="color:#B2EBF4">[답글]&nbsp;</span></c:if><strong style="cursor:pointer" onclick="location.href=&quot;${ctp}/content/${sMid}?coIdx=${vo.rCoIdx}&rIdx=${vo.rIdx}&quot;">${vo.rContent}</strong><c:if test="${vo.readCheck == '읽지않음' && vo.rMid != sMid}"><i class="fa-solid fa-n fa-sm ml-2" style="color: #ff7200;"></i></c:if>
 								<div style="color:#999999; font-size:14px;">
 									${vo.coTitle}
 								</div>
@@ -299,7 +299,7 @@
 		}
 		
 		let deleteSw = 0;
-		function replyDelete() {
+		function replyDeleteOk() {
 			deleteSw = 1;
 			$('#myModal2').modal('hide');
 			ReplyChange();
@@ -311,6 +311,8 @@
 			let checkedBoxes = document.querySelectorAll('input[name="ReplyCheck"]:checked');
 			let checkedrIdx = "";
 			
+			if(selected == 0) return;
+			
 			if(checkedBoxes.length == 0) return;
 			
 			for(let i=0; i<checkedBoxes.length; i++){
@@ -321,6 +323,7 @@
 			    $('#myModal2').modal('show');
 			    if(deleteSw == 0) return;
 			}
+			$('#myModal').modal('hide');
 			
 			$.ajax({
 				url : "${ctp}/ReplyChange",
@@ -445,7 +448,7 @@
         
         <!-- Modal footer -->
         <div class="modal-footer" id="modal-footer">
-        	<button type="button" class="btn btn-danger mr-2" onclick="replyDelete()">삭제</button>
+        	<button type="button" class="btn btn-danger mr-2" onclick="replyDeleteOk()">삭제</button>
           	<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>
         </div>
         

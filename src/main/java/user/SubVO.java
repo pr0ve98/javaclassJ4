@@ -8,6 +8,7 @@ public class SubVO {
 	private String sBlogTitle;
 	private String sBlogIntro;
 	private String sNickName;
+	private String blogMid;
 	
 	public int getsIdx() {
 		return sIdx;
@@ -45,11 +46,18 @@ public class SubVO {
 	public void setsNickName(String sNickName) {
 		this.sNickName = sNickName;
 	}
+	public String getBlogMid() {
+		return blogMid;
+	}
+	public void setBlogMid(String blogMid) {
+		this.blogMid = blogMid;
+	}
 	@Override
 	public String toString() {
 		return "SubVO [sIdx=" + sIdx + ", sBlogIdx=" + sBlogIdx + ", subMid=" + subMid + ", sBlogTitle=" + sBlogTitle
-				+ ", sBlogIntro=" + sBlogIntro + ", sNickName=" + sNickName + "]";
+				+ ", sBlogIntro=" + sBlogIntro + ", sNickName=" + sNickName + ", blogMid=" + blogMid + "]";
 	}
+
 	
 	
 }

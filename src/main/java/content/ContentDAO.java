@@ -921,5 +921,215 @@ public class ContentDAO {
 		return totRecCnt;
 	}
 
+	// 인기글 카테고리별로 가져오기
+	public ArrayList<ContentVO> getPopContentList(String category) {
+		ArrayList<ContentVO> vos = new ArrayList<ContentVO>();
+		try {
+			if(category.equals("") || category.equals("all")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+					+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+							+ "order by viewCnt desc limit 20";
+			}
+			else if(category.equals("life")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+								+ "and part='일상' order by viewCnt desc limit 10";
+			}
+			else if(category.equals("hobby")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "and part='취미' order by viewCnt desc limit 10";
+			}
+			else if(category.equals("movie")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "and part='영화/드라마' order by viewCnt desc limit 10";
+			}
+			else if(category.equals("game")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "and part='게임' order by viewCnt desc limit 10";
+			}
+			else if(category.equals("beauty")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "and part='패션/미용' order by viewCnt desc limit 10";
+			}
+			else if(category.equals("food")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "and part='맛집' order by viewCnt desc limit 10";
+			}
+			else if(category.equals("star")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "and part='스타/연예인' order by viewCnt desc limit 10";
+			}
+			else if(category.equals("animal")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "and part='반려동물' order by viewCnt desc limit 10";
+			}
+			else if(category.equals("travel")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "and part='여행' order by viewCnt desc limit 10";
+			}
+			else {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "and part='상품리뷰' order by viewCnt desc limit 10";
+			}
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				ContentVO vo = new ContentVO();
+				vo.setCoIdx(rs.getInt("coIdx"));
+				vo.setCoBlogIdx(rs.getInt("coBlogIdx"));
+				vo.setCategoryIdx(rs.getInt("categoryIdx"));
+				vo.setTitle(rs.getString("title"));
+				vo.setPart(rs.getString("part"));
+				vo.setwDate(rs.getString("wDate"));
+				vo.setViewCnt(rs.getInt("viewCnt"));
+				vo.setContent(rs.getString("content"));
+				vo.setCtPreview(rs.getString("ctPreview"));
+				vo.setcHostIp(rs.getString("cHostIp"));
+				vo.setCoPublic(rs.getString("coPublic"));
+				vo.setImgName(rs.getString("imgName"));
+				
+				BlogDAO bDao = new BlogDAO();
+				CategoryVO cVo = bDao.getCategoryIdx(vo.getCategoryIdx());
+				vo.setCategoryName(cVo.getCategory());
+				
+				BlogVO bVo = bDao.getBlogIdx(vo.getCoBlogIdx());
+				
+				UserDAO uDao = new UserDAO();
+				UserVO uVo = uDao.getUserIdCheck(bVo.getBlogMid());
+				vo.setUserMid(uVo.getMid());
+				vo.setUserImg(uVo.getUserImg());
+				vo.setNickName(uVo.getNickName());
+				
+				ReplyDAO rDao = new ReplyDAO();
+				int replyCnt = rDao.getReplyCount(vo.getCoIdx());
+				vo.setReplyCnt(replyCnt);
+				
+				vo.setHour_diff(rs.getInt("hour_diff"));
+				vo.setMin_diff(rs.getInt("min_diff"));
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+
+	// 최신글 카테고리별로 가져오기
+	public ArrayList<ContentVO> getRecContentList(String category) {
+		ArrayList<ContentVO> vos = new ArrayList<ContentVO>();
+		try {
+			if(category.equals("") || category.equals("all")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+					+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+							+ "order by wDate desc limit 20";
+			}
+			else if(category.equals("life")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+								+ "and part='일상' order by wDate desc limit 10";
+			}
+			else if(category.equals("hobby")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "and part='취미' order by wDate desc limit 10";
+			}
+			else if(category.equals("movie")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "and part='영화/드라마' order by wDate desc limit 10";
+			}
+			else if(category.equals("game")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "and part='게임' order by wDate desc limit 10";
+			}
+			else if(category.equals("beauty")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "and part='패션/미용' order by wDate desc limit 10";
+			}
+			else if(category.equals("food")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "and part='맛집' order by wDate desc limit 10";
+			}
+			else if(category.equals("star")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "and part='스타/연예인' order by wDate desc limit 10";
+			}
+			else if(category.equals("animal")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "and part='반려동물' order by wDate desc limit 10";
+			}
+			else if(category.equals("travel")) {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "and part='여행' order by wDate desc limit 10";
+			}
+			else {
+				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
+						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "and part='상품리뷰' order by wDate desc limit 10";
+			}
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				ContentVO vo = new ContentVO();
+				vo.setCoIdx(rs.getInt("coIdx"));
+				vo.setCoBlogIdx(rs.getInt("coBlogIdx"));
+				vo.setCategoryIdx(rs.getInt("categoryIdx"));
+				vo.setTitle(rs.getString("title"));
+				vo.setPart(rs.getString("part"));
+				vo.setwDate(rs.getString("wDate"));
+				vo.setViewCnt(rs.getInt("viewCnt"));
+				vo.setContent(rs.getString("content"));
+				vo.setCtPreview(rs.getString("ctPreview"));
+				vo.setcHostIp(rs.getString("cHostIp"));
+				vo.setCoPublic(rs.getString("coPublic"));
+				vo.setImgName(rs.getString("imgName"));
+				
+				BlogDAO bDao = new BlogDAO();
+				CategoryVO cVo = bDao.getCategoryIdx(vo.getCategoryIdx());
+				vo.setCategoryName(cVo.getCategory());
+				
+				BlogVO bVo = bDao.getBlogIdx(vo.getCoBlogIdx());
+				
+				UserDAO uDao = new UserDAO();
+				UserVO uVo = uDao.getUserIdCheck(bVo.getBlogMid());
+				vo.setUserMid(uVo.getMid());
+				vo.setUserImg(uVo.getUserImg());
+				vo.setNickName(uVo.getNickName());
+				
+				ReplyDAO rDao = new ReplyDAO();
+				int replyCnt = rDao.getReplyCount(vo.getCoIdx());
+				vo.setReplyCnt(replyCnt);
+				
+				vo.setHour_diff(rs.getInt("hour_diff"));
+				vo.setMin_diff(rs.getInt("min_diff"));
+				
+				vos.add(vo);
+			}
+		} catch (SQLException e) {
+			System.out.println("sql 오류 "+e.getMessage());
+		} finally {
+			rsClose();
+		}
+		return vos;
+	}
+
 
 }

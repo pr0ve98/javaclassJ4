@@ -165,11 +165,6 @@
             </ul>
         </div>
         <hr/>
-        <div class="recent-comments">
-            <h3>최근댓글</h3>
-            <!-- 댓글 목록 추가 -->
-        </div>
-        <hr/>
         <div class="counter">
             <div>Total</div>
             <div class="totalVisit">${bVo.totalVisit}</div>

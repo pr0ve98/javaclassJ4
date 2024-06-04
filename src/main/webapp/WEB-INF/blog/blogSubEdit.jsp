@@ -109,7 +109,7 @@
 								<label class="custom-control-label" for="SubCheck${st.index}"></label>
 							</div>
 							<div class="contentView">
-			                    <strong>${vo.sBlogTitle}</strong>
+			                    <strong style="cursor:pointer" onclick="location.href=&quot;${ctp}/blog/${vo.blogMid}&quot;">${vo.sBlogTitle}</strong>
 								<div style="color:#999999;">${vo.sBlogIntro}</div>
 								<div style="color:#ff7200; font-size:14px;">${vo.sNickName}</div>
 							</div>
@@ -276,8 +276,12 @@
 		}
 		
 		function SubChange() {
+			let changeSelected = document.querySelector('select[name="change"]');
+			let selected = changeSelected.value;
 			let checkedBoxes = document.querySelectorAll('input[name="SubCheck"]:checked');
 			let checkedsIdx = "";
+			
+			if(selected == 0) return;
 			
 			if(checkedBoxes.length == 0) return;
 			

@@ -147,7 +147,7 @@
 								<label class="custom-control-label" for="ContentCheck${st.index}"></label>
 							</div>
 							<div class="contentView">
-			                    <strong>${coVo.title}</strong><c:if test="${coVo.coPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if>
+			                    <strong style="cursor:pointer" onclick="location.href=&quot;${ctp}/content/${sMid}?coIdx=${coVo.coIdx}&quot;">${coVo.title}</strong><c:if test="${coVo.coPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if>
 								<div style="color:#999999; font-size:14px;">
 									<span style="color:#ff7200">${coVo.categoryName}</span> · 
 									<fmt:parseDate value="${coVo.wDate}" var="wDate" pattern="yyyy-MM-dd HH:mm:ss.0" />

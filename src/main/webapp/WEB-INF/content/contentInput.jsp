@@ -127,7 +127,6 @@
 		        +'<option>게임</option>'
 		        +'<option>패션/미용</option>'
 		        +'<option>맛집</option>'
-		        +'<option>육아/결혼</option>'
 		        +'<option>스타/연예인</option>'
 		        +'<option>반려동물</option>'
 		        +'<option>여행</option>'

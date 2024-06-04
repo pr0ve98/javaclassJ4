@@ -128,7 +128,6 @@
 		        +'<option ${contentVo.part == "게임" ? "selected" : ""}>게임</option>'
 		        +'<option ${contentVo.part == "패션/미용" ? "selected" : ""}>패션/미용</option>'
 		        +'<option ${contentVo.part == "맛집" ? "selected" : ""}>맛집</option>'
-		        +'<option ${contentVo.part == "육아/결혼" ? "selected" : ""}>육아/결혼</option>'
 		        +'<option ${contentVo.part == "스타/연예인" ? "selected" : ""}>스타/연예인</option>'
 		        +'<option ${contentVo.part == "반려동물" ? "selected" : ""}>반려동물</option>'
 		        +'<option ${contentVo.part == "여행" ? "selected" : ""}>여행</option>'

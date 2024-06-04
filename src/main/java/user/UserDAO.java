@@ -383,6 +383,7 @@ public class UserDAO {
 				UserDAO uDao = new UserDAO();
 				UserVO uVo = uDao.getUserIdCheck(bVo.getBlogMid());
 				vo.setsNickName(uVo.getNickName());
+				vo.setBlogMid(uVo.getMid());
 				
 				vos.add(vo);
 			}
