@@ -490,7 +490,7 @@
 							<div>
 								<span class="proBtn-sm mt-2" onclick="rreplyShow(${rPVo.rIdx})">답글</span>
 								<c:if test="${rCVo.rMid == sMid}"><span class="proBtn-sm mt-2" onclick="replyEditModal('${rCVo.rContent}', '${rCVo.rPublic}', ${rCVo.rIdx})">수정</span></c:if>
-								<c:if test="${rCVo.rMid == sMid || sMid == userMid}"><span class="proBtn-sm mt-2">삭제</span></c:if>
+								<c:if test="${rCVo.rMid == sMid || sMid == userMid}"><span class="proBtn-sm mt-2" onclick="replyDeleteModal('${rCVo.rIdx}')">삭제</span></c:if>
 							</div>
 							</div>
 						</div>
