@@ -278,10 +278,14 @@ public class ReplyDAO {
 	public ArrayList<ReplyVO> getNotReadReplys(int blogIdx, String mid) {
 		ArrayList<ReplyVO> vos = new ArrayList<ReplyVO>();
 		try {
-			sql = "select * from hbReply where rBlogIdx=? and readCheck='읽지않음' and rMid != ? order by rIdx desc";
+			//sql = "select * from hbReply where rBlogIdx=? and readCheck='읽지않음' and rMid != ? order by rDate desc";
+			sql = "select * from hbReply where rBlogIdx=? and readCheck='읽지않음' and rMid != ? "
+					+ "union select r1.* from hbReply as r1 join hbReply as r2 on r1.parentReplyIdx = r2.rIdx "
+					+ "where r2.rMid=? and r1.readCheck='읽지않음' order by rDate desc";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, blogIdx);
 			pstmt.setString(2, mid);
+			pstmt.setString(3, mid);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				vo = new ReplyVO();
@@ -319,10 +323,14 @@ public class ReplyDAO {
 	public int getNotReadReplysCnt(int blogIdx, String mid) {
 		int newReplyCnt = 0;
 		try {
-			sql = "select count(*) as newReplyCnt from hbReply where rBlogIdx=? and readCheck='읽지않음' and rMid != ?";
+			//sql = "select count(*) as newReplyCnt from hbReply where rBlogIdx=? and readCheck='읽지않음' and rMid != ?";
+			sql = "select count(*) as newReplyCnt from (select * from hbReply where rBlogIdx=? and readCheck='읽지않음' and rMid != ? "
+					+ "union select r1.* from hbReply as r1 join hbReply as r2 on r1.parentReplyIdx = r2.rIdx "
+					+ "where r2.rMid=? and r1.readCheck='읽지않음') as allCount";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, blogIdx);
 			pstmt.setString(2, mid);
+			pstmt.setString(3, mid);
 			rs = pstmt.executeQuery();
 			rs.next();
 			newReplyCnt = rs.getInt("newReplyCnt");

@@ -475,7 +475,7 @@
 		</c:if>
 			<c:forEach var="rCVo" items="${rCVos}">
 				<c:if test="${rPVo.rIdx == rCVo.parentReplyIdx}">
-					<c:if test="${rCVo.rPublic == '공개' || (rCVo.rPublic == '비공개' && (rCVo.rMid == sMid || sMid == userMid))}">
+					<c:if test="${rCVo.rPublic == '공개' || (rCVo.rPublic == '비공개' && (rCVo.rMid == sMid || sMid == userMid || rPVo.rMid == sMid))}">
 						<div class="reply-list-re" id="reply${rCVo.rIdx}">
 							<div>┗</div>
 							<div>
@@ -495,7 +495,7 @@
 							</div>
 						</div>
 					</c:if>
-					<c:if test="${rCVo.rPublic == '비공개' && (rCVo.rMid != sMid && sMid != userMid)}">
+					<c:if test="${rCVo.rPublic == '비공개' && (rCVo.rMid != sMid && sMid != userMid && rPVo.rMid != sMid)}">
 						<div class="reply-list-re">
 							<div>┗</div>
 							<div>
