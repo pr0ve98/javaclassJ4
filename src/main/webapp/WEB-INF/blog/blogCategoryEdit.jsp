@@ -31,7 +31,7 @@
 		        <div class="profile">
 		            <img src="${ctp}/images/user/${uVo.userImg}" alt="Profile" class="profile-img">
 		            <div class="profile-name" onclick="location.href='${ctp}/blog/${uVo.mid}';">${bVo.blogTitle}</div>
-		            <div class="profile-link">${bVo.blogIntro}</div>
+		            <div class="profile-link">${fn:replace(bVo.blogIntro, newLine, "<br/>")}</div>
 		        </div>
 		        <nav>
 		            <ul>

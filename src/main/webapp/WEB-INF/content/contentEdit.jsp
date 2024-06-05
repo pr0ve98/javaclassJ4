@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <c:set var="ctp" value="${pageContext.request.contextPath}" />
+<% pageContext.setAttribute("smallD", "'"); %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -225,7 +227,7 @@
 
 	// 썸머노트 기본설정
 	$(document).ready(function() {
-		$("#summernote").html('${contentVo.content}');
+		$("#summernote").html('${fn:replace(contentVo.content, smallD, "\\'")}');
 	    let fontList = ['나눔바른고딕', '리디바탕', '서울남산체', '둘기마요고딕', '매일옥자체', '밑미폰트'];
 	    $('#summernote').summernote({
 	        lang: 'ko-KR',

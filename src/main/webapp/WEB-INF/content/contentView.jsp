@@ -555,7 +555,7 @@
         <div class="profile">
             <img src="${ctp}/images/user/${userImg}" alt="profile">
             <div class="nickName">${nickName}</div>
-            <div class="blog-intro">${bVo.blogIntro}</div>
+            <div class="blog-intro">${fn:replace(bVo.blogIntro, newLine, "<br/>")}</div>
             <c:if test="${userMid == sMid}">
             <hr/>
 	        <div class="actions">
