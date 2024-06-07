@@ -203,7 +203,7 @@ public class ReplyDAO {
 				pstmt.setInt(3, pageSize);
 			}
 			else {
-				if(part.equals("작성자")) sql = "select * from hbReply where rBlogIdx=? and rNickName like ? limit ?,?";
+				if(part.equals("아이디")) sql = "select * from hbReply where rBlogIdx=? and rMid like ? limit ?,?";
 				else sql = "select * from hbReply where rBlogIdx=? and rContent like ? limit ?,?";
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setInt(1, blogIdx);
@@ -281,11 +281,12 @@ public class ReplyDAO {
 			//sql = "select * from hbReply where rBlogIdx=? and readCheck='읽지않음' and rMid != ? order by rDate desc";
 			sql = "select * from hbReply where rBlogIdx=? and readCheck='읽지않음' and rMid != ? "
 					+ "union select r1.* from hbReply as r1 join hbReply as r2 on r1.parentReplyIdx = r2.rIdx "
-					+ "where r2.rMid=? and r1.readCheck='읽지않음' order by rDate desc";
+					+ "where r2.rMid=? and r1.readCheck='읽지않음' and r1.rMid != ? order by rDate desc";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, blogIdx);
 			pstmt.setString(2, mid);
 			pstmt.setString(3, mid);
+			pstmt.setString(4, mid);
 			rs = pstmt.executeQuery();
 			while(rs.next()) {
 				vo = new ReplyVO();
@@ -326,11 +327,12 @@ public class ReplyDAO {
 			//sql = "select count(*) as newReplyCnt from hbReply where rBlogIdx=? and readCheck='읽지않음' and rMid != ?";
 			sql = "select count(*) as newReplyCnt from (select * from hbReply where rBlogIdx=? and readCheck='읽지않음' and rMid != ? "
 					+ "union select r1.* from hbReply as r1 join hbReply as r2 on r1.parentReplyIdx = r2.rIdx "
-					+ "where r2.rMid=? and r1.readCheck='읽지않음') as allCount";
+					+ "where r2.rMid=? and r1.readCheck='읽지않음' and r1.rMid != ?) as allCount";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, blogIdx);
 			pstmt.setString(2, mid);
 			pstmt.setString(3, mid);
+			pstmt.setString(4, mid);
 			rs = pstmt.executeQuery();
 			rs.next();
 			newReplyCnt = rs.getInt("newReplyCnt");

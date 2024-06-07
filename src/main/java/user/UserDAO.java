@@ -306,7 +306,7 @@ public class UserDAO {
 	public int setUserSubDelete(String sMid, int blogIdx) {
 		int res = 0;
 		try {
-			sql = "delete from hbSub where sBlogIdx=? and subMid=?";
+			sql = "delete from hbSub where sIdx=? and subMid=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, blogIdx);
 			pstmt.setString(2, sMid);

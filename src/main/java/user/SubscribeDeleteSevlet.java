@@ -20,14 +20,13 @@ import blog.CategoryVO;
 public class SubscribeDeleteSevlet extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int blogIdx = request.getParameter("blogIdx")==null ? 0 : Integer.parseInt(request.getParameter("blogIdx"));
-		
+		int sIdx = request.getParameter("sIdx")==null ? 0 : Integer.parseInt(request.getParameter("sIdx"));
 		UserDAO dao = new UserDAO();
 		
        String pathInfo = request.getPathInfo(); // 사용자 아이디 부분 가져오기(/blog'/mid')
        String sMid = pathInfo.substring(1); // 슬래시 빼고 뒤에 아이디만 추출
        
-       int res = dao.setUserSubDelete(sMid, blogIdx);
+       int res = dao.setUserSubDelete(sMid, sIdx);
         
        response.getWriter().write(res+"");
         

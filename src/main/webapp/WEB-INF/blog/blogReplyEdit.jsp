@@ -92,7 +92,7 @@
 		        </nav>
 		    </div>
 		    <div class="main-content">
-		        <h1>글 관리</h1>
+		        <h1>댓글 관리</h1>
 		        <div class="category-manager mb-3">
 					<div class="contentEdit mb-3">
 						<div class="header-left">
@@ -108,7 +108,7 @@
 						</div>
 						<div class="header-right">
 				            <select name="replyView" class="custom-select custom-select-sm mr-2">
-								<option ${param.part == null || param.part == '작성자' ? 'selected' : ''}>작성자</option>
+								<option ${param.part == null || param.part == '아이디' ? 'selected' : ''}>아이디</option>
 								<option ${param.part == '내용' ? 'selected' : ''}>내용</option>
 							</select>
 				            <input type="text" name="search" id="search" value="${param.search}" placeholder="Search..." />
@@ -130,7 +130,7 @@
 							</div>
 							<div class="contentView">
 								<fmt:parseDate value="${vo.rDate}" var="rDate" pattern="yyyy-MM-dd HH:mm:ss.0" />
-								<div style="color:#999999; font-size:14px;"><span style="color:#ff7200">${vo.rNickName}</span> · ${vo.rHostIp} · <fmt:formatDate value="${rDate}" pattern="yyyy. MM. dd HH:mm" /><c:if test="${vo.rPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if></div>
+								<div style="color:#999999; font-size:14px;"><span style="color:#ff7200">${vo.rNickName}</span> · ${vo.rMid} · <fmt:formatDate value="${rDate}" pattern="yyyy. MM. dd HH:mm" /><c:if test="${vo.rPublic == '비공개'}"><i class="fa-solid fa-lock fa-sm ml-2" style="color: gray;"></i></c:if></div>
 			                    <c:if test="${vo.parentReplyIdx != 0}"><span style="color:#B2EBF4">[답글]&nbsp;</span></c:if><strong style="cursor:pointer" onclick="location.href=&quot;${ctp}/content/${sMid}?coIdx=${vo.rCoIdx}&rIdx=${vo.rIdx}&quot;">${vo.rContent}</strong><c:if test="${vo.readCheck == '읽지않음' && vo.rMid != sMid}"><i class="fa-solid fa-n fa-sm ml-2" style="color: #ff7200;"></i></c:if>
 								<div style="color:#999999; font-size:14px;">
 									${vo.coTitle}

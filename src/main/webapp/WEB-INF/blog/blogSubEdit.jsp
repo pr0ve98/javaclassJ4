@@ -329,21 +329,21 @@
 			SubChange();
 		}
 		
-		function SubDeleteModal(sBlogIdx) {
+		function SubDeleteModal(sIdx) {
 			$("#myModal2 #modalTitle").text("구독 취소"); 
 			$("#myModal2 #modalText").text("정말로 취소하시겠습니까?");
-			let footerHtml = '<button type="button" class="btn btn-danger mr-2" onclick="SubDelete('+sBlogIdx+')">삭제</button>'
+			let footerHtml = '<button type="button" class="btn btn-danger mr-2" onclick="SubDelete('+sIdx+')">취소</button>'
 							+'<button type="button" class="btn btn-secondary btn-gray" data-dismiss="modal">닫기</button>';
 			$("#myModal2 #modal-footer").html(footerHtml);
 		    $('#myModal2').modal('show');
 		}
 		
-		function SubDelete(sBlogIdx) {
+		function SubDelete(sIdx) {
 			$('#myModal').modal('hide');
 			$.ajax({
 				url : "${ctp}/SubscribeDelete/${sMid}",
 				type : "post",
-				data : {blogIdx : sBlogIdx},
+				data : {sIdx : sIdx},
 				success : function(res) {
 					if(res != "0"){
 						location.reload();
