@@ -659,5 +659,11 @@
 	.menu2 {
 		display: block;
 	}
+	.sub-blog {
+		width: 100%;
+	}
+	.navbar-brand img {
+		width: 150px!important;
+	}
 } 
 </style>
