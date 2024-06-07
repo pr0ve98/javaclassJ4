@@ -927,57 +927,57 @@ public class ContentDAO {
 		try {
 			if(category.equals("") || category.equals("all")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-					+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+					+ "from hbContent where viewCnt > 50 AND and coPublic='공개' "
 							+ "order by viewCnt desc limit 20";
 			}
 			else if(category.equals("life")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "from hbContent where viewCnt > 50 and coPublic='공개' "
 								+ "and part='일상' order by viewCnt desc limit 10";
 			}
 			else if(category.equals("hobby")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "from hbContent where viewCnt > 50 and coPublic='공개' "
 						+ "and part='취미' order by viewCnt desc limit 10";
 			}
 			else if(category.equals("movie")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "from hbContent where viewCnt > 50 and coPublic='공개' "
 						+ "and part='영화/드라마' order by viewCnt desc limit 10";
 			}
 			else if(category.equals("game")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "from hbContent where viewCnt > 50 and coPublic='공개' "
 						+ "and part='게임' order by viewCnt desc limit 10";
 			}
 			else if(category.equals("beauty")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "from hbContent where viewCnt > 50 and coPublic='공개' "
 						+ "and part='패션/미용' order by viewCnt desc limit 10";
 			}
 			else if(category.equals("food")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "from hbContent where viewCnt > 50 and coPublic='공개' "
 						+ "and part='맛집' order by viewCnt desc limit 10";
 			}
 			else if(category.equals("star")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "from hbContent where viewCnt > 50 and coPublic='공개' "
 						+ "and part='스타/연예인' order by viewCnt desc limit 10";
 			}
 			else if(category.equals("animal")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "from hbContent where viewCnt > 50 and coPublic='공개' "
 						+ "and part='반려동물' order by viewCnt desc limit 10";
 			}
 			else if(category.equals("travel")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "from hbContent where viewCnt > 50 and coPublic='공개' "
 						+ "and part='여행' order by viewCnt desc limit 10";
 			}
 			else {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where viewCnt > 50 AND wDate >= DATE_SUB(NOW(), INTERVAL 14 DAY) and coPublic='공개' "
+						+ "from hbContent where viewCnt > 50 and coPublic='공개' "
 						+ "and part='상품리뷰' order by viewCnt desc limit 10";
 			}
 			pstmt = conn.prepareStatement(sql);
@@ -1037,52 +1037,52 @@ public class ContentDAO {
 			}
 			else if(category.equals("life")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "from hbContent where coPublic='공개' "
 								+ "and part='일상' order by wDate desc limit 10";
 			}
 			else if(category.equals("hobby")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "from hbContent where coPublic='공개' "
 						+ "and part='취미' order by wDate desc limit 10";
 			}
 			else if(category.equals("movie")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "from hbContent where coPublic='공개' "
 						+ "and part='영화/드라마' order by wDate desc limit 10";
 			}
 			else if(category.equals("game")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "from hbContent where coPublic='공개' "
 						+ "and part='게임' order by wDate desc limit 10";
 			}
 			else if(category.equals("beauty")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "from hbContent where coPublic='공개' "
 						+ "and part='패션/미용' order by wDate desc limit 10";
 			}
 			else if(category.equals("food")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "from hbContent where coPublic='공개' "
 						+ "and part='맛집' order by wDate desc limit 10";
 			}
 			else if(category.equals("star")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "from hbContent where coPublic='공개' "
 						+ "and part='스타/연예인' order by wDate desc limit 10";
 			}
 			else if(category.equals("animal")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "from hbContent where coPublic='공개' "
 						+ "and part='반려동물' order by wDate desc limit 10";
 			}
 			else if(category.equals("travel")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "from hbContent where coPublic='공개' "
 						+ "and part='여행' order by wDate desc limit 10";
 			}
 			else {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-						+ "from hbContent where wDate >= DATE_SUB(NOW(), INTERVAL 7 DAY) and coPublic='공개' "
+						+ "from hbContent where coPublic='공개' "
 						+ "and part='상품리뷰' order by wDate desc limit 10";
 			}
 			pstmt = conn.prepareStatement(sql);
