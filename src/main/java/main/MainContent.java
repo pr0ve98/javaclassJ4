@@ -3,6 +3,7 @@ package main;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpSession;
 
 import blog.BlogDAO;
 import blog.BlogVO;
-import common.Pagination;
 import content.ContentDAO;
 import content.ContentVO;
 import user.SubVO;
@@ -79,7 +79,6 @@ public class MainContent extends HttpServlet {
 				  }
 				  mySubBlog = mySubBlog.substring(0, mySubBlog.length()-1);
 				  
-				  
 				// 페이지네이션
 		    	int totRecCnt = cDao.getSubContentCnt(mySubBlog, sMid);
 				int totPage = (totRecCnt % pageSize)==0 ? (totRecCnt / pageSize) : (totRecCnt / pageSize)+1;
@@ -135,7 +134,8 @@ public class MainContent extends HttpServlet {
 									  +"<div class='blog-title' style='cursor:pointer;' onclick='location.href=\""+request.getContextPath()+"/blog/"+ranBlog.getBlogMid()+"\";'>"+ranBlog.getBlogTitle()+"</div>"
 									  +"<div>"+ranBlog.getNickName()+"</div>"
 									  +"<div class='blog-ment'>"+ranBlog.getBlogIntro()+"</div>";
-							if(mySubBlog.indexOf(String.valueOf(ranBlog.getBlogIdx())) == -1) responseData += "<div class='orangeBtn-sm' onclick='subOk(\""+sMid+"\", "+ranBlog.getBlogIdx()+")'>구독하기</div></div>";
+							boolean found = Arrays.asList(mySubBlog.split(",")).contains(String.valueOf(ranBlog.getBlogIdx()));
+							if(!found) responseData += "<div class='orangeBtn-sm' onclick='subOk(\""+sMid+"\", "+ranBlog.getBlogIdx()+")'>구독하기</div></div>";
 							else responseData += "<div class='grayBtn-sm' onclick='subDelete(\""+sMid+"\", "+ranBlog.getBlogIdx()+")'>구독취소</div></div>";
 						  }
 			    	}
