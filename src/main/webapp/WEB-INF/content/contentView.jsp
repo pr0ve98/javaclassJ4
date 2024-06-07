@@ -563,7 +563,7 @@
 		        <div class="action-link" onclick="location.href='${ctp}/BlogEdit/${sMid}';"><i class="fas fa-cogs"></i> 블로그 관리</div>
 	    	</div>
 	    	</c:if>
-	    	<c:if test="${userMid != sMid}">
+	    	<c:if test="${userMid != sMid && sMid != null}">
 	    	<hr/>
 	    	<div class="actions">
 	    		<c:if test="${sVo.subMid == sMid && sVo.subMid != null}">
