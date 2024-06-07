@@ -927,7 +927,7 @@ public class ContentDAO {
 		try {
 			if(category.equals("") || category.equals("all")) {
 				sql = "select *, timestampdiff(hour, wDate, now()) as hour_diff, timestampdiff(minute, wDate, now()) as min_diff "
-					+ "from hbContent where viewCnt > 50 AND and coPublic='공개' "
+					+ "from hbContent where viewCnt > 50 and coPublic='공개' "
 							+ "order by viewCnt desc limit 20";
 			}
 			else if(category.equals("life")) {

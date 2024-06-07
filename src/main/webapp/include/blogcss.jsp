@@ -556,4 +556,7 @@
 	#replys {
 		display: none;
 	}
+@media all and (max-width:767px) {
+	.post {display: block;}
+} 
 </style>

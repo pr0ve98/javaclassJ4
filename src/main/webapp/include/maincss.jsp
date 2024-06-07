@@ -645,5 +645,19 @@
 		margin: 0 auto;
 		font-family: 'Pretendard-Light';
 	}
-	
+@media all and (max-width:767px) {
+	.content-bt {
+		padding: 0;
+	}
+	.content-box {
+		width: 100%;
+		padding: 10px;
+	}
+	.content-box-line {
+		width: 100%;
+	}
+	.menu2 {
+		display: block;
+	}
+} 
 </style>
